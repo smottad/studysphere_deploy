@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:studysphere/Vistas/iniciar_sesion.dart';
+import 'package:studysphere/Vistas/pagina_inicio.dart';
+import 'package:studysphere/color_schemes.g.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,14 +31,23 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: lightColorScheme,
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData(
+          colorScheme: darkColorScheme,
+          useMaterial3: true), //aqui estan todos los colores
+      themeMode: ThemeMode.light,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const IniciarSesion(),
+        '/start': (context) => const PaginaInicio()
+      },
     );
   }
 }
 
+/*
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -81,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).primaryColor,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -105,9 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            const Text('Lore ipsum dolor'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -123,3 +133,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/
