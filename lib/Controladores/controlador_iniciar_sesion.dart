@@ -5,11 +5,13 @@ var email = TextEditingController();
 var password = TextEditingController();
 
 iniciarSesion(BuildContext context) {
-  print('iniciando sesión ... ');
-  Navigator.pushNamed(context, '/start');
+  Navigator.pushNamed(context, '/inicio');
 }
 
 iniciarSesionGoogle(BuildContext context) {
-  print('iniciando sesión con google... ');
-  Navigator.pushNamed(context, '/start');
+  Navigator.pushNamed(context, '/inicio');
+}
+
+irRegistro(BuildContext context) {
+  Navigator.pushNamed(context, '/registro');
 }
