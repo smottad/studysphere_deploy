@@ -32,11 +32,14 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: lightColorScheme,
+        fontFamily: "Jost",
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
           colorScheme: darkColorScheme,
+          fontFamily: "Jost",
           useMaterial3: true), //aqui estan todos los colores
+
       themeMode: ThemeMode.light,
       initialRoute: '/',
       routes: {
