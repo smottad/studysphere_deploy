@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:studysphere/Componentes/web_view.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
 import 'package:studysphere/Vistas/registro.dart';
@@ -47,7 +48,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const IniciarSesion(),
         '/inicio': (context) => const PaginaInicio(),
-        '/registro': (context) => const Registro()
+        '/registro': (context) => const Registro(),
+        '/terminos': (context) => const HTMLScreen(),
       },
     );
   }

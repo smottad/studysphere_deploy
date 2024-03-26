@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:studysphere/Componentes/boton.dart';
+import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_iniciar_sesion.dart';
 
 class IniciarSesion extends StatelessWidget {
@@ -28,7 +30,7 @@ class IniciarSesion extends StatelessWidget {
               Text(
                 "STUDY SPHERE",
                 //Para mantener el tema de texto pero diciendo que sea negro
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
               ),
@@ -52,85 +54,22 @@ class IniciarSesion extends StatelessWidget {
                     labelText: "Usuario",
                     border: OutlineInputBorder(),
                   ),
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width:
-                      (MediaQuery.of(context).size.width * 0.7).clamp(200, 500),
-                  child: TextField(
-                    autocorrect: false,
-                    controller: password,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Contraseña",
-                      border: OutlineInputBorder(),
-                    ),
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ElevatedButton(
-                  onPressed: () => iniciarSesion(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        //el secondary container es verde en el tema que puse
-                        Theme.of(context).colorScheme.secondaryContainer,
-                    elevation: 2,
-                    fixedSize:
-                        Size.fromWidth(MediaQuery.of(context).size.width / 2),
-                    maximumSize: const Size.fromWidth(300),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Iniciar sesión',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: ElevatedButton(
-                  onPressed: () => iniciarSesionGoogle(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
-                    elevation: 2,
-                    fixedSize:
-                        Size.fromWidth(MediaQuery.of(context).size.width / 2),
-                    maximumSize: const Size.fromWidth(300),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Iniciar con google',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer),
-                    ),
-                  ),
-                ),
-              ),
+              textFormulario(context, password, "Contraseña", oscurecer: true),
+              boton(context, "Iniciar sesión", iniciarSesion),
+              boton(context, "Iniciar con Google", iniciarSesionGoogle),
               TextButton(
                 onPressed: () => irRegistro(context),
                 child: Text(
                   "Crear una cuenta",
                   style: Theme.of(context)
                       .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Theme.of(context).colorScheme.tertiary),
+                      .bodyMedium
+                      ?.copyWith(color: Theme.of(context).colorScheme.tertiary),
                 ),
               ),
               const Spacer(),
