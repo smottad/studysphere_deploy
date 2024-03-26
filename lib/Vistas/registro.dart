@@ -57,17 +57,19 @@ class _RegistroState extends State<Registro> {
                 return setState(
                   () => foto = CircleAvatar(
                     backgroundImage: FileImage(file),
-                    radius:
-                        (MediaQuery.of(context).size.width * 0.2).clamp(10, 60),
+                    radius: (MediaQuery.of(context).size.height * 0.07)
+                        .clamp(10, 100),
                   ),
                 );
               },
               customBorder: const CircleBorder(),
               child: foto ??
                   CircleAvatar(
-                    backgroundImage: const AssetImage('lib/Assets/logo.png'),
-                    radius:
-                        (MediaQuery.of(context).size.width * 0.2).clamp(10, 60),
+                    backgroundImage: const AssetImage('lib/Assets/no_user.png'),
+                    backgroundColor:
+                        Theme.of(context).colorScheme.secondaryContainer,
+                    radius: (MediaQuery.of(context).size.height * 0.07)
+                        .clamp(10, 100),
                   ),
             ),
             const Spacer(),

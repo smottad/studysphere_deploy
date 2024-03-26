@@ -68,6 +68,7 @@ flutter:
   assets:
       - lib/Assets/background.png
       - lib/Assets/logo.png
+      - lib/Assets/no_user.png
       - lib/Assets/policy.html
       - lib/Assets/terms.html
 

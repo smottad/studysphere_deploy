@@ -13,11 +13,12 @@ Padding textFormulario(
           obscureText: oscurecer,
           obscuringCharacter: '*',
           decoration: InputDecoration(
+            fillColor: Theme.of(context).colorScheme.surface,
             labelText: label,
             border: const OutlineInputBorder(),
           ),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
         ),
       ),
