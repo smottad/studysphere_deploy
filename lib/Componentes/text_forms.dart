@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 Padding textFormulario(
-        BuildContext context, TextEditingController controller, String label,
-        {bool oscurecer = false}) =>
+  BuildContext context,
+  TextEditingController controller,
+  String label, {
+  bool oscurecer = false,
+  double padding = 6.0,
+  TextInputType? teclado,
+}) =>
     Padding(
-      padding: const EdgeInsets.all(6.0),
+      padding: EdgeInsets.all(padding),
       child: SizedBox(
         width: (MediaQuery.of(context).size.width * 0.7).clamp(200, 500),
         child: TextField(
@@ -12,6 +17,7 @@ Padding textFormulario(
           controller: controller,
           obscureText: oscurecer,
           obscuringCharacter: '*',
+          keyboardType: teclado,
           decoration: InputDecoration(
             fillColor: Theme.of(context).colorScheme.surface,
             labelText: label,

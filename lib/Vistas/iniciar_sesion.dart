@@ -47,17 +47,8 @@ class IniciarSesion extends StatelessWidget {
                 //minimo 200 maximo 500
                 width:
                     (MediaQuery.of(context).size.width * 0.7).clamp(200, 500),
-                child: TextField(
-                  autocorrect: false,
-                  controller: email,
-                  decoration: const InputDecoration(
-                    labelText: "Usuario",
-                    border: OutlineInputBorder(),
-                  ),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                ),
+                child: textFormulario(context, email, "Usuario",
+                    padding: 0.0, teclado: TextInputType.emailAddress),
               ),
               textFormulario(context, password, "Contraseña", oscurecer: true),
               boton(context, "Iniciar sesión", iniciarSesion),
