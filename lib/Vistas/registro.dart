@@ -48,28 +48,27 @@ class _RegistroState extends State<Registro> {
         child: Column(
           children: [
             const Spacer(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: InkWell(
-                onTap: () async {
-                  var file = await getFoto();
-                  if (file == null) {
-                    return;
-                  }
-                  return setState(
-                    () => foto = CircleAvatar(
-                      backgroundImage: FileImage(file),
-                      radius: MediaQuery.of(context).size.height * 0.2,
-                    ),
-                  );
-                },
-                customBorder: const CircleBorder(),
-                child: foto ??
-                    CircleAvatar(
-                      backgroundImage: const AssetImage('lib/Assets/logo.png'),
-                      radius: MediaQuery.of(context).size.height * 0.2,
-                    ),
-              ),
+            InkWell(
+              onTap: () async {
+                var file = await getFoto();
+                if (file == null) {
+                  return;
+                }
+                return setState(
+                  () => foto = CircleAvatar(
+                    backgroundImage: FileImage(file),
+                    radius:
+                        (MediaQuery.of(context).size.width * 0.2).clamp(10, 60),
+                  ),
+                );
+              },
+              customBorder: const CircleBorder(),
+              child: foto ??
+                  CircleAvatar(
+                    backgroundImage: const AssetImage('lib/Assets/logo.png'),
+                    radius:
+                        (MediaQuery.of(context).size.width * 0.2).clamp(10, 60),
+                  ),
             ),
             const Spacer(),
             textFormulario(context, nombre, "Nombre"),
@@ -102,7 +101,6 @@ class _RegistroState extends State<Registro> {
             const Spacer(),
             boton(context, "Crear cuenta", crearCuenta),
             const Spacer(),
-            const Spacer(),
           ],
         ),
       ),
@@ -128,13 +126,13 @@ RichText terminosYCondiciones(context) => RichText(
         children: [
           TextSpan(
               text: 'Acepto los ', // el texto que quieres mostrar
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).colorScheme.onBackground)),
           TextSpan(
               text: 'términos y condiciones',
               style: Theme.of(context)
                   .textTheme
-                  .bodyMedium
+                  .bodySmall
                   ?.copyWith(color: Theme.of(context).colorScheme.secondary),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => terminos(context)),
@@ -142,14 +140,14 @@ RichText terminosYCondiciones(context) => RichText(
             text: ' y nuestra ', // el texto que quieres mostrar
             style: Theme.of(context)
                 .textTheme
-                .bodyMedium
+                .bodySmall
                 ?.copyWith(color: Theme.of(context).colorScheme.onBackground),
           ),
           TextSpan(
               text: 'política de privacidad.',
               style: Theme.of(context)
                   .textTheme
-                  .bodyMedium
+                  .bodySmall
                   ?.copyWith(color: Theme.of(context).colorScheme.secondary),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => politicas(context))

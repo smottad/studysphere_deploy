@@ -4,7 +4,7 @@ Padding textFormulario(
         BuildContext context, TextEditingController controller, String label,
         {bool oscurecer = false}) =>
     Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(6.0),
       child: SizedBox(
         width: (MediaQuery.of(context).size.width * 0.7).clamp(200, 500),
         child: TextField(
