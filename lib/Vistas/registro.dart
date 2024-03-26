@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:studysphere/Componentes/boton.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_registro.dart';
@@ -14,6 +15,7 @@ class Registro extends StatefulWidget {
 class _RegistroState extends State<Registro> {
   final titulo = "Crear cuenta";
   var _isChecked = false;
+  CircleAvatar? foto;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,31 @@ class _RegistroState extends State<Registro> {
       body: Center(
         child: Column(
           children: [
+            const Spacer(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: InkWell(
+                onTap: () async {
+                  var file = await getFoto();
+                  if (file == null) {
+                    return;
+                  }
+                  return setState(
+                    () => foto = CircleAvatar(
+                      backgroundImage: FileImage(file),
+                      radius: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                  );
+                },
+                customBorder: const CircleBorder(),
+                child: foto ??
+                    CircleAvatar(
+                      backgroundImage: const AssetImage('lib/Assets/logo.png'),
+                      radius: MediaQuery.of(context).size.height * 0.2,
+                    ),
+              ),
+            ),
+            const Spacer(),
             textFormulario(context, nombre, "Nombre"),
             textFormulario(context, correo, "Correo"),
             textFormulario(context, edad, "Edad"),
@@ -72,7 +99,10 @@ class _RegistroState extends State<Registro> {
                 )
               ],
             ),
-            boton(context, "Crear cuenta", crearCuenta)
+            const Spacer(),
+            boton(context, "Crear cuenta", crearCuenta),
+            const Spacer(),
+            const Spacer(),
           ],
         ),
       ),
