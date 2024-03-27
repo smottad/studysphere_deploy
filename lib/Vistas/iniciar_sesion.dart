@@ -8,6 +8,8 @@ class IniciarSesion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
@@ -30,9 +32,9 @@ class IniciarSesion extends StatelessWidget {
               Text(
                 "STUDY SPHERE",
                 //Para mantener el tema de texto pero diciendo que sea negro
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+                style: textTheme.displayMedium?.copyWith(
+                  color: colorScheme.onBackground,
+                ),
               ),
               SizedBox(
                   height:
@@ -57,10 +59,8 @@ class IniciarSesion extends StatelessWidget {
                 onPressed: () => irRegistro(context),
                 child: Text(
                   "Crear una cuenta",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Theme.of(context).colorScheme.tertiary),
+                  style: textTheme.bodyMedium
+                      ?.copyWith(color: colorScheme.tertiary),
                 ),
               ),
               const Spacer(),
