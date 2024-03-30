@@ -11,3 +11,7 @@ irProyectos(BuildContext context) {
 irHorario(BuildContext context) {
   Navigator.pushNamed(context, '/inicio/horario');
 }
+
+irConfiguracion(BuildContext context) {
+  Navigator.pushNamed(context, '/inicio/proyectos');
+}

@@ -23,27 +23,7 @@ class PaginaInicio extends StatelessWidget {
         elevation: 2,
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Spacer(),
-                  Icon(
-                    Icons.person,
-                    color: colorScheme.onPrimary,
-                    size: (size.height * 0.1).clamp(10, 50),
-                  ),
-                  const Spacer(),
-                  const Spacer(),
-                  Icon(
-                    Icons.settings,
-                    color: colorScheme.onPrimary,
-                    size: (size.height * 0.1).clamp(10, 50),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            ),
+            fotoYConfiguracion(size, context, colorScheme),
             cards(context, Icons.book, 'Asignaturas', irAsignaturas),
             cards(context, Icons.timeline, 'Proyectos', irProyectos),
             cards(context, Icons.view_week, 'Horario', irHorario),
@@ -51,6 +31,31 @@ class PaginaInicio extends StatelessWidget {
         ),
       ),
       body: const Center(child: Text('Algo')),
+    );
+  }
+
+  Padding fotoYConfiguracion(
+      Size size, BuildContext context, ColorScheme colorScheme) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Image(
+            image: const AssetImage('lib/Assets/no_user.png'),
+            width: (size.height * 0.1).clamp(10, 50),
+            height: (size.height * 0.1).clamp(10, 50),
+          ),
+          const Spacer(),
+          InkWell(
+            onTap: () => irConfiguracion(context),
+            child: Icon(
+              Icons.settings,
+              color: colorScheme.onPrimary,
+              size: (size.height * 0.1).clamp(10, 50),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
