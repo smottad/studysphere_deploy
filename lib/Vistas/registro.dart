@@ -43,13 +43,7 @@ class _RegistroState extends State<Registro> {
                 );
               },
               customBorder: const CircleBorder(),
-              child: foto ??
-                  CircleAvatar(
-                    backgroundImage: const AssetImage('lib/Assets/no_user.png'),
-                    backgroundColor: colorScheme.secondaryContainer,
-                    radius: (MediaQuery.of(context).size.height * 0.07)
-                        .clamp(10, 100),
-                  ),
+              child: foto ?? FotoDefault(colorScheme: colorScheme),
             ),
             const Spacer(),
             textFormulario(context, nombre, "Nombre",
@@ -91,6 +85,24 @@ class _RegistroState extends State<Registro> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class FotoDefault extends StatelessWidget {
+  const FotoDefault({
+    super.key,
+    required this.colorScheme,
+  });
+
+  final ColorScheme colorScheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      backgroundImage: const AssetImage('lib/Assets/no_user.png'),
+      backgroundColor: colorScheme.secondaryContainer,
+      radius: (MediaQuery.of(context).size.height * 0.07).clamp(10, 100),
     );
   }
 }
