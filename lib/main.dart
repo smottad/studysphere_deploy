@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
+import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/en_progreso.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/inicio/asignaturas': (context) => const EnProgreso(),
         '/inicio/proyectos': (context) => const EnProgreso(),
         '/inicio/horario': (context) => const EnProgreso(),
+        '/inicio/crear_recordatorio': (context) => const CrearRecordatorio(),
       },
     );
   }
