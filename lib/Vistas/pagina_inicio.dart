@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/cards.dart';
+import 'package:studysphere/Componentes/menu_expandible.dart';
 import 'package:studysphere/Controladores/controlador_pagina_inicio.dart';
 
 class PaginaInicio extends StatelessWidget {
+  static const _actionTitles = [
+    'Crear recordatorio',
+    'Crear flashcard',
+    'Añadir asignatura',
+    'Añadir proyecto',
+  ];
   const PaginaInicio({super.key});
 
   @override
@@ -15,7 +21,59 @@ class PaginaInicio extends StatelessWidget {
 
     return Scaffold(
       appBar: appBar(context, "Study Sphere", menu: true),
-      floatingActionButton: menu(colorScheme),
+      floatingActionButton: ExpandableFab(
+        distance: 200,
+        children: [
+          Column(
+            children: [
+              ActionButton(
+                onPressed: () => showAction(context, 0),
+                icon: Icon(
+                  Icons.alarm,
+                  color: colorScheme.onSecondary,
+                ),
+              ),
+              Text(_actionTitles[0])
+            ],
+          ),
+          Column(
+            children: [
+              ActionButton(
+                onPressed: () => showAction(context, 1),
+                icon: Icon(
+                  Icons.bookmark,
+                  color: colorScheme.onSecondary,
+                ),
+              ),
+              Text(_actionTitles[1])
+            ],
+          ),
+          Column(
+            children: [
+              ActionButton(
+                onPressed: () => showAction(context, 2),
+                icon: Icon(
+                  Icons.book,
+                  color: colorScheme.onSecondary,
+                ),
+              ),
+              Text(_actionTitles[2])
+            ],
+          ),
+          Column(
+            children: [
+              ActionButton(
+                onPressed: () => showAction(context, 3),
+                icon: Icon(
+                  Icons.timeline,
+                  color: colorScheme.onSecondary,
+                ),
+              ),
+              Text(_actionTitles[3])
+            ],
+          ),
+        ],
+      ),
       backgroundColor: colorScheme.background,
       drawer: Drawer(
         width: (size.width * 0.8).clamp(100, 400),
@@ -59,14 +117,3 @@ class PaginaInicio extends StatelessWidget {
     );
   }
 }
-
-menu(ColorScheme colorScheme) => FloatingActionButton(
-      onPressed: () => something(),
-      elevation: 2,
-      backgroundColor: colorScheme.primary,
-      foregroundColor: colorScheme.onPrimary,
-      isExtended: true,
-      child: const Icon(Icons.add),
-    );
-
-something() => print("hace cositas");
