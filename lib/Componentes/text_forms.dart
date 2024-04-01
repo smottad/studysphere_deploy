@@ -19,6 +19,7 @@ Padding textFormulario(
           obscuringCharacter: '*',
           keyboardType: teclado,
           decoration: InputDecoration(
+            filled: true,
             fillColor: Theme.of(context).colorScheme.surface,
             labelText: label,
             border: const OutlineInputBorder(),
