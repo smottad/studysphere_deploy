@@ -37,3 +37,12 @@ void showAction(BuildContext context, int index) {
       throw ('wtf');
   }
 }
+
+//para la foto del menu lateral, por ahora es generico
+Image getFotoUsuario(double width, double height) {
+  return Image(
+    image: const AssetImage('lib/Assets/no_user.png'),
+    width: width,
+    height: height,
+  );
+}

@@ -132,8 +132,7 @@ RichText terminosYCondiciones(
                   ?.copyWith(color: colorScheme.onBackground)),
           TextSpan(
               text: 'términos y condiciones',
-              style:
-                  textTheme.bodySmall?.copyWith(color: colorScheme.secondary),
+              style: textTheme.bodySmall?.copyWith(color: colorScheme.tertiary),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => terminos(context)),
           TextSpan(
@@ -143,8 +142,7 @@ RichText terminosYCondiciones(
           ),
           TextSpan(
               text: 'política de privacidad.',
-              style:
-                  textTheme.bodySmall?.copyWith(color: colorScheme.secondary),
+              style: textTheme.bodySmall?.copyWith(color: colorScheme.tertiary),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => politicas(context))
         ],

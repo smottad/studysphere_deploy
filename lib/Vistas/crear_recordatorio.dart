@@ -23,11 +23,14 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: appBar(context, titulo),
+      //para que no salga el error cuando el teclado no deja que se vea todo el formulario
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           children: [
             const Spacer(),
-            textFormulario(context, nombre, 'Nombre'),
+            textFormulario(context, nombre, 'Nombre',
+                teclado: TextInputType.name),
             Padding(
               padding: const EdgeInsets.all(8),
               child: FutureBuilder(
@@ -69,13 +72,10 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 ),
               ),
             ),
-            textFormulario(context, fecha, 'Fecha'),
-            textFormulario(context, hora, 'Hora'),
+            textFormulario(context, fecha, 'Fecha', funcion: escogerFecha),
+            textFormulario(context, hora, 'Hora', funcion: escogerHora),
             textFormulario(context, prioridad, 'Prioridad'),
-            (tipo == null
-                ? textFormulario(context, temas, 'Temas')
-                //esto es solo para que no salga nada
-                : const Padding(padding: EdgeInsets.all(0))),
+            textFormulario(context, temas, 'Temas'),
             SizedBox(
                 width: (size.width * 0.7).clamp(200, 500),
                 child: Padding(
@@ -94,7 +94,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                     ],
                   ),
                 )),
-            boton(context, 'guardar', () {
+            boton(context, 'GUARDAR', () {
               if (alarma!) {
                 funcionAlarma();
               }

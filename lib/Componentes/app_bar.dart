@@ -26,7 +26,7 @@ AppBar appBar(BuildContext context, String titulo,
   return AppBar(
     leading: leading,
     titleTextStyle:
-        Theme.of(context).textTheme.headlineLarge?.copyWith(color: colorTexto),
+        Theme.of(context).textTheme.headlineMedium?.copyWith(color: colorTexto),
     backgroundColor: colorBar,
     foregroundColor: colorTexto,
     elevation: 2,

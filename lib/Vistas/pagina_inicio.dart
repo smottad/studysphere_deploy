@@ -81,6 +81,8 @@ class PaginaInicio extends StatelessWidget {
         elevation: 2,
         child: Column(
           children: [
+            //sin esto va desde el lugar de notificaciones, no se porque
+            const SizedBox(height: 30),
             fotoYConfiguracion(size, context, colorScheme),
             cards(context, Icons.book, 'Asignaturas', irAsignaturas),
             cards(context, Icons.timeline, 'Proyectos', irProyectos),
@@ -98,10 +100,9 @@ class PaginaInicio extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          Image(
-            image: const AssetImage('lib/Assets/no_user.png'),
-            width: (size.height * 0.1).clamp(10, 50),
-            height: (size.height * 0.1).clamp(10, 50),
+          getFotoUsuario(
+            (size.height * 0.1).clamp(10, 50),
+            (size.height * 0.1).clamp(10, 50),
           ),
           const Spacer(),
           InkWell(
