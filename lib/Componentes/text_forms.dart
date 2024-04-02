@@ -5,21 +5,26 @@ Padding textFormulario(
         {bool oscurecer = false,
         double padding = 6.0,
         TextInputType? teclado,
-        Function? funcion}) =>
+        Function? funcion,
+        String? Function(String?)? validator}) =>
     Padding(
       padding: EdgeInsets.all(padding),
       child: SizedBox(
-        width: (MediaQuery.of(context).size.width * 0.7).clamp(200, 500),
+        width: (MediaQuery.of(context).size.width * 0.8).clamp(200, 500),
         child: TextFormField(
           onTap: () {
             funcion!(context);
           },
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: validator,
           autocorrect: !oscurecer,
           controller: controller,
           obscureText: oscurecer,
           obscuringCharacter: '*',
           keyboardType: teclado,
           decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             filled: true,
             fillColor: Theme.of(context).colorScheme.surface,
             labelText: label,
