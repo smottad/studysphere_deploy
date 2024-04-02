@@ -13,8 +13,29 @@ class Registro extends StatefulWidget {
 }
 
 class _RegistroState extends State<Registro> {
-  var _isChecked = false;
   CircleAvatar? foto;
+  @override
+  void initState() {
+    super.initState();
+    nombre.addListener(validarNombre);
+    correo.addListener(validarCorreo);
+    edad.addListener(validarEdad);
+    telefono.addListener(validarTelefono);
+    contrasena.addListener(validarContrasena);
+    verificarContrasena.addListener(validarConfirmarContrasena);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nombre.dispose();
+    correo.dispose();
+    edad.dispose();
+    telefono.dispose();
+    contrasena.dispose();
+    verificarContrasena.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -29,34 +50,37 @@ class _RegistroState extends State<Registro> {
           children: [
             const Spacer(),
             InkWell(
-              onTap: () async {
-                var file = await getFoto();
-                if (file == null) {
-                  return;
-                }
-                return setState(
-                  () => foto = CircleAvatar(
-                    backgroundImage: FileImage(file),
-                    radius: (MediaQuery.of(context).size.height * 0.07)
-                        .clamp(10, 100),
-                  ),
-                );
-              },
-              customBorder: const CircleBorder(),
-              child: foto ?? FotoDefault(colorScheme: colorScheme),
-            ),
+                onTap: () async {
+                  var file = await getFoto();
+                  if (file == null) {
+                    return;
+                  }
+                  return setState(() => foto = CircleAvatar(
+                        backgroundImage: FileImage(file),
+                        radius: (MediaQuery.of(context).size.height * 0.07)
+                            .clamp(10, 100),
+                      ));
+                },
+                customBorder: const CircleBorder(),
+                child: foto ?? FotoDefault(colorScheme: colorScheme)),
             const Spacer(),
             textFormulario(context, nombre, "Nombre",
-                teclado: TextInputType.name),
+                teclado: TextInputType.name,
+                validator: (val) => nombreValidator_),
             textFormulario(context, correo, "Correo",
-                teclado: TextInputType.emailAddress),
+                teclado: TextInputType.emailAddress,
+                validator: (val) => correoValidator_),
             textFormulario(context, edad, "Edad",
-                teclado: TextInputType.number),
+                teclado: TextInputType.number,
+                validator: (val) => edadValidator_),
             textFormulario(context, telefono, "Teléfono",
-                teclado: TextInputType.phone),
-            textFormulario(context, contrasena, "Contraseña", oscurecer: true),
+                teclado: TextInputType.phone,
+                validator: (val) => telefonoValidator_),
+            textFormulario(context, contrasena, "Contraseña",
+                oscurecer: true, validator: (val) => contrasenaValidator_),
             textFormulario(context, verificarContrasena, "Confirmar contraseña",
-                oscurecer: true),
+                oscurecer: true,
+                validator: (val) => verificarContrasenaValidator_),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,9 +95,9 @@ class _RegistroState extends State<Registro> {
                   checkColor: colorScheme.onSecondaryContainer,
                   fillColor: MaterialStateProperty.resolveWith(
                       (states) => getColor(context, states, colorScheme)),
-                  value: _isChecked,
+                  value: isChecked,
                   onChanged: (bool? newValue) {
-                    setState(() => _isChecked = newValue!);
+                    setState(() => isChecked = newValue!);
                   },
                 )
               ],
@@ -132,8 +156,7 @@ RichText terminosYCondiciones(
                   ?.copyWith(color: colorScheme.onBackground)),
           TextSpan(
               text: 'términos y condiciones',
-              style:
-                  textTheme.bodySmall?.copyWith(color: colorScheme.secondary),
+              style: textTheme.bodySmall?.copyWith(color: colorScheme.tertiary),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => terminos(context)),
           TextSpan(
@@ -143,8 +166,7 @@ RichText terminosYCondiciones(
           ),
           TextSpan(
               text: 'política de privacidad.',
-              style:
-                  textTheme.bodySmall?.copyWith(color: colorScheme.secondary),
+              style: textTheme.bodySmall?.copyWith(color: colorScheme.tertiary),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => politicas(context))
         ],

@@ -39,6 +39,10 @@ dependencies:
   image_picker: ^1.0.7
   webview_flutter: ^4.7.0
   postgres: ^3.1.2
+  add_2_calendar: ^3.0.1
+  syncfusion_flutter_calendar: ^25.1.38
+  alarm: ^3.0.14
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +76,7 @@ flutter:
       - lib/Assets/no_user.png
       - lib/Assets/policy.html
       - lib/Assets/terms.html
+      - lib/Assets/alarm.wav
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

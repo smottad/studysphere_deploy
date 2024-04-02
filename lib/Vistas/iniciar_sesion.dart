@@ -48,7 +48,7 @@ class IniciarSesion extends StatelessWidget {
               SizedBox(
                 //minimo 200 maximo 500
                 width:
-                    (MediaQuery.of(context).size.width * 0.7).clamp(200, 500),
+                    (MediaQuery.of(context).size.width * 0.8).clamp(200, 500),
                 child: textFormulario(context, email, "Usuario",
                     padding: 0.0, teclado: TextInputType.emailAddress),
               ),

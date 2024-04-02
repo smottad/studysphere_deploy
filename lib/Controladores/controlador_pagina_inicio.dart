@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+//para la foto del menu lateral, por ahora es generico
+Image getFotoUsuario(double width, double height) {
+  return Image(
+    image: const AssetImage('lib/Assets/no_user.png'),
+    width: width,
+    height: height,
+  );
+}
+
 irAsignaturas(BuildContext context) {
   Navigator.pushNamed(context, '/inicio/asignaturas');
 }

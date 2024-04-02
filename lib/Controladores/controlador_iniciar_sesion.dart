@@ -5,11 +5,11 @@ var email = TextEditingController();
 var password = TextEditingController();
 
 iniciarSesion(BuildContext context) {
-  Navigator.pushNamed(context, '/inicio');
+  Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
 }
 
 iniciarSesionGoogle(BuildContext context) {
-  Navigator.pushNamed(context, '/inicio');
+  Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
 }
 
 irRegistro(BuildContext context) {

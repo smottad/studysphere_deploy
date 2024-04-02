@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 Padding boton(BuildContext context, String texto, Function funcion) => Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(6.0),
       child: ElevatedButton(
         onPressed: () => funcion(context),
         style: ElevatedButton.styleFrom(
