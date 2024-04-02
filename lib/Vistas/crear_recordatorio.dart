@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/boton.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
@@ -127,7 +128,9 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                       const Spacer(),
                       Checkbox(
                           value: alarma,
-                          onChanged: (value) => setState(() => alarma = value)),
+                          onChanged: (value) async {
+                            botonAlarma(value);
+                          }),
                     ],
                   ),
                 )),
@@ -138,4 +141,23 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
       ),
     );
   }
+
+  Future<void> botonAlarma(bool? value) async {
+    if (await checkAndroidScheduleExactAlarmPermission()) {
+      setState(() => alarma = value);
+    }
+  }
+}
+
+Future<bool> checkAndroidScheduleExactAlarmPermission() async {
+  final status = await Permission.scheduleExactAlarm.status;
+  //Schedule exact alarm permission
+  if (status.isDenied) {
+    //Requesting schedule exact alarm permission
+    final res = await Permission.scheduleExactAlarm.request();
+    if (res.isDenied) {
+      return false;
+    }
+  }
+  return true;
 }

@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:alarm/alarm.dart';
+import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 
@@ -9,6 +13,9 @@ List<DropdownMenuEntry<String>> lista = [
 Future<List<DropdownMenuEntry<String>>> getAsignaturasYProyectos() async {
   return lista;
 }
+
+// TODO: implementar
+sendToBD() {}
 
 bool? alarma = false;
 var nombre = TextEditingController();
@@ -82,8 +89,11 @@ funcionGuardar(BuildContext context) async {
     return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Por favor ingrese una prioridad válida')));
   }
+  var id = Random(1).nextInt(1000);
+  await sendToBD();
+
   if (alarma!) {
-    crearAlarma();
+    await crearAlarma(id);
   }
   await anadirAlCalendario();
   if (context.mounted) {
@@ -91,7 +101,19 @@ funcionGuardar(BuildContext context) async {
   }
 }
 
-crearAlarma() {}
+crearAlarma(id) async {
+  final horaAlarma =
+      date!.copyWith(hour: startHour?.hour, minute: startHour?.minute);
+  final alarmSettings = AlarmSettings(
+      id: id,
+      dateTime: horaAlarma,
+      assetAudioPath: 'lib/Assets/alarma.wav',
+      notificationTitle: '$tipo de $asignatura',
+      notificationBody: 'Alarma',
+      volume: 1,
+      loopAudio: true);
+  await Alarm.set(alarmSettings: alarmSettings);
+}
 
 anadirAlCalendario() async {
   DateTime fechaInicioEvento;
