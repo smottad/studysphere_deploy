@@ -24,54 +24,42 @@ class PaginaInicio extends StatelessWidget {
       floatingActionButton: ExpandableFab(
         distance: 200,
         children: [
-          Column(
-            children: [
-              ActionButton(
+          Column(children: [
+            ActionButton(
                 onPressed: () => showAction(context, 0),
-                icon: Icon(
-                  Icons.alarm,
-                  color: colorScheme.onSecondary,
-                ),
+                icon: Icon(Icons.alarm, color: colorScheme.onSecondary)),
+            Text(_actionTitles[0])
+          ]),
+          Column(children: [
+            ActionButton(
+              onPressed: () => showAction(context, 1),
+              icon: Icon(
+                Icons.bookmark,
+                color: colorScheme.onSecondary,
               ),
-              Text(_actionTitles[0])
-            ],
-          ),
-          Column(
-            children: [
-              ActionButton(
-                onPressed: () => showAction(context, 1),
-                icon: Icon(
-                  Icons.bookmark,
-                  color: colorScheme.onSecondary,
-                ),
+            ),
+            Text(_actionTitles[1])
+          ]),
+          Column(children: [
+            ActionButton(
+              onPressed: () => showAction(context, 2),
+              icon: Icon(
+                Icons.book,
+                color: colorScheme.onSecondary,
               ),
-              Text(_actionTitles[1])
-            ],
-          ),
-          Column(
-            children: [
-              ActionButton(
-                onPressed: () => showAction(context, 2),
-                icon: Icon(
-                  Icons.book,
-                  color: colorScheme.onSecondary,
-                ),
+            ),
+            Text(_actionTitles[2])
+          ]),
+          Column(children: [
+            ActionButton(
+              onPressed: () => showAction(context, 3),
+              icon: Icon(
+                Icons.timeline,
+                color: colorScheme.onSecondary,
               ),
-              Text(_actionTitles[2])
-            ],
-          ),
-          Column(
-            children: [
-              ActionButton(
-                onPressed: () => showAction(context, 3),
-                icon: Icon(
-                  Icons.timeline,
-                  color: colorScheme.onSecondary,
-                ),
-              ),
-              Text(_actionTitles[3])
-            ],
-          ),
+            ),
+            Text(_actionTitles[3])
+          ]),
         ],
       ),
       backgroundColor: colorScheme.background,

@@ -1,4 +1,3 @@
-import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/boton.dart';
@@ -15,10 +14,32 @@ class CrearRecordatorio extends StatefulWidget {
 class _CrearRecordatorioState extends State<CrearRecordatorio> {
   final titulo = 'Nuevo recordatorio';
   final listaAsignaturas = getAsignaturasYProyectos();
-  bool? alarma = false;
+
+  @override
+  void initState() {
+    super.initState();
+    nombre.addListener(validarNombre);
+    prioridad.addListener(validarPrioridad);
+    asignatura = null;
+    tipo = null;
+    startHour = null;
+    endHour = null;
+    date = null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    nombre.clear();
+    horaFin.clear();
+    horaInicio.clear();
+    fecha.clear();
+    prioridad.clear();
+    temas.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
@@ -30,21 +51,26 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
         child: Column(
           children: [
             const Spacer(),
-            textFormulario(context, nombre, 'Nombre',
-                teclado: TextInputType.name),
+            textFormulario(context, nombre, "Nombre",
+                teclado: TextInputType.name,
+                validator: (val) => nombreValidator_),
             Padding(
               padding: const EdgeInsets.all(8),
               child: FutureBuilder(
                 future: listaAsignaturas,
                 builder: (context, snapshot) => DropdownMenu<String>(
                   hintText: 'Asignatura o proyecto',
-                  width: (size.width * 0.7).clamp(200, 500),
+                  width: (size.width * 0.8).clamp(200, 500),
                   onSelected: (value) => setAsignatura(value),
                   textStyle: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurface,
                   ),
                   dropdownMenuEntries: snapshot.data!,
                   inputDecorationTheme: InputDecorationTheme(
+                    hintStyle: textTheme.bodySmall
+                        ?.copyWith(color: colorScheme.onSurface),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     filled: true,
                     fillColor: colorScheme.surface,
                     border: const OutlineInputBorder(),
@@ -56,17 +82,21 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
               padding: const EdgeInsets.all(8),
               child: DropdownMenu(
                 dropdownMenuEntries: const [
-                  DropdownMenuEntry(value: 0, label: 'Tarea'),
-                  DropdownMenuEntry(value: 1, label: 'Examen'),
-                  DropdownMenuEntry(value: 2, label: 'Reunion')
+                  DropdownMenuEntry(value: 'Tarea', label: 'Tarea'),
+                  DropdownMenuEntry(value: 'Examen', label: 'Examen'),
+                  DropdownMenuEntry(value: 'Reunión', label: 'Reunion')
                 ],
-                hintText: 'tipo',
-                width: (size.width * 0.7).clamp(200, 500),
+                hintText: 'Tipo',
+                width: (size.width * 0.8).clamp(200, 500),
                 onSelected: (value) => setTipo(value),
                 textStyle: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurface,
                 ),
                 inputDecorationTheme: InputDecorationTheme(
+                  hintStyle: textTheme.bodySmall
+                      ?.copyWith(color: colorScheme.onSurface),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   filled: true,
                   fillColor: colorScheme.surface,
                   border: const OutlineInputBorder(),
@@ -77,9 +107,11 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 funcion: escogerFecha, teclado: TextInputType.none),
             textFormulario(context, horaInicio, 'Hora inicio',
                 funcion: escogerHoraInicio, teclado: TextInputType.none),
-            textFormulario(context, horaFin, 'Hora fin',
+            textFormulario(context, horaFin, 'Hora fin (Opcional)',
                 funcion: escogerHoraFinal, teclado: TextInputType.none),
-            textFormulario(context, prioridad, 'Prioridad'),
+            textFormulario(context, prioridad, 'Prioridad',
+                teclado: TextInputType.number,
+                validator: (val) => prioridadValidator_),
             textFormulario(context, temas, 'Temas'),
             SizedBox(
                 width: (size.width * 0.6).clamp(200, 500),
@@ -99,45 +131,11 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                     ],
                   ),
                 )),
-            boton(context, 'Guardar en el calendario', funcionGuardar),
+            boton(context, 'Guardar', funcionGuardar),
             const Spacer(),
           ],
         ),
       ),
     );
-  }
-
-  funcionGuardar(BuildContext context) {
-    if (alarma!) {
-      funcionAlarma();
-    }
-    anadirAlCalendario();
-    mandarALaBD(context);
-  }
-
-  funcionAlarma() {}
-
-  anadirAlCalendario() async {
-    DateTime fechaInicioEvento;
-    DateTime fechaFinalEvento;
-    if (endHour != null) {
-      fechaInicioEvento =
-          date!.copyWith(hour: startHour?.hour, minute: startHour?.minute);
-      fechaFinalEvento =
-          date!.copyWith(hour: endHour?.hour, minute: endHour?.minute);
-    } else {
-      fechaInicioEvento =
-          date!.copyWith(hour: startHour?.hour, minute: startHour?.minute);
-      fechaFinalEvento = date!
-          .copyWith(hour: (startHour!.hour + 1), minute: startHour?.minute);
-    }
-
-    final Event event = Event(
-      title: 'evento de $asignatura',
-      description: 'creado automáticamente por Study Sphere',
-      startDate: fechaInicioEvento,
-      endDate: fechaFinalEvento,
-    );
-    await Add2Calendar.addEvent2Cal(event);
   }
 }

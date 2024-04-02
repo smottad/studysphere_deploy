@@ -24,13 +24,13 @@ Padding textFormulario(
           keyboardType: teclado,
           decoration: InputDecoration(
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             filled: true,
             fillColor: Theme.of(context).colorScheme.surface,
             labelText: label,
             border: const OutlineInputBorder(),
           ),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
               ),
         ),

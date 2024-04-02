@@ -138,7 +138,8 @@ crearCuenta(BuildContext context) {
         content: Text(
             'Debe aceptar nuestros términos y condiciones para crear una cuenta')));
   }
-  Navigator.pushNamed(context, '/inicio');
+  Navigator.popAndPushNamed(context, '/inicio');
+  Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
 }
 
 politicas(BuildContext context) {

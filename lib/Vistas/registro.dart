@@ -26,6 +26,17 @@ class _RegistroState extends State<Registro> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    nombre.dispose();
+    correo.dispose();
+    edad.dispose();
+    telefono.dispose();
+    contrasena.dispose();
+    verificarContrasena.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
