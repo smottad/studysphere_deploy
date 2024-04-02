@@ -1,3 +1,4 @@
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/boton.dart';
@@ -35,7 +36,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
               padding: const EdgeInsets.all(8),
               child: FutureBuilder(
                 future: listaAsignaturas,
-                builder: (context, snapshot) => DropdownMenu<int>(
+                builder: (context, snapshot) => DropdownMenu<String>(
                   hintText: 'Asignatura o proyecto',
                   width: (size.width * 0.7).clamp(200, 500),
                   onSelected: (value) => setAsignatura(value),
@@ -72,14 +73,18 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 ),
               ),
             ),
-            textFormulario(context, fecha, 'Fecha', funcion: escogerFecha),
-            textFormulario(context, hora, 'Hora', funcion: escogerHora),
+            textFormulario(context, fecha, 'Fecha',
+                funcion: escogerFecha, teclado: TextInputType.none),
+            textFormulario(context, horaInicio, 'Hora inicio',
+                funcion: escogerHoraInicio, teclado: TextInputType.none),
+            textFormulario(context, horaFin, 'Hora fin',
+                funcion: escogerHoraFinal, teclado: TextInputType.none),
             textFormulario(context, prioridad, 'Prioridad'),
             textFormulario(context, temas, 'Temas'),
             SizedBox(
-                width: (size.width * 0.7).clamp(200, 500),
+                width: (size.width * 0.6).clamp(200, 500),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
                     children: [
                       Text(
@@ -94,12 +99,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                     ],
                   ),
                 )),
-            boton(context, 'GUARDAR', () {
-              if (alarma!) {
-                funcionAlarma();
-              }
-              mandarALaBD();
-            }),
+            boton(context, 'Guardar en el calendario', funcionGuardar),
             const Spacer(),
           ],
         ),
@@ -107,5 +107,37 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
     );
   }
 
-  void funcionAlarma() {}
+  funcionGuardar(BuildContext context) {
+    if (alarma!) {
+      funcionAlarma();
+    }
+    anadirAlCalendario();
+    mandarALaBD(context);
+  }
+
+  funcionAlarma() {}
+
+  anadirAlCalendario() async {
+    DateTime fechaInicioEvento;
+    DateTime fechaFinalEvento;
+    if (endHour != null) {
+      fechaInicioEvento =
+          date!.copyWith(hour: startHour?.hour, minute: startHour?.minute);
+      fechaFinalEvento =
+          date!.copyWith(hour: endHour?.hour, minute: endHour?.minute);
+    } else {
+      fechaInicioEvento =
+          date!.copyWith(hour: startHour?.hour, minute: startHour?.minute);
+      fechaFinalEvento = date!
+          .copyWith(hour: (startHour!.hour + 1), minute: startHour?.minute);
+    }
+
+    final Event event = Event(
+      title: 'evento de $asignatura',
+      description: 'creado automáticamente por Study Sphere',
+      startDate: fechaInicioEvento,
+      endDate: fechaFinalEvento,
+    );
+    await Add2Calendar.addEvent2Cal(event);
+  }
 }
