@@ -138,6 +138,19 @@ crearCuenta(BuildContext context) {
         content: Text(
             'Debe aceptar nuestros términos y condiciones para crear una cuenta')));
   }
+  // Creamos una instancia de nuestro servicio de base de datos para utilizar sus métodos
+  final ServicioBaseDatos servicioBaseDatos = ServicioBaseDatos();
+
+  // Llamamos al método correspondiente del servicio para crear la cuenta
+  Future<String> resultado = servicioBaseDatos.insertarRegistros(
+    nombre.text,
+    correo.text,
+    edad.text,
+    telefono.text,
+    contrasena.text,
+  );
+// Si el registro fue exitoso, navega a la pantalla de inicio
+  if (resultado == "Usuario registrado correctamente") {
   Navigator.popAndPushNamed(context, '/inicio');
   Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
 }
