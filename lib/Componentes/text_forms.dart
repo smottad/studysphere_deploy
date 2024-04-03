@@ -13,7 +13,7 @@ Padding textFormulario(
         width: (MediaQuery.of(context).size.width * 0.8).clamp(200, 500),
         child: TextFormField(
           onTap: () {
-            funcion!(context);
+            funcion?.call(context);
           },
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: validator,
