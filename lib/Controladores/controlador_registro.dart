@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:studysphere/Servicios/servicio_registro.dart';
 
 //mage(image: AssetImage("lib/Assets/logo.png"));
 
@@ -151,8 +152,14 @@ crearCuenta(BuildContext context) {
   );
 // Si el registro fue exitoso, navega a la pantalla de inicio
   if (resultado == "Usuario registrado correctamente") {
-  Navigator.popAndPushNamed(context, '/inicio');
-  Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+    Navigator.popAndPushNamed(context, '/inicio');
+    Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+  } else {
+    // Si el registro no fue exitoso, puedes devolver al usuario a la página de inicio de sesión
+    print("algun tipo de error");
+    print(resultado);
+    Navigator.pop(context); // Cierra la página actual
+  }
 }
 
 politicas(BuildContext context) {
