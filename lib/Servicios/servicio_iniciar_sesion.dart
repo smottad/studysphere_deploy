@@ -1,4 +1,5 @@
 import 'package:postgres/postgres.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ServicioBaseDatosInicioSesion {
   Future<Connection?> iniciarConexion() async {
@@ -30,50 +31,82 @@ class ServicioBaseDatosInicioSesion {
     }
   }
 
-  // Future<String> insertarRegistros(String nombre, String correo, String edad,
-  //     String telefono, String contrasena) async {
-  //   final connection =
-  //       await iniciarConexion(); // Espera a que la conexión se establezca
+  Future<bool> iniciarSesion(String correo, String contrasena) async {
+    final connection = await iniciarConexion();
+    try {
+      if (connection != null) {
+        // Verificar si existe un usuario con el correo proporcionado
+        final correoResult = await connection.execute(
+          Sql.named('SELECT COUNT(*) FROM Usuarios WHERE Correo = @correo'),
+          parameters: {
+            'correo': correo,
+          },
+        );
 
-  //   try {
-  //     if (connection != null) {
-  //       // Verificar si el correo ya está registrado en la base de datos
-  //       final result = await connection.execute(
-  //         Sql.named('SELECT COUNT(*) FROM Usuarios WHERE Correo=@correo'),
-  //         parameters: {'correo': correo},
-  //       );
+        // Verificar si existe un usuario con la contraseña proporcionada
+        final contrasenaResult = await connection.execute(
+          Sql.named(
+              'SELECT COUNT(*) FROM Usuarios WHERE Contraseña = @contrasena'),
+          parameters: {
+            'contrasena': contrasena,
+          },
+        );
 
-  //       // Si el correo ya está registrado, mostrar un mensaje de error
-  //       if (result.isNotEmpty && (result[0][0] as int) > 0) {
-  //         print('El correo ya está registrado');
-  //         await cerrarConexion(connection); // Cerrar la conexión antes de salir
-  //         return "El correo ya está registrado";
-  //       }
+        // Si no hay usuarios con el correo proporcionado, el correo es incorrecto
+        if (correoResult.isNotEmpty && (correoResult[0][0] as int) == 0) {
+          print('El correo electrónico proporcionado es incorrecto');
+          await cerrarConexion(connection);
+          return false;
+        }
 
-  //       // Si el correo no está registrado, insertar el nuevo usuario en la base de datos
-  //       print("hasta aqui bien");
-  //       await connection.execute(
-  //         r'INSERT INTO Usuarios (Nombre, Correo, Edad, Telefono, Contraseña ) VALUES ($1, $2, $3, $4, $5)',
-  //         parameters: [
-  //           nombre,
-  //           correo,
-  //           edad,
-  //           telefono,
-  //           contrasena,
-  //         ],
-  //       );
+        // Si no hay usuarios con la contraseña proporcionada, la contraseña es incorrecta
+        if (contrasenaResult.isNotEmpty &&
+            (contrasenaResult[0][0] as int) == 0) {
+          print('La contraseña proporcionada es incorrecta');
+          await cerrarConexion(connection);
+          return false;
+        }
 
-  //       print('Usuario registrado correctamente');
-  //       await cerrarConexion(connection); // Cerrar la conexión antes de salir
-  //       return "Usuario registrado correctamente";
-  //     } else {
-  //       print('No se pudo establecer la conexión con la base de datos');
-  //       return "No se pudo establecer la conexión con la base de datos";
-  //     }
-  //   } catch (e) {
-  //     print('Error al registrar usuario: $e');
-  //     await cerrarConexion(connection); // Cerrar la conexión en caso de error
-  //     throw e; // Relanzar la excepción para que el código que llama a esta función pueda manejarla
-  //   }
-  // }
+        // Si hay al menos un usuario con el correo y la contraseña proporcionados, el inicio de sesión es exitoso
+        final result = await connection.execute(
+          Sql.named(
+              'SELECT COUNT(*) FROM Usuarios WHERE Correo = @correo AND Contraseña = @contrasena'),
+          parameters: {
+            'correo': correo,
+            'contrasena': contrasena,
+          },
+        );
+
+        if (result.isNotEmpty && (result[0][0] as int) > 0) {
+          print('Inicio de sesión exitoso');
+          await cerrarConexion(connection);
+          return true;
+        } else {
+          print('Correo electrónico o contraseña incorrectos');
+          await cerrarConexion(connection);
+          return false;
+        }
+      } else {
+        print('No se pudo establecer la conexión con la base de datos');
+        return false;
+      }
+    } catch (e) {
+      print('Error al iniciar sesión: $e');
+      await cerrarConexion(connection);
+      throw e;
+    }
+  }
+
+  Future<bool> iniciarSesionConGoogle(String correo) async {
+    final GoogleSignIn googleSignIn = GoogleSignIn(scopes: [correo]);
+    final connection = await iniciarConexion();
+    try {
+      await googleSignIn.signIn();
+
+      return true; // Inicio de sesión exitoso
+    } catch (error) {
+      print('Error al iniciar sesión con Google: $error');
+      return false; // Error al iniciar sesión
+    }
+  }
 }
