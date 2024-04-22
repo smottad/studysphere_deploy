@@ -5,7 +5,7 @@ import 'package:studysphere/Componentes/select_days.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 
 ControllerCalendar controllerCalendarInit = ControllerCalendar(DateTime.now(), 'Fecha de inicio');
-ControllerCalendar controllerCalendarFinal = ControllerCalendar(DateTime.now().subtract(const Duration(days: 1)), 'Fecha de Finalización');
+ControllerCalendar controllerCalendarFinal = ControllerCalendar(DateTime.now().add(const Duration(days: 1)), 'Fecha de Finalización');
 
 class CrearAsignatura extends StatelessWidget {
   const CrearAsignatura({super.key});
@@ -119,7 +119,7 @@ class _InitCalendar extends State<InitCalendar> with RestorationMixin {
               mainAxisSize: MainAxisSize.min, 
               children:[ 
                 SizedBox(
-                  width: MediaQuery.of(context).size.width*0.5,
+                  width: (MediaQuery.of(context).size.width*0.5).clamp(100, 200),
                   child: TextField(
                     keyboardType: TextInputType.datetime,
                     enabled: false,
@@ -238,7 +238,7 @@ class _FinalCalendar extends State<FinalCalendar> with RestorationMixin {
               mainAxisSize: MainAxisSize.min, 
               children:[ 
                 SizedBox(
-                  width: MediaQuery.of(context).size.width*0.5,
+                  width: (MediaQuery.of(context).size.width*0.5).clamp(100, 200),
                   child: TextField(
                     keyboardType: TextInputType.datetime,
                     enabled: false,
