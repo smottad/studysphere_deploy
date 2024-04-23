@@ -9,6 +9,7 @@ import 'package:studysphere/Vistas/iniciar_sesion.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
 import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
+import 'package:studysphere/Vistas/ver_asignaturas.dart';
 import 'package:studysphere/color_schemes.g.dart';
 
 Future<void> main() async {
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
         '/inicio': (context) => const PaginaInicio(),
         '/registro': (context) => const Registro(),
         '/terminos': (context) => const HTMLScreen(),
-        '/inicio/asignaturas': (context) => const CrearAsignatura(),
+        '/inicio/crear_asignaturas': (context) => const CrearAsignatura(),
+        '/inicio/asignaturas': (context) => const VerAsignaturas(),
         '/inicio/proyectos': (context) => const EnProgreso(),
         '/inicio/horario': (context) => const Horario(),
         '/inicio/crear_recordatorio': (context) => const CrearRecordatorio(),
