@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:studysphere/Componentes/time_picker.dart';
+import 'package:studysphere/Controladores/controlador_crear_asignatura.dart';
+
+ControllerTime tmInit = ControllerTime(time: TimeOfDay.now());
+ControllerTime tmFinal = ControllerTime(time: TimeOfDay.now());
 
 class SelectDays extends StatefulWidget{
   const SelectDays({super.key});
@@ -11,6 +16,8 @@ class SelectDays extends StatefulWidget{
 
 class _SelectDays extends State<SelectDays> {
   var confirmDays = [false, false, false, false, false, false, false];
+  TimePicker initTime = TimePicker(textInit: "Hora de inicio", timeInit: TimeOfDay.now(), controllerTime: tmInit,);
+  TimePicker finalTime = TimePicker(textInit: "Hora final", timeInit: tmInit.time!, controllerTime: tmFinal,);
 
   @override
   Widget build (BuildContext context) {
@@ -34,31 +41,13 @@ class _SelectDays extends State<SelectDays> {
                   dayButton(context, 'V', Theme.of(context).colorScheme.onSecondary, cambioColor(4), 4),
                   dayButton(context, 'S', Theme.of(context).colorScheme.onSecondary, cambioColor(5), 5),
                   dayButton(context, 'D', Theme.of(context).colorScheme.onSecondary, cambioColor(6), 6),
+                  const SizedBox(width: 10,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          Future<TimeOfDay?> selectedTimeRTL = showTimePicker(
-  context: context,
-  initialTime: TimeOfDay.now(),
-  builder: (BuildContext context, Widget? child) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: child!,
-    );
-  },
-);
-                        },
-                        child: const Text('Hora inicio'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                    
-                        },
-                        child: const Text('Hora final'),
-                      ),
-                
+                      initTime,
+                      const SizedBox(height: 15,),
+                      finalTime,
                     ],
                   ),
                 ]
