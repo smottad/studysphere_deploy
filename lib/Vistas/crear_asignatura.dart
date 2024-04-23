@@ -19,8 +19,17 @@ class CrearAsignatura extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             textFormulario(context, name, "Nombre de asignatura"),
-            const InitCalendar(restorationId: 'main',),
-            const FinalCalendar(restorationId: 'main',),
+            const SizedBox(height: 100,),
+            const Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InitCalendar(restorationId: 'main',),
+                SizedBox(width: 20,),
+                FinalCalendar(restorationId: 'main',),
+              ],
+            ),
+            const SizedBox(height: 100,),
             const SelectDays(),
             // DatePickerDialog(
             //   restorationId: 'date_picker_dialog',
@@ -29,6 +38,25 @@ class CrearAsignatura extends StatelessWidget {
             //   firstDate: DateTime.now(),
             //   lastDate: DateTime(2060),
             // ),
+            const SizedBox(height: 50,),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              onPressed: () {
+
+              }, 
+              child:Text(
+                "Guardar",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              )
+            ),
           ],
         ),
       )

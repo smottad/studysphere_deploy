@@ -34,3 +34,9 @@ class ControllerCalendar {
     return label;
   }
 }
+
+class ControllerTime {
+  TimeOfDay? time;
+
+  ControllerTime({this.time});
+}
