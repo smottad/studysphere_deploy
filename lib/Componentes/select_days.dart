@@ -8,14 +8,16 @@ ControllerTime tmInit = ControllerTime(time: TimeOfDay.now());
 ControllerTime tmFinal = ControllerTime(time: TimeOfDay.now());
 
 class SelectDays extends StatefulWidget{
-  const SelectDays({super.key});
+  const SelectDays({super.key,
+  this.confirmDays = const ["false", "false", "false", "false", "false", "false", "false"]});
+
+  final List<String> confirmDays;
 
   @override
   State<SelectDays> createState() => _SelectDays();
 }
 
 class _SelectDays extends State<SelectDays> {
-  var confirmDays = [false, false, false, false, false, false, false];
   TimePicker initTime = TimePicker(textInit: "Hora de inicio", timeInit: TimeOfDay.now(), controllerTime: tmInit,);
   TimePicker finalTime = TimePicker(textInit: "Hora final", timeInit: tmInit.time!, controllerTime: tmFinal,);
 
@@ -79,7 +81,7 @@ class _SelectDays extends State<SelectDays> {
   }
 
   Color cambioColor(int index) {
-    if (confirmDays[index] == false) {
+    if (widget.confirmDays[index] == "false") {
       return Theme.of(context).colorScheme.onTertiary;
     } 
 
@@ -98,10 +100,10 @@ class _SelectDays extends State<SelectDays> {
         ),
         onPressed: () {
           setState(() {
-            if (confirmDays[index] == false) {
-              confirmDays[index] = true;
+            if (widget.confirmDays[index] == "false") {
+              widget.confirmDays[index] = "true";
             } else {
-              confirmDays[index] = false;
+              widget.confirmDays[index] = "false";
             }
           });
         },
