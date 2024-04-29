@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gotrue/src/types/user.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:studysphere/Servicios/servicio_registro.dart';
 
@@ -143,12 +144,12 @@ crearCuenta(BuildContext context) {
   final ServicioBaseDatos servicioBaseDatos = ServicioBaseDatos();
 
   // Llamamos al método correspondiente del servicio para crear la cuenta
-  Future<String> resultado = servicioBaseDatos.insertarRegistros(
+  Future<String> resultado = servicioBaseDatos.registrarUsuario(
     nombre.text,
     correo.text,
+    contrasena.text,
     edad.text,
     telefono.text,
-    contrasena.text,
   );
 // Si el registro fue exitoso, navega a la pantalla de inicio
   if (resultado == "Usuario registrado correctamente") {

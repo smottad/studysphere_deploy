@@ -13,8 +13,16 @@ import 'package:studysphere/Vistas/crear_asignatura.dart';
 import 'package:studysphere/Vistas/ver_asignaturas.dart';
 import 'package:studysphere/Vistas/ver_asignaturas_pasadas.dart';
 import 'package:studysphere/color_schemes.g.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://yvesvjnkzjfsesaxbtys.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2ZXN2am5rempmc2VzYXhidHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM4MzQ0NDAsImV4cCI6MjAyOTQxMDQ0MH0.AuGmOiya2KUjrAbJgTZ9DMyvePSskgauatcduWl8IAk',
+  );
   //PARA TENER ALARMAS
   runApp(const MyApp());
   await Alarm.init();
@@ -50,7 +58,8 @@ class MyApp extends StatelessWidget {
         '/terminos': (context) => const HTMLScreen(),
         '/inicio/crear_asignaturas': (context) => const CrearAsignatura(),
         '/inicio/asignaturas': (context) => const VerAsignaturas(),
-        '/inicio/asignaturas_pasadas': (context) => const VerAsignaturasPasadas(),
+        '/inicio/asignaturas_pasadas': (context) =>
+            const VerAsignaturasPasadas(),
         '/inicio/editar_asignaturas': (context) => const EditarAsignatura(),
         '/inicio/proyectos': (context) => const EnProgreso(),
         '/inicio/horario': (context) => const Horario(),

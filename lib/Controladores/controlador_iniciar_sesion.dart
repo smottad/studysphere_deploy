@@ -52,28 +52,28 @@ iniciarSesion(BuildContext context) async {
 //   Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
 // }
 
-void iniciarSesionGoogle(BuildContext context) async {
-  print("entra a iniciar sesion");
+// void iniciarSesionGoogle(BuildContext context) async {
+//   print("entra a iniciar sesion");
 
-  final ServicioBaseDatosInicioSesion servicioBaseDatosInicioSesion =
-      ServicioBaseDatosInicioSesion();
+//   final ServicioBaseDatosInicioSesion servicioBaseDatosInicioSesion =
+//       ServicioBaseDatosInicioSesion();
 
-  try {
-    // Llamar al método de inicio de sesión con Google
-    bool resultado =
-        await servicioBaseDatosInicioSesion.iniciarSesionConGoogle(email.text);
+//   try {
+//     // Llamar al método de inicio de sesión con Google
+//     bool resultado =
+//         await servicioBaseDatosInicioSesion.iniciarSesionConGoogle(email.text);
 
-    if (resultado) {
-      Navigator.popAndPushNamed(context, '/inicio');
-      Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
-    } else {
-      print("Correo electrónico o contraseña incorrectos");
-    }
-  } catch (e) {
-    print('An error occurred: $e');
-    Navigator.pop(context);
-  }
-}
+//     if (resultado) {
+//       Navigator.popAndPushNamed(context, '/inicio');
+//       Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+//     } else {
+//       print("Correo electrónico o contraseña incorrectos");
+//     }
+//   } catch (e) {
+//     print('An error occurred: $e');
+//     Navigator.pop(context);
+//   }
+// }
 
 irRegistro(BuildContext context) {
   Navigator.pushNamed(context, '/registro');

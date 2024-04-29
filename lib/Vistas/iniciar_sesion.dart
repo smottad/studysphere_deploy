@@ -54,7 +54,7 @@ class IniciarSesion extends StatelessWidget {
               ),
               textFormulario(context, password, "Contraseña", oscurecer: true),
               boton(context, "Iniciar sesión", iniciarSesion),
-              boton(context, "Iniciar con Google", iniciarSesionGoogle),
+              boton(context, "Iniciar con Google", iniciarSesion),
               TextButton(
                 onPressed: () => irRegistro(context),
                 child: Text(
