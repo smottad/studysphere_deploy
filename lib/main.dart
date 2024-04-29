@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
 import 'package:studysphere/Vistas/crear_recordatorio.dart';
+import 'package:studysphere/Vistas/editar_asignatura.dart';
 import 'package:studysphere/Vistas/en_progreso.dart';
 import 'package:studysphere/Vistas/horario.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
 import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
+import 'package:studysphere/Vistas/ver_asignaturas.dart';
+import 'package:studysphere/Vistas/ver_asignaturas_pasadas.dart';
 import 'package:studysphere/color_schemes.g.dart';
 
 Future<void> main() async {
@@ -39,12 +42,16 @@ class MyApp extends StatelessWidget {
 
       themeMode: ThemeMode.light,
       initialRoute: '/',
+
       routes: {
         '/': (context) => const IniciarSesion(),
         '/inicio': (context) => const PaginaInicio(),
         '/registro': (context) => const Registro(),
         '/terminos': (context) => const HTMLScreen(),
-        '/inicio/asignaturas': (context) => const CrearAsignatura(),
+        '/inicio/crear_asignaturas': (context) => const CrearAsignatura(),
+        '/inicio/asignaturas': (context) => const VerAsignaturas(),
+        '/inicio/asignaturas_pasadas': (context) => const VerAsignaturasPasadas(),
+        '/inicio/editar_asignaturas': (context) => const EditarAsignatura(),
         '/inicio/proyectos': (context) => const EnProgreso(),
         '/inicio/horario': (context) => const Horario(),
         '/inicio/crear_recordatorio': (context) => const CrearRecordatorio(),

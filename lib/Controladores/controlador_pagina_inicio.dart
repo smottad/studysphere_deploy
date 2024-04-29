@@ -35,7 +35,7 @@ void showAction(BuildContext context, int index) {
       //Navigator.pushNamed(context, '/inicio/crear_flashcard');
       break;
     case 2:
-      Navigator.pushNamed(context, '/inicio/asignaturas');
+      Navigator.pushNamed(context, '/inicio/crear_asignaturas');
       //Navigator.pushNamed(context, '/inicio/crear_asignatura');
       break;
     case 3:

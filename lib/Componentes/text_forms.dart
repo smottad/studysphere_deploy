@@ -6,7 +6,7 @@ Padding textFormulario(
         double padding = 6.0,
         TextInputType? teclado,
         Function? funcion,
-        String? Function(String?)? validator}) =>
+        String? Function(String?)? validator,}) =>
     Padding(
       padding: EdgeInsets.all(padding),
       child: SizedBox(
