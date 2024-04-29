@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/selected_days.dart';
 import 'package:studysphere/Controladores/controlador_ver_asignatura.dart';
 import 'package:studysphere/my_flutter_app_icons.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class CardAsignatura extends StatelessWidget {
   const CardAsignatura(
@@ -32,7 +33,7 @@ class CardAsignatura extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  width: 70,
+                  width: 50,
                 ), 
                 Center(
                   child: Title(                
@@ -47,11 +48,38 @@ class CardAsignatura extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  width: 40,
+                  width: 10,
                 ),
                 IconButton(
                   onPressed: () => irEditarAsignatura(context, nameSubject, daysSelected), 
                   icon: const Icon(MyFlutterApp.edit),
+                ),
+                IconButton(
+                  onPressed: () {
+                    AwesomeDialog(
+                      context: context,
+                      animType: AnimType.scale,
+                      dialogType: DialogType.warning,
+                      width: 700,
+                      dismissOnTouchOutside: true,
+                       onDismissCallback: (type) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Dismissed by $type'),
+                          ),
+                        );
+                      },
+                      // body: const Center(child: Text(
+                      //         'If the body is specified, then title and description will be ignored, this allows to 											further customize the dialogue.',
+                            //   style: TextStyle(fontStyle: FontStyle.italic),
+                            // ),),
+                      title: '¿Está seguro que quiere eliminar la asignatura $nameSubject?',
+                      desc:   'Estas a punto de eliminar la asignatura $nameSubject permanenetemente.',
+                      btnOkOnPress: () {},
+                      btnCancelOnPress: () {}
+                      ).show();
+                  },
+                  icon: const Icon(Icons.delete),
                 ),
               ]
             ),
