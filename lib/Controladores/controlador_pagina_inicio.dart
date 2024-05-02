@@ -39,7 +39,7 @@ void showAction(BuildContext context, int index) {
       //Navigator.pushNamed(context, '/inicio/crear_asignatura');
       break;
     case 3:
-      Navigator.pushNamed(context, '/inicio/proyectos');
+      Navigator.pushNamed(context, '/inicio/crear_proyectos');
       //Navigator.pushNamed(context, '/inicio/crear_proyecto');
       break;
     default:
