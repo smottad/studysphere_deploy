@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gotrue/src/types/user.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:studysphere/Servicios/servicio_registro.dart';
 
 //mage(image: AssetImage("lib/Assets/logo.png"));
 
@@ -138,8 +140,27 @@ crearCuenta(BuildContext context) {
         content: Text(
             'Debe aceptar nuestros términos y condiciones para crear una cuenta')));
   }
-  Navigator.popAndPushNamed(context, '/inicio');
-  Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+  // Creamos una instancia de nuestro servicio de base de datos para utilizar sus métodos
+  final ServicioBaseDatos servicioBaseDatos = ServicioBaseDatos();
+
+  // Llamamos al método correspondiente del servicio para crear la cuenta
+  Future<String> resultado = servicioBaseDatos.registrarUsuario(
+    nombre.text,
+    correo.text,
+    contrasena.text,
+    edad.text,
+    telefono.text,
+  );
+// Si el registro fue exitoso, navega a la pantalla de inicio
+  if (resultado == "Usuario registrado correctamente") {
+    Navigator.popAndPushNamed(context, '/inicio');
+    Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+  } else {
+    // Si el registro no fue exitoso, puedes devolver al usuario a la página de inicio de sesión
+    print("algun tipo de error");
+    print(resultado);
+    Navigator.pop(context); // Cierra la página actual
+  }
 }
 
 politicas(BuildContext context) {
