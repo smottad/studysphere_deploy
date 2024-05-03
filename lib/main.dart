@@ -2,8 +2,10 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
+import 'package:studysphere/Vistas/crear_proyecto.dart';
 import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
+import 'package:studysphere/Vistas/editar_proyecto.dart';
 import 'package:studysphere/Vistas/en_progreso.dart';
 import 'package:studysphere/Vistas/horario.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
@@ -12,6 +14,8 @@ import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
 import 'package:studysphere/Vistas/ver_asignaturas.dart';
 import 'package:studysphere/Vistas/ver_asignaturas_pasadas.dart';
+import 'package:studysphere/Vistas/ver_proyectos.dart';
+import 'package:studysphere/Vistas/ver_proyectos_pasados.dart';
 import 'package:studysphere/color_schemes.g.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -61,7 +65,10 @@ class MyApp extends StatelessWidget {
         '/inicio/asignaturas_pasadas': (context) =>
             const VerAsignaturasPasadas(),
         '/inicio/editar_asignaturas': (context) => const EditarAsignatura(),
-        '/inicio/proyectos': (context) => const EnProgreso(),
+        '/inicio/crear_proyectos': (context) => const CrearProyecto(),
+        '/inicio/proyectos': (context) => const VerProyectos(),
+        '/inicio/proyectos_pasados': (context) => const VerProyectosPasados(),
+        '/inicio/editar_proyectos': (context) => const EditProject(),
         '/inicio/horario': (context) => const Horario(),
         '/inicio/crear_recordatorio': (context) => const CrearRecordatorio(),
       },
