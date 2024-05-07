@@ -109,7 +109,7 @@ getFoto() async {
   return file != null ? File(file.path) : null;
 }
 
-crearCuenta(BuildContext context) {
+crearCuenta(BuildContext context) async {
   if (nombreValidator_ != null || nombre.text.isEmpty) {
     return ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Ingrese un nombre válido')));
@@ -141,24 +141,32 @@ crearCuenta(BuildContext context) {
             'Debe aceptar nuestros términos y condiciones para crear una cuenta')));
   }
   // Creamos una instancia de nuestro servicio de base de datos para utilizar sus métodos
-  final ServicioBaseDatos servicioBaseDatos = ServicioBaseDatos();
+  // Creamos una instancia de nuestro servicio de base de datos para utilizar sus métodos
+  final ServicioRegistroBaseDatos servicioBaseDatosRegistro =
+      ServicioRegistroBaseDatos();
 
-  // Llamamos al método correspondiente del servicio para crear la cuenta
-  Future<String> resultado = servicioBaseDatos.registrarUsuario(
-    nombre.text,
-    correo.text,
-    contrasena.text,
-    edad.text,
-    telefono.text,
-  );
-// Si el registro fue exitoso, navega a la pantalla de inicio
-  if (resultado == "Usuario registrado correctamente") {
-    Navigator.popAndPushNamed(context, '/inicio');
-    Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
-  } else {
-    // Si el registro no fue exitoso, puedes devolver al usuario a la página de inicio de sesión
-    print("algun tipo de error");
-    print(resultado);
+// Llamamos al método correspondiente del servicio para crear la cuenta
+  try {
+    String resultado = await servicioBaseDatosRegistro.registrarUsuario(
+      nombre.text,
+      correo.text,
+      contrasena.text,
+      edad.text,
+      telefono.text,
+    );
+
+    // Si el registro fue exitoso, navega a la pantalla de inicio
+    if (resultado == "Usuario registrado correctamente") {
+      Navigator.popAndPushNamed(context, '/inicio');
+      Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+    } else {
+      // Si el registro no fue exitoso, puedes devolver al usuario a la página de inicio de sesión
+      print("Algun tipo de error: $resultado");
+      Navigator.pop(context); // Cierra la página actual
+    }
+  } catch (error) {
+    // Manejar cualquier error que pueda ocurrir durante el proceso de registro
+    print('Error al registrar el usuario: $error');
     Navigator.pop(context); // Cierra la página actual
   }
 }
