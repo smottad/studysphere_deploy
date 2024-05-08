@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studysphere/Servicios/servicio_registrar_proyecto.dart';
+import 'package:studysphere/Servicios/servicio_proyecto.dart';
 
 // Controlador para crear un proyecto
 void crearProyecto(

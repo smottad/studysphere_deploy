@@ -4,6 +4,7 @@ import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
 //por el momento solo uso una lista con una asignatura/proyecto vació
 List<DropdownMenuEntry<String>> lista = [
@@ -13,9 +14,6 @@ List<DropdownMenuEntry<String>> lista = [
 Future<List<DropdownMenuEntry<String>>> getAsignaturasYProyectos() async {
   return lista;
 }
-
-// TODO: implementar
-sendToBD() {}
 
 bool? alarma = false;
 var nombre = TextEditingController();
@@ -33,6 +31,43 @@ var temas = TextEditingController();
 
 String? nombreValidator_;
 String? prioridadValidator_;
+
+sendToBD(BuildContext context) async {
+  final ServicioRegistroRecordatorios servicioRegistroRecordatorios =
+      ServicioRegistroRecordatorios();
+
+  try {
+    print(startHour);
+    print(endHour);
+    print(date);
+
+    String resultado =
+        await servicioRegistroRecordatorios.registrarRecordatorio(
+      nombre.text,
+      asignatura!,
+      tipo!,
+      date!,
+      startHour!,
+      endHour!,
+      prioridad.text.isEmpty ? 0 : int.parse(prioridad.text),
+      temas.text,
+      alarma!,
+      context, // Pasar context como un parámetro adicional
+    );
+
+    // Verificar si el registro fue exitoso
+    if (resultado == "Recordatorio guardado correctamente") {
+      // Manejar la navegación o cualquier acción adicional después de un registro exitoso
+      print("Registro de recordatorio exitoso");
+    } else {
+      // Manejar errores si el registro no fue exitoso
+      print("Error al registrar el recordatorio: $resultado");
+    }
+  } catch (error) {
+    // Manejar cualquier error que pueda ocurrir durante el proceso de registro
+    print('Error al registrar el recordatorio: $error');
+  }
+}
 
 validarNombre() {
   //alfabetico + ñ + espacio
@@ -90,7 +125,7 @@ funcionGuardar(BuildContext context) async {
         content: Text('Por favor ingrese una prioridad válida')));
   }
   var id = Random(1).nextInt(1000);
-  await sendToBD();
+  await sendToBD(context);
 
   if (alarma!) {
     await crearAlarma(id);
