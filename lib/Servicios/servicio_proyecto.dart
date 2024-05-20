@@ -23,23 +23,8 @@ class ServicioRegistroProyectoBaseDatos {
         'fecha_inicio': fechaInicio.toIso8601String(),
         'fecha_final': fechaFinal.toIso8601String(),
         'id_asignatura': idAsignatura,
-        'id_usuario': session?.user?.id,
+        'id_usuario': session?.user.id,
       });
-
-      // Verifica si la inserción fue exitosa
-      if (response != null) {
-        // Verifica si la inserción fue exitosa
-        if (response.error != null) {
-          // Maneja el error si la inserción falla
-          print('Error al guardar el proyecto: ${response.error!.message}');
-        } else {
-          // Maneja la inserción exitosa
-          print('Proyecto guardado exitosamente en Supabase.');
-        }
-      } else {
-        // Maneja el caso en el que la respuesta es null
-        print('La respuesta de Supabase es nula.');
-      }
     } catch (e) {
       // Manejo de cualquier excepción ocurrida durante el proceso
       print('Error al guardar el proyecto en Supabase: $e');
@@ -81,5 +66,43 @@ class ServicioRegistroProyectoBaseDatos {
     //   print('Error en obtenerNombresProyectosPorUsuario: $error');
     //   rethrow; // relanzar el error para que el widget pueda manejarlo
     // }
+  }
+
+  Future<Map<String, int>> obtenerAsignaturasPorUsuario() async {
+    try {
+      final supabase = Supabase.instance.client;
+      final Session? session = supabase.auth.currentSession;
+      final userId = session?.user.id;
+      print(userId);
+      if (userId == null) {
+        throw ArgumentError('El userId no puede ser nulo');
+      }
+
+      // Realiza una consulta a la tabla de asignaturas para obtener los nombres y IDs de las asignaturas del usuario
+      final response = await supabase
+          .from('asignaturas')
+          .select('nombre, id')
+          .eq('id_usuario', userId as Object);
+
+      print(response);
+      // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron asignaturas para el usuario
+      if (response.isEmpty) {
+        print('No se encontraron asignaturas para el usuario con ID: $userId');
+        return {};
+      }
+
+      // Extrae los nombres y IDs de las asignaturas de la respuesta y los devuelve como un mapa
+      Map<String, int> asignaturas = {};
+      for (var row in response as List<Map<String, dynamic>>) {
+        asignaturas[row['nombre'] as String] = row['id'] as int;
+      }
+      print(asignaturas);
+
+      return asignaturas;
+    } catch (error) {
+      // Manejar cualquier error que pueda ocurrir durante la obtención de las asignaturas
+      print('Error en obtenerAsignaturasPorUsuario: $error');
+      throw error; // Relanzar el error para que el widget pueda manejarlo
+    }
   }
 }

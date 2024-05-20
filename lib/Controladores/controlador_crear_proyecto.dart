@@ -25,6 +25,26 @@ void crearProyecto(
   // print(fechaInicioProyectoDate);
   // print(fechaFinalProyectoDate);
 
-  servicioBaseDatos.guardarProyectoEnSupabase(nombreProyecto,
-      fechaInicioProyecto, fechaFinalProyecto, materiaProyectoId);
+  try {
+    servicioBaseDatos.guardarProyectoEnSupabase(
+      nombreProyecto,
+      fechaInicioProyecto,
+      fechaFinalProyecto,
+      materiaProyectoId,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Proyecto guardado con éxito')),
+    );
+  } catch (e) {
+    print('Error al guardar el proyecto: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al guardar el proyecto: $e')),
+    );
+  }
+}
+
+Future<Map<String, int>> getAsignaturas() async {
+  final ServicioRegistroProyectoBaseDatos servicioBaseDatosGetAsignaturas =
+      ServicioRegistroProyectoBaseDatos();
+  return await servicioBaseDatosGetAsignaturas.obtenerAsignaturasPorUsuario();
 }
