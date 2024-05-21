@@ -5,10 +5,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Define una clase para representar las asignaturas
 class Asignatura {
+  final String id;
   final String nombre;
   final List<bool> diasSeleccionados;
 
-  Asignatura({required this.nombre, required this.diasSeleccionados});
+  Asignatura(
+      {required this.id,
+      required this.nombre,
+      required this.diasSeleccionados});
 }
 
 class ServicioBaseDatosAsignatura {
@@ -64,7 +68,7 @@ class ServicioBaseDatosAsignatura {
 
     final response = await supabase
         .from('asignaturas')
-        .select('nombre, dias_semana')
+        .select('id, nombre, dias_semana')
         .eq('id_usuario', userId);
 
     if (response.isEmpty) {
@@ -80,11 +84,43 @@ class ServicioBaseDatosAsignatura {
           .map((e) => e == 'true')
           .toList();
       asignaturas.add(Asignatura(
+        id: row['id'].toString(),
         nombre: row['nombre'],
         diasSeleccionados: diasSeleccionados,
       ));
     }
     print(asignaturas);
     return asignaturas;
+  }
+}
+
+Future<void> updateAsignatura({
+  context,
+  required int idAsignatura, // El ID de la asignatura que quieres actualizar
+  required String nombre,
+  required DateTime fechaDeInicio,
+  required DateTime fechaDeFin,
+}) async {
+  final SupabaseClient supabase = Supabase.instance.client;
+  String _timeOfDayToString(TimeOfDay time) {
+    final hours = time.hour.toString().padLeft(2, '0');
+    final minutes = time.minute.toString().padLeft(2, '0');
+    return '$hours:$minutes:00';
+  }
+
+  final Session? session = supabase.auth.currentSession;
+
+  try {
+    final response = await supabase.from('asignaturas').update({
+      'nombre': nombre,
+      'fecha_inicio': fechaDeInicio.toIso8601String(),
+      'fecha_final': fechaDeFin.toIso8601String(),
+    }).eq('id',
+        idAsignatura); // Filtra por el ID de la asignatura que deseas actualizar
+  } catch (e) {
+    // Maneja cualquier error que ocurra durante la actualización
+    print('Error al actualizar la asignatura: $e');
+    // Puedes lanzar el error nuevamente o manejarlo de alguna otra manera según tus necesidades
+    rethrow;
   }
 }

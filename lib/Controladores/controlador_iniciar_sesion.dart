@@ -18,7 +18,12 @@ iniciarSesion(BuildContext context) async {
       Navigator.popAndPushNamed(context, '/inicio');
       Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
     } else {
-      print("Correo electrónico o contraseña incorrectos");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Correo electrónico o contraseña incorrectos"),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   } catch (e) {
     print('An error occurred: $e');
