@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/card_asignatura.dart';
+import 'package:studysphere/Controladores/controlador_crear_asignatura.dart';
 import 'package:studysphere/Controladores/controlador_ver_asignatura.dart';
 import 'package:studysphere/Servicios/servicio_asignatura.dart';
 
@@ -36,6 +37,7 @@ class VerAsignaturas extends StatelessWidget {
                         return CardAsignatura(
                           nameSubject: asignatura.nombre,
                           daysSelected: asignatura.diasSeleccionados,
+                          idAsignatura: asignatura.id,
                         );
                       }).toList(),
                     ),

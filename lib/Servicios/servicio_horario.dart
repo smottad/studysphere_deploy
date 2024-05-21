@@ -1,35 +1,47 @@
-// // Función para obtener las asignaturas desde la base de datos
-//   Future<List<Asignatura>> obtenerAsignaturasPorUsuario() async {
-//     final supabase = Supabase.instance.client;
-//     final Session? session = supabase.auth.currentSession;
-//     final userId = session?.user.id;
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:studysphere/Controladores/controlador_horario.dart';
 
-//     if (userId == null) {
-//       throw ArgumentError('El userId no puede ser nulo');
-//     }
+class AsignaturaHorario {
+  final String nombre;
+  final List<bool> diasSeleccionados;
+  final List<String> horasInicio;
+  final List<String> horasFin;
+  final List<String> fechaInicio;
+  final List<String> fechaFin;
 
-//     final response = await supabase
-//         .from('asignaturas')
-//         .select('nombre, dias_semana')
-//         .eq('id_usuario', userId);
+  AsignaturaHorario({
+    required this.nombre,
+    required this.diasSeleccionados,
+    required this.horasInicio,
+    required this.horasFin,
+    required this.fechaInicio,
+    required this.fechaFin,
+  });
+}
 
-//     if (response.isEmpty) {
-//       print('Error al obtener asignaturas:');
-//       return [];
-//     }
+// Función para obtener las asignaturas desde la base de datos
+Future<List<Map<String, dynamic>>> obtenerAsignaturasPorUsuario() async {
+  final supabase = Supabase.instance.client;
+  final Session? session = supabase.auth.currentSession;
+  final userId = session?.user.id;
 
-//     print(response);
-//     List<Asignatura> asignaturas = [];
-//     for (var row in response as List<Map<String, dynamic>>) {
-//       // Convertir la lista de strings 'true'/'false' a List<bool>
-//       List<bool> diasSeleccionados = (row['dias_semana'] as List<dynamic>)
-//           .map((e) => e == 'true')
-//           .toList();
-//       asignaturas.add(Asignatura(
-//         nombre: row['nombre'],
-//         diasSeleccionados: diasSeleccionados,
-//       ));
-//     }
-//     print(asignaturas);
-//     return asignaturas;
-//   }
+  if (userId == null) {
+    throw ArgumentError('El userId no puede ser nulo');
+  }
+
+  final response = await supabase
+      .from('asignaturas')
+      .select(
+          'nombre, dias_semana, hora_inicio, hora_final, fecha_inicio, fecha_final')
+      .eq('id_usuario', userId);
+
+  if (response.isEmpty) {
+    print('Error al obtener asignaturas:');
+    return [];
+  }
+
+  print(response);
+  print("dentro antes servicio");
+
+  return response;
+}

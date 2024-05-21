@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_crear_asignatura.dart';
-import 'package:studysphere/Componentes/select_days.dart';
+import 'package:studysphere/Controladores/controlador_editar_asignatura.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 
 ControllerCalendar controllerCalendarInit =
@@ -32,6 +32,10 @@ class EditarAsignatura extends StatelessWidget {
       name.text = strSubject!;
       // subject.toString().substring(1, subject.toString().length-1).split(",")[1];
     }
+    String? strId = mapSubject[3]!.trim().split(",")[0];
+    String? idAsignatura = strId;
+    print(subject);
+    print(idAsignatura);
 
     return Scaffold(
         appBar: appBar(context, 'Editar asignatura', color: 1),
@@ -86,7 +90,12 @@ class EditarAsignatura extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () => ControladorEditarAsignatura.guardarCambios(
+                      context,
+                      name,
+                      controllerCalendarInit.getDateTimeVar(),
+                      controllerCalendarFinal.getDateTimeVar(),
+                      idAsignatura!),
                   child: Text(
                     "Guardar",
                     style: TextStyle(

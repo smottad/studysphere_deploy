@@ -147,7 +147,7 @@ crearCuenta(BuildContext context) async {
 
 // Llamamos al método correspondiente del servicio para crear la cuenta
   try {
-    String resultado = await servicioBaseDatosRegistro.registrarUsuario(
+    bool resultado = await servicioBaseDatosRegistro.registrarUsuario(
       nombre.text,
       correo.text,
       contrasena.text,
@@ -155,18 +155,36 @@ crearCuenta(BuildContext context) async {
       telefono.text,
     );
 
-    // Si el registro fue exitoso, navega a la pantalla de inicio
-    if (resultado == "Usuario registrado correctamente") {
-      Navigator.popAndPushNamed(context, '/inicio');
-      Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+    if (resultado == true) {
+      // Mostrar un Snackbar indicando que el registro fue exitoso
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Usuario registrado correctamente"),
+          backgroundColor: Colors.green,
+        ),
+      );
+      // Navegar a la pantalla de inicio después de mostrar el Snackbar
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+      });
     } else {
-      // Si el registro no fue exitoso, puedes devolver al usuario a la página de inicio de sesión
-      print("Algun tipo de error: $resultado");
+      // Si el registro no fue exitoso, muestra un Snackbar con el mensaje de error
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Error al registrar el usuario"),
+          backgroundColor: Colors.red,
+        ),
+      );
       Navigator.pop(context); // Cierra la página actual
     }
   } catch (error) {
     // Manejar cualquier error que pueda ocurrir durante el proceso de registro
-    print('Error al registrar el usuario: $error');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error al registrar el usuario: $error'),
+        backgroundColor: Colors.red,
+      ),
+    );
     Navigator.pop(context); // Cierra la página actual
   }
 }

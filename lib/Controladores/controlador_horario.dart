@@ -1,37 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-class EventDataSource extends CalendarDataSource {
-  EventDataSource(List<Event> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments?[index].startTime;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments?[index].endTime;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments?[index].title;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments?[index].color;
-  }
-}
+import 'package:intl/intl.dart';
+import 'package:studysphere/Servicios/servicio_horario.dart';
 
 class Event {
-  String title;
-  DateTime startTime;
-  DateTime endTime;
-  Color color;
+  String eventName;
+  DateTime from;
+  DateTime to;
+  Color background;
+  bool isAllDay;
 
-  Event(this.title, this.startTime, this.endTime, this.color);
+  Event(this.eventName, this.from, this.to, this.background,
+      {this.isAllDay = false});
+
+  @override
+  String toString() {
+    return 'Event{name: $eventName, from: $from, to: $to, background: $background, isAllDay: $isAllDay}';
+  }
 }
+
+// Obtener asignaturas desde la base de datos
+Future<List<Map<String, dynamic>>> fetchData() async {
+  // Aquí deberías tener tu lógica para obtener las asignaturas desde la base de datos.
+  // Este es un ejemplo simulado de respuesta.
+  List<Map<String, dynamic>> asignaturas = await obtenerAsignaturasPorUsuario();
+  final List<dynamic> events = asignaturas;
+
+  print("a11");
+  print(asignaturas);
+  print("a22");
+
+  print("aca");
+  print(events);
+  print("despues eventos");
+  return asignaturas;
+}
+// // Crear el origen de datos de eventos
+// EventDataSource dataSource = EventDataSource(events);
+
+// List<Event> createRepeatedEvents(
+//   String name,
+//   DateTime startDate,
+//   DateTime endDate,
+//   TimeOfDay startTime,
+//   TimeOfDay endTime,
+//   List<int> daysOfWeek,
+// ) {
+//   List<Event> events = [];
+//   DateTime currentDate = startDate;
+
+//   while (
+//       currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate)) {
+//     if (daysOfWeek.contains(currentDate.weekday)) {
+//       DateTime eventStartTime = DateTime(
+//         currentDate.year,
+//         currentDate.month,
+//         currentDate.day,
+//         startTime.hour,
+//         startTime.minute,
+//       );
+//       DateTime eventEndTime = DateTime(
+//         currentDate.year,
+//         currentDate.month,
+//         currentDate.day,
+//         endTime.hour,
+//         endTime.minute,
+//       );
+
+//       events.add(
+//         Event(
+//           name,
+//           eventStartTime,
+//           eventEndTime,
+//           Colors.blue, // Puedes ajustar el color si lo necesitas
+//         ),
+//       );
+//     }
+//     currentDate = currentDate.add(Duration(days: 1)); // Avanza al siguiente día
+//   }
+
+//   return events;
+// }
+
