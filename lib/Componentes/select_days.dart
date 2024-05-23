@@ -8,8 +8,7 @@ ControllerTime tmInit = ControllerTime(time: TimeOfDay.now());
 ControllerTime tmFinal = ControllerTime(time: TimeOfDay.now());
 
 class SelectDays extends StatefulWidget{
-  const SelectDays({super.key,
-  this.confirmDays = const ["false", "false", "false", "false", "false", "false", "false"]});
+  const SelectDays({super.key, required this.confirmDays});
 
   final List<String> confirmDays;
 

@@ -2,9 +2,11 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
+import 'package:studysphere/Vistas/ajustes.dart';
 import 'package:studysphere/Vistas/crear_proyecto.dart';
 import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
+import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
 import 'package:studysphere/Vistas/en_progreso.dart';
 import 'package:studysphere/Vistas/horario.dart';
@@ -71,6 +73,8 @@ class MyApp extends StatelessWidget {
         '/inicio/editar_proyectos': (context) => const EditProject(),
         '/inicio/horario': (context) => const Horario(),
         '/inicio/crear_recordatorio': (context) => const CrearRecordatorio(),
+        '/inicio/ajustes': (context) => const Ajustes(),
+        '/inicio/ajustes/editar_perfil': (context) => const EditProfile(),
       },
     );
   }

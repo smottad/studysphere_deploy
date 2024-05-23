@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_crear_asignatura.dart';
-import 'package:studysphere/Componentes/select_days.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 
 ControllerCalendar controllerCalendarInit = ControllerCalendar(DateTime.now(), 'Fecha de inicio');

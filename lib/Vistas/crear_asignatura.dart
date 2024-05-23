@@ -30,7 +30,7 @@ class CrearAsignatura extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 100,),
-            const SelectDays(),
+            SelectDays(confirmDays: ["false", "false", "false", "false", "false", "false", "false",],),
             // DatePickerDialog(
             //   restorationId: 'date_picker_dialog',
             //   initialEntryMode: DatePickerEntryMode.input,
