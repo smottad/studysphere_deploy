@@ -6,14 +6,38 @@ import 'package:flutter/material.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
-//por el momento solo uso una lista con una asignatura/proyecto vació
-List<DropdownMenuEntry<String>> lista = [
-  const DropdownMenuEntry(value: 'Ninguna', label: 'Ninguna'),
+// Lista inicial con una entrada de proyecto vacía
+List<DropdownMenuEntry<String>> listaProyectos = [
+  const DropdownMenuEntry(value: 'Ninguna', label: ''),
 ];
-//esto deberia venir de la bd
-Future<List<DropdownMenuEntry<String>>> getAsignaturasYProyectos() async {
-  return lista;
+
+// Función para obtener los proyectos de la base de datos
+Future<List<DropdownMenuEntry<String>>> getProyectos() async {
+  final ServicioRegistroRecordatorios servicioRegistroRecordatorios =
+      ServicioRegistroRecordatorios();
+  List<String> proyectos =
+      await servicioRegistroRecordatorios.obtenerNombresProyectosPorUsuario();
+
+  // Actualiza la lista de proyectos con los nombres obtenidos
+  listaProyectos.clear();
+  listaProyectos.addAll(proyectos.map((nombre) {
+    return DropdownMenuEntry(value: nombre, label: nombre);
+  }));
+
+  // Devuelve la lista actualizada de proyectos
+  return listaProyectos;
 }
+
+// //por el momento solo uso una lista con una asignatura/proyecto vació
+// List<DropdownMenuEntry<String>> lista = [
+//   const DropdownMenuEntry(value: 'Ninguna', label: 'Ninguna'),
+// ];
+// //esto deberia venir de la bd
+// Future<List<DropdownMenuEntry<String>>> getProyectos(
+// ) async {
+//   ob();
+//   return lista;
+// }
 
 bool? alarma = false;
 var nombre = TextEditingController();

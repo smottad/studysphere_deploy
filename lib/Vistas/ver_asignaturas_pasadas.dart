@@ -11,35 +11,57 @@ class VerAsignaturasPasadas extends StatelessWidget {
     return Scaffold(
       appBar: appBar(context, "Asignaturas Pasadas", color: 0),
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,  
-        child: Column( 
-          children: [
-            const Center(
-              child: Wrap(
-                spacing: 10,
-                // runAlignment: WrapAlignment.center,
-                // crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  CardAsignatura(nameSubject: "Ingeniería de software I", daysSelected: [true, false, true, false, false, false, false,],),
-                  CardAsignatura(nameSubject: "Italiano I", daysSelected: [false, true, false, true, false, true, false,],),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextButton(
-              onPressed: () => irVerAsignaturasActuales(context),
-              child: Text(
-                "Ver asignaturas actuales",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
+        scrollDirection: Axis.vertical,
+        child: Column(children: [
+          const Center(
+            child: Wrap(
+              spacing: 10,
+              // runAlignment: WrapAlignment.center,
+              // crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                CardAsignatura(
+                  idAsignatura: "8",
+                  nameSubject: "Ingeniería de software I",
+                  daysSelected: [
+                    true,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false,
+                    false,
+                  ],
                 ),
+                CardAsignatura(
+                  idAsignatura: "8",
+                  nameSubject: "Italiano I",
+                  daysSelected: [
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                    true,
+                    false,
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextButton(
+            onPressed: () => irVerAsignaturasActuales(context),
+            child: Text(
+              "Ver asignaturas actuales",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-          ]
-        ),
+          ),
+        ]),
       ),
-    ); 
+    );
   }
 }

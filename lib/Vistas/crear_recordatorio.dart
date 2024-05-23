@@ -14,7 +14,7 @@ class CrearRecordatorio extends StatefulWidget {
 
 class _CrearRecordatorioState extends State<CrearRecordatorio> {
   final titulo = 'Nuevo recordatorio';
-  final listaAsignaturas = getAsignaturasYProyectos();
+  final listaAsignaturas = getProyectos();
 
   @override
   void initState() {
@@ -57,26 +57,34 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 validator: (val) => nombreValidator_),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: FutureBuilder(
-                future: listaAsignaturas,
-                builder: (context, snapshot) => DropdownMenu<String>(
-                  hintText: 'Asignatura o proyecto',
-                  width: (size.width * 0.8).clamp(200, 500),
-                  onSelected: (value) => setAsignatura(value),
-                  textStyle: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurface,
-                  ),
-                  dropdownMenuEntries: snapshot.data!,
-                  inputDecorationTheme: InputDecorationTheme(
-                    hintStyle: textTheme.bodySmall
-                        ?.copyWith(color: colorScheme.onSurface),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    filled: true,
-                    fillColor: colorScheme.surface,
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
+              child: FutureBuilder<List<DropdownMenuEntry<String>>>(
+                future: getProyectos(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return DropdownMenu<String>(
+                      hintText: 'Proyecto',
+                      width: (size.width * 0.8).clamp(200, 500),
+                      onSelected: (value) => setAsignatura(value),
+                      textStyle: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurface,
+                      ),
+                      dropdownMenuEntries: snapshot.data!,
+                      inputDecorationTheme: InputDecorationTheme(
+                        hintStyle: textTheme.bodySmall
+                            ?.copyWith(color: colorScheme.onSurface),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        filled: true,
+                        fillColor: colorScheme.surface,
+                        border: const OutlineInputBorder(),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
             Padding(
