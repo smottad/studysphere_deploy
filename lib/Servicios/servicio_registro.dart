@@ -1,8 +1,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ServicioRegistroBaseDatos {
-  Future<String> registrarUsuario(String nombre, String correo,
-      String contrasena, String edad, String telefono) async {
+  Future<bool> registrarUsuario(String nombre, String correo, String contrasena,
+      String edad, String telefono) async {
     try {
       // Get a reference to your Supabase client
       final supabase = Supabase.instance.client;
@@ -28,20 +28,11 @@ class ServicioRegistroBaseDatos {
             1, // Aquí puedes definir el tipo de cuenta según tus requerimientos
       });
 
-      // Verifica si la inserción en la tabla Usuarios fue exitosa
-      if (response.error != null) {
-        // Maneja el error si la inserción falla
-        print(
-            'Error al insertar el usuario en la tabla Usuarios: ${response.error!.message}');
-        return 'Error al registrar el usuario';
-      } else {
-        // Si la inserción en la tabla Usuarios fue exitosa
-        return "Usuario registrado correctamente";
-      }
+      return true;
     } catch (error) {
       // Manejar cualquier error que pueda ocurrir durante el proceso de registro
       print('Error al registrar el usuario dentro del servicio: $error');
-      return 'Error al registrar el usuario';
+      return false;
     }
   }
 }

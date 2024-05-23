@@ -13,11 +13,16 @@ TextEditingController nameController =
 TextEditingController materiaController =
     TextEditingController(); // Controlador para la materia del proyecto
 
-Map<String, int> asignaturas = {
-  "Ingeniería de software": 1,
-  "Sistemas de información": 2,
-  // Agrega más asignaturas si es necesario
-};
+Map<String, int> asignaturas = {};
+
+Future<void> actualizarAsignaturas() async {
+  try {
+    asignaturas = await getAsignaturas();
+  } catch (error) {
+    // Manejar cualquier error que pueda ocurrir durante la actualización de las asignaturas
+    print('Error al actualizar las asignaturas: $error');
+  }
+}
 
 String selectedMateria =
     ""; // Variable para almacenar el nombre de la materia seleccionada
@@ -29,6 +34,7 @@ class CrearProyecto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    actualizarAsignaturas();
     return Scaffold(
       appBar: appBar(context, 'Nuevo Proyecto', color: 1),
       body: Center(

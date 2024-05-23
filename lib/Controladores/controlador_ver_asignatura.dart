@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
 
-irEditarAsignatura(BuildContext context, String nameSubject, List<bool> daysSelected) {
-  Navigator.pushNamed(context, '/inicio/editar_asignaturas', arguments: {"nameSubject": nameSubject, "days":daysSelected});
+irEditarAsignatura(BuildContext context, String nameSubject,
+    List<bool> daysSelected, String idAsignatura) {
+  Navigator.pushNamed(context, '/inicio/editar_asignaturas', arguments: {
+    "nameSubject": nameSubject,
+    "days": daysSelected,
+    "idAsignatura": idAsignatura
+  });
 }
 
-irVerAsignaturasPasadas(BuildContext context,) {
-  Navigator.pushNamed(context, '/inicio/asignaturas_pasadas',);
+irVerAsignaturasPasadas(
+  BuildContext context,
+) {
+  Navigator.pushNamed(
+    context,
+    '/inicio/asignaturas_pasadas',
+  );
 }
 
-irVerAsignaturasActuales(BuildContext context,) {
-  Navigator.pushNamed(context, '/inicio/asignaturas',);
+irVerAsignaturasActuales(
+  BuildContext context,
+) {
+  Navigator.pushNamed(
+    context,
+    '/inicio/asignaturas',
+  );
 }
