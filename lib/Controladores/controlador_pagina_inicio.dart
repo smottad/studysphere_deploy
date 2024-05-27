@@ -22,7 +22,7 @@ irHorario(BuildContext context) {
 }
 
 irConfiguracion(BuildContext context) {
-  Navigator.pushNamed(context, '/inicio/proyectos');
+  Navigator.pushNamed(context, '/inicio/ajustes');
 }
 
 void showAction(BuildContext context, int index) {
