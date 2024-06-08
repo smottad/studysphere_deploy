@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:studysphere/Controladores/controlador_horario.dart';
 
-
 class Horario extends StatefulWidget {
   const Horario({super.key});
 
@@ -12,9 +11,6 @@ class Horario extends StatefulWidget {
 
 class _HorarioState extends State<Horario> {
   List<Appointment> _appointments = [];
-  String? _errorMessage;
-  final CalendarController _calendarController = CalendarController();
-  CalendarView _calendarView = CalendarView.week;
 
   @override
   void initState() {
@@ -28,12 +24,9 @@ class _HorarioState extends State<Horario> {
 
       setState(() {
         _appointments = _processData(data);
-        _errorMessage = null;
       });
     } catch (e) {
-      setState(() {
-        _errorMessage = 'Error al cargar los eventos: $e';
-      });
+      setState(() {});
     }
   }
 
@@ -83,120 +76,49 @@ class _HorarioState extends State<Horario> {
     return appointments;
   }
 
-  void _onViewChanged(CalendarView view) {
-    setState(() {
-      _calendarView = view;
-    });
-  }
-
-  void _onPreviousView() {
-    _calendarController.backward!();
-  }
-
-  void _onNextView() {
-    _calendarController.forward!();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Horario"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.chevron_left),
-            onPressed: _onPreviousView,
+        appBar: AppBar(
+          title: const Text("Horario"),
+        ),
+        body: SfCalendar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          view: CalendarView.week,
+          dataSource: EventDataSource(_appointments),
+          allowedViews: const [
+            CalendarView.day,
+            CalendarView.week,
+            CalendarView.workWeek,
+            CalendarView.month,
+            CalendarView.timelineDay,
+            CalendarView.timelineWeek,
+            CalendarView.timelineWorkWeek,
+            CalendarView.timelineMonth,
+            CalendarView.schedule,
+          ],
+          allowViewNavigation: true,
+          showNavigationArrow: true,
+          allowAppointmentResize: true,
+          allowDragAndDrop: true,
+          showDatePickerButton: true,
+          onAppointmentResizeEnd: (AppointmentResizeEndDetails details) {
+            // ACA VA EL CODIGO DE ACTUALIZAR
+          },
+          onDragEnd: (AppointmentDragEndDetails details) {
+            //ACA VA EL CODIFO DE BORRAR
+          },
+          monthViewSettings: const MonthViewSettings(
+            showAgenda: true,
+            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
           ),
-          IconButton(
-            icon: const Icon(Icons.chevron_right),
-            onPressed: _onNextView,
+          timeSlotViewSettings: const TimeSlotViewSettings(
+            timeInterval: Duration(minutes: 30),
+            timeFormat: 'HH:mm',
+            startHour: 6,
+            endHour: 23,
           ),
-          PopupMenuButton<CalendarView>(
-            icon: const Icon(Icons.view_agenda),
-            onSelected: _onViewChanged,
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<CalendarView>>[
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.day,
-                child: Text('Día'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.week,
-                child: Text('Semana'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.workWeek,
-                child: Text('Semana laboral'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.month,
-                child: Text('Mes'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.timelineDay,
-                child: Text('Cronología día'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.timelineWeek,
-                child: Text('Cronología semana'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.timelineWorkWeek,
-                child: Text('Cronología semana laboral'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.timelineMonth,
-                child: Text('Cronología mes'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.schedule,
-                child: Text('Agenda'),
-              ),
-            ],
-          ),
-        ],
-      ),
-      body: _appointments.isNotEmpty
-          ? SfCalendar(
-              view: _calendarView,
-              controller: _calendarController,
-              dataSource: EventDataSource(_appointments),
-              allowedViews: const [
-                CalendarView.day,
-                CalendarView.week,
-                CalendarView.workWeek,
-                CalendarView.month,
-                CalendarView.timelineDay,
-                CalendarView.timelineWeek,
-                CalendarView.timelineWorkWeek,
-                CalendarView.timelineMonth,
-                CalendarView.schedule,
-              ],
-              allowAppointmentResize: true,
-              allowDragAndDrop: true,
-              showDatePickerButton: true,
-              monthViewSettings: const MonthViewSettings(
-                showAgenda: true,
-                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-              ),
-              timeSlotViewSettings: const TimeSlotViewSettings(
-                timeInterval: Duration(minutes: 30),
-                timeFormat: 'HH:mm',
-                startHour: 6,
-                endHour: 23,
-              ),
-            )
-          : _errorMessage != null
-              ? Center(
-                  child: Text(
-                    _errorMessage!,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                )
-              : const Center(
-                  child: CircularProgressIndicator(),
-                ),
-    );
+        ));
   }
 
   Future<List<Map<String, dynamic>>> fetchDataej() async {
