@@ -27,6 +27,9 @@ validarNombre() {
   RegExp regExp = RegExp(r"^[a-zA-ZñÑ ]+$");
   if (nombre.text.isEmpty) {
     nombreValidator_ = 'Ingrese su nombre';
+  } else if (nombre.text.length > 100) {
+    nombreValidator_ = 'El nombre es demasiado largo';
+
   } else if (!regExp.hasMatch(nombre.text)) {
     nombreValidator_ = 'Ingrese un nombre válido';
   } else {
@@ -35,10 +38,12 @@ validarNombre() {
 }
 
 validarCorreo() {
-  RegExp regExp =
-      RegExp(r"^[a-zA-Z0-9!#$%&'*+-\/=?^_`{|]+@[a-zA-Z0-9]+(.[a-zA-Z0-9]+)+$");
+  RegExp regExp = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   if (correo.text.isEmpty) {
     correoValidator_ = 'Ingrese su correo';
+  } else if (correo.text.length > 100) {
+    correoValidator_ = 'El correo es demasiado largo';
   } else if (!regExp.hasMatch(correo.text)) {
     correoValidator_ = 'Ingrese un correo válido';
   } else {
