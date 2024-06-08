@@ -78,7 +78,9 @@ class PaginaInicio extends StatelessWidget {
           ],
         ),
       ),
-      body: const Center(child: Text('Algo')),
+        body: GridView.count(
+          crossAxisCount: 3,
+        )
     );
   }
 

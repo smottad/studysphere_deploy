@@ -104,9 +104,11 @@ class _HorarioState extends State<Horario> {
           showDatePickerButton: true,
           onAppointmentResizeEnd: (AppointmentResizeEndDetails details) {
             // ACA VA EL CODIGO DE ACTUALIZAR
+            print(details);
           },
           onDragEnd: (AppointmentDragEndDetails details) {
-            //ACA VA EL CODIFO DE BORRAR
+            //ACA VA EL CODIFO DE ACTUALIZAR
+            print(details);
           },
           monthViewSettings: const MonthViewSettings(
             showAgenda: true,

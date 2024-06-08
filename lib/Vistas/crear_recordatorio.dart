@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
@@ -122,6 +124,8 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 teclado: TextInputType.number,
                 validator: (val) => prioridadValidator_),
             textFormulario(context, temas, 'Temas'),
+            Platform.isAndroid
+                ?
             SizedBox(
                 width: (size.width * 0.6).clamp(200, 500),
                 child: Padding(
@@ -141,7 +145,8 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                           }),
                     ],
                   ),
-                )),
+                    ))
+                : const Spacer(),
             boton(context, 'Guardar', funcionGuardar),
             const Spacer(),
           ],
