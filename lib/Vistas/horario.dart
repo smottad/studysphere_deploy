@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:studysphere/Controladores/controlador_horario.dart';
 
-import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
 
 class Horario extends StatefulWidget {
-  const Horario({Key? key}) : super(key: key);
+  const Horario({super.key});
 
   @override
-  _HorarioState createState() => _HorarioState();
+  State<Horario> createState() => _HorarioState();
 }
 
 class _HorarioState extends State<Horario> {
   List<Appointment> _appointments = [];
   String? _errorMessage;
-  CalendarController _calendarController = CalendarController();
+  final CalendarController _calendarController = CalendarController();
   CalendarView _calendarView = CalendarView.week;
 
   @override
@@ -77,7 +74,7 @@ class _HorarioState extends State<Horario> {
               subject: nombre,
               color: Colors.blue,
             ));
-            currentDate = currentDate.add(Duration(days: 7));
+            currentDate = currentDate.add(const Duration(days: 7));
           }
         }
       }
@@ -104,18 +101,18 @@ class _HorarioState extends State<Horario> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Horario"),
+        title: const Text("Horario"),
         actions: [
           IconButton(
-            icon: Icon(Icons.chevron_left),
+            icon: const Icon(Icons.chevron_left),
             onPressed: _onPreviousView,
           ),
           IconButton(
-            icon: Icon(Icons.chevron_right),
+            icon: const Icon(Icons.chevron_right),
             onPressed: _onNextView,
           ),
           PopupMenuButton<CalendarView>(
-            icon: Icon(Icons.view_agenda),
+            icon: const Icon(Icons.view_agenda),
             onSelected: _onViewChanged,
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<CalendarView>>[
@@ -164,7 +161,7 @@ class _HorarioState extends State<Horario> {
               view: _calendarView,
               controller: _calendarController,
               dataSource: EventDataSource(_appointments),
-              allowedViews: [
+              allowedViews: const [
                 CalendarView.day,
                 CalendarView.week,
                 CalendarView.workWeek,
@@ -175,12 +172,14 @@ class _HorarioState extends State<Horario> {
                 CalendarView.timelineMonth,
                 CalendarView.schedule,
               ],
+              allowAppointmentResize: true,
+              allowDragAndDrop: true,
               showDatePickerButton: true,
-              monthViewSettings: MonthViewSettings(
+              monthViewSettings: const MonthViewSettings(
                 showAgenda: true,
                 appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
               ),
-              timeSlotViewSettings: TimeSlotViewSettings(
+              timeSlotViewSettings: const TimeSlotViewSettings(
                 timeInterval: Duration(minutes: 30),
                 timeFormat: 'HH:mm',
                 startHour: 6,
@@ -191,7 +190,7 @@ class _HorarioState extends State<Horario> {
               ? Center(
                   child: Text(
                     _errorMessage!,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 )
               : const Center(
