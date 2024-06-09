@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:studysphere/Controladores/controlador_crear_asignatura.dart';
 
@@ -42,23 +40,21 @@ class _TimePicker extends State<TimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextButton(
-        style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-        ),
-        onPressed: () async {
-          final TimeOfDay? time = await showTimePicker(
-            context: context,
-            initialTime: widget.timeInit,
-          );
-          setState(() {
-            selectedTime = time;
-            widget.controllerTime.time = time;
-          });
-        },
-        child: txtInit(selectedTime),
-        ),
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+      ),
+      onPressed: () async {
+        final TimeOfDay? time = await showTimePicker(
+          context: context,
+          initialTime: widget.timeInit,
+        );
+        setState(() {
+          selectedTime = time;
+          widget.controllerTime.time = time;
+        });
+      },
+      child: txtInit(selectedTime),
     );
   }
 }

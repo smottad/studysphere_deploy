@@ -1,5 +1,6 @@
+// ignore_for_file: avoid_print
+
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:studysphere/Controladores/controlador_horario.dart';
 
 class AsignaturaHorario {
   final String nombre;

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:intl/intl.dart';
 import 'package:studysphere/Servicios/servicio_horario.dart';
 
 class Event {
@@ -24,15 +22,7 @@ Future<List<Map<String, dynamic>>> fetchData() async {
   // Aquí deberías tener tu lógica para obtener las asignaturas desde la base de datos.
   // Este es un ejemplo simulado de respuesta.
   List<Map<String, dynamic>> asignaturas = await obtenerAsignaturasPorUsuario();
-  final List<dynamic> events = asignaturas;
 
-  print("a11");
-  print(asignaturas);
-  print("a22");
-
-  print("aca");
-  print(events);
-  print("despues eventos");
   return asignaturas;
 }
 // // Crear el origen de datos de eventos
