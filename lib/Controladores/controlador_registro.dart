@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:studysphere/Servicios/servicio_registro.dart';
@@ -197,21 +198,25 @@ crearCuenta(BuildContext context) async {
 }
 
 politicas(BuildContext context) {
-  if (Platform.isAndroid || Platform.isIOS) {
-    Navigator.pushNamed(
-      context,
-      '/terminos',
-      arguments: 'lib/Assets/policy.html',
-    );
+  if (!kIsWeb) {
+    if (Platform.isAndroid || Platform.isIOS) {
+      Navigator.pushNamed(
+        context,
+        '/terminos',
+        arguments: 'lib/Assets/policy.html',
+      );
+    }
   }
 }
 
 terminos(BuildContext context) {
+  if (!kIsWeb) {
   if (Platform.isAndroid || Platform.isIOS) {
     Navigator.pushNamed(
       context,
       '/terminos',
       arguments: 'lib/Assets/terms.html',
     );
+    }
   }
 }

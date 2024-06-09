@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/cards.dart';
@@ -79,7 +82,20 @@ class PaginaInicio extends StatelessWidget {
         ),
       ),
         body: GridView.count(
+          scrollDirection: kIsWeb ? Axis.horizontal : Axis.vertical,
           crossAxisCount: 3,
+          children: const [
+            SizedBox(
+              child: ColoredBox(color: Colors.blue),
+            ),
+            SizedBox(
+              child: ColoredBox(color: Colors.blue),
+            ),
+            SizedBox(
+              child: ColoredBox(color: Colors.blue),
+            ),
+          ],
+          //children: [FutureBuilder(future: getAsignaturas(), builder: )],
         )
     );
   }

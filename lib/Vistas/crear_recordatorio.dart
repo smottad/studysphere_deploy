@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
@@ -63,7 +64,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 future: getProyectos(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -124,29 +125,28 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 teclado: TextInputType.number,
                 validator: (val) => prioridadValidator_),
             textFormulario(context, temas, 'Temas'),
-            Platform.isAndroid
-                ?
-            SizedBox(
-                width: (size.width * 0.6).clamp(200, 500),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        '¿Activar alarma?',
-                        style: textTheme.bodyLarge
-                            ?.copyWith(color: colorScheme.onBackground),
+            kIsWeb //verifica si es una webapp
+                ? const Spacer()
+                : SizedBox(
+                    width: (size.width * 0.6).clamp(200, 500),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            '¿Activar alarma?',
+                            style: textTheme.bodyLarge
+                                ?.copyWith(color: colorScheme.onBackground),
+                          ),
+                          const Spacer(),
+                          Checkbox(
+                              value: alarma,
+                              onChanged: (value) async {
+                                botonAlarma(value);
+                              }),
+                        ],
                       ),
-                      const Spacer(),
-                      Checkbox(
-                          value: alarma,
-                          onChanged: (value) async {
-                            botonAlarma(value);
-                          }),
-                    ],
-                  ),
-                    ))
-                : const Spacer(),
+                    )),
             boton(context, 'Guardar', funcionGuardar),
             const Spacer(),
           ],
