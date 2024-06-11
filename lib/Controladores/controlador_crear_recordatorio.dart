@@ -5,7 +5,6 @@ import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:studysphere/Servicios/servicio_recordatorios.dart';
-import 'package:studysphere/Vistas/crear_proyecto.dart';
 
 // Lista inicial con una entrada de proyecto vacía
 List<DropdownMenuEntry<String>> listaProyectos = [

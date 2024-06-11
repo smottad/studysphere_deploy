@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -7,7 +5,6 @@ import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/boton.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_crear_recordatorio.dart';
-import 'package:studysphere/Servicios/servicio_horario.dart';
 
 class CrearRecordatorio extends StatefulWidget {
   const CrearRecordatorio({super.key});
@@ -18,7 +15,6 @@ class CrearRecordatorio extends StatefulWidget {
 
 class _CrearRecordatorioState extends State<CrearRecordatorio> {
   final titulo = 'Nuevo recordatorio';
-  final listaAsignaturas = obtenerAsignaturasPorUsuario();
 
   @override
   void initState() {
@@ -64,11 +60,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
               child: FutureBuilder<List<DropdownMenuEntry<String>>>(
                 future: getProyectos(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
+                  if (snapshot.hasData) {
                     return DropdownMenu<String>(
                       hintText: 'Asignatura o proyecto',
                       width: (size.width * 0.8).clamp(200, 500),
@@ -87,6 +79,14 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                         border: const OutlineInputBorder(),
                       ),
                     );
+
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const CircularProgressIndicator();
                   }
                 },
               ),
