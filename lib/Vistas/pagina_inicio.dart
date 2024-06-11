@@ -213,12 +213,81 @@ class PaginaInicio extends StatelessWidget {
   }
 
   Future<Card> paginaInicioExamenes() async {
-    obtenerNombresExamenes();
-    return const Card();
+    return Card(
+      child: Column(
+        children: [
+          const Text("Próximas tareas"),
+          FutureBuilder(
+              future: obtenerNombresExamenes(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  final count = snapshot.data?.length;
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: count,
+                      itemBuilder: (context, index) {
+                        String key = snapshot.data!.keys.elementAt(index);
+                        List<List<String>>? data = snapshot.data![key];
+                        String content = "";
+                        for (var item in data!) {
+                          for (var miniitem in item) {
+                            content += "$miniitem ";
+                          }
+                          content += "\n";
+                        }
+
+                        return Column(children: [Text(key), Text(content)]);
+                      });
+                }
+              })
+        ],
+      ),
+    );
   }
 
   Future<Card> paginaInicioReuniones() async {
-    obtenerNombresReuniones();
-    return const Card();
+    return Card(
+      child: Column(
+        children: [
+          const Text("Próximas tareas"),
+          FutureBuilder(
+              future: obtenerNombresReuniones(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  final count = snapshot.data?.length;
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: count,
+                      itemBuilder: (context, index) {
+                        String key = snapshot.data!.keys.elementAt(index);
+                        List<List<String>>? data = snapshot.data![key];
+                        String content = "";
+                        for (var item in data!) {
+                          for (var miniitem in item) {
+                            content += "$miniitem ";
+                          }
+                          content += "\n";
+                        }
+
+                        return Column(children: [Text(key), Text(content)]);
+                      });
+                }
+              })
+        ],
+      ),
+    );
+
   }
 }
