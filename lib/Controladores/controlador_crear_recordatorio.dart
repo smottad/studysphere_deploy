@@ -17,6 +17,9 @@ Future<List<DropdownMenuEntry<String>>> getProyectos() async {
       ServicioRegistroRecordatorios();
   List<String> proyectos =
       await servicioRegistroRecordatorios.obtenerNombresProyectosPorUsuario();
+  List<String> asignaturas =
+      await servicioRegistroRecordatorios.obtenerNombresAsignaturasPorUsuario();
+
 
   // Actualiza la lista de proyectos con los nombres obtenidos
   listaProyectos.clear();
@@ -24,9 +27,13 @@ Future<List<DropdownMenuEntry<String>>> getProyectos() async {
     return DropdownMenuEntry(value: nombre, label: nombre);
   }));
 
+  listaProyectos.addAll(asignaturas.map((nombre) {
+    return DropdownMenuEntry(value: nombre, label: nombre);
+  }));
   // Devuelve la lista actualizada de proyectos
   return listaProyectos;
 }
+
 
 // //por el momento solo uso una lista con una asignatura/proyecto vació
 // List<DropdownMenuEntry<String>> lista = [
