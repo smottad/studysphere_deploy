@@ -7,6 +7,7 @@ import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/boton.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_crear_recordatorio.dart';
+import 'package:studysphere/Servicios/servicio_horario.dart';
 
 class CrearRecordatorio extends StatefulWidget {
   const CrearRecordatorio({super.key});
@@ -17,7 +18,7 @@ class CrearRecordatorio extends StatefulWidget {
 
 class _CrearRecordatorioState extends State<CrearRecordatorio> {
   final titulo = 'Nuevo recordatorio';
-  final listaAsignaturas = getProyectos();
+  final listaAsignaturas = obtenerAsignaturasPorUsuario();
 
   @override
   void initState() {
@@ -69,7 +70,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     return DropdownMenu<String>(
-                      hintText: 'Proyecto',
+                      hintText: 'Asignatura o proyecto',
                       width: (size.width * 0.8).clamp(200, 500),
                       onSelected: (value) => setAsignatura(value),
                       textStyle: textTheme.bodyMedium?.copyWith(
@@ -136,7 +137,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                           Text(
                             '¿Activar alarma?',
                             style: textTheme.bodyLarge
-                                ?.copyWith(color: colorScheme.onBackground),
+                                ?.copyWith(color: colorScheme.onSurface),
                           ),
                           const Spacer(),
                           Checkbox(

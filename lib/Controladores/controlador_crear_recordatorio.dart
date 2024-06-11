@@ -5,6 +5,7 @@ import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:studysphere/Servicios/servicio_recordatorios.dart';
+import 'package:studysphere/Vistas/crear_proyecto.dart';
 
 // Lista inicial con una entrada de proyecto vacía
 List<DropdownMenuEntry<String>> listaProyectos = [
@@ -17,6 +18,9 @@ Future<List<DropdownMenuEntry<String>>> getProyectos() async {
       ServicioRegistroRecordatorios();
   List<String> proyectos =
       await servicioRegistroRecordatorios.obtenerNombresProyectosPorUsuario();
+  List<String> asignaturas =
+      await servicioRegistroRecordatorios.obtenerNombresAsignaturasPorUsuario();
+
 
   // Actualiza la lista de proyectos con los nombres obtenidos
   listaProyectos.clear();
@@ -24,9 +28,13 @@ Future<List<DropdownMenuEntry<String>>> getProyectos() async {
     return DropdownMenuEntry(value: nombre, label: nombre);
   }));
 
+  listaProyectos.addAll(asignaturas.map((nombre) {
+    return DropdownMenuEntry(value: nombre, label: nombre);
+  }));
   // Devuelve la lista actualizada de proyectos
   return listaProyectos;
 }
+
 
 // //por el momento solo uso una lista con una asignatura/proyecto vació
 // List<DropdownMenuEntry<String>> lista = [

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -66,6 +68,43 @@ class ServicioRegistroRecordatorios {
     // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
     final response = await supabase
         .from('proyectos')
+        .select('nombre')
+        .eq('id_usuario', userId as Object);
+
+    print(response);
+    // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
+    if (response.isEmpty) {
+      print('No se encontraron proyectos para el usuario con ID: $userId');
+      return [];
+    }
+
+    // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
+    List<String> nombresProyectos = [];
+    for (var row in response as List<Map<String, dynamic>>) {
+      nombresProyectos.add(row['nombre'] as String);
+    }
+    print(nombresProyectos);
+
+    return nombresProyectos;
+    // } catch (error) {
+    //   // Manejar cualquier error que pueda ocurrir durante la obtención de los nombres de los proyectos
+    //   print('Error en obtenerNombresProyectosPorUsuario: $error');
+    //   rethrow; // relanzar el error para que el widget pueda manejarlo
+    // }
+  }
+
+  Future<List<String>> obtenerNombresAsignaturasPorUsuario() async {
+    // try {
+    final supabase = Supabase.instance.client;
+    final Session? session = supabase.auth.currentSession;
+    final userId = session?.user.id;
+    print(userId);
+    if (userId == null) {
+      throw ArgumentError('El userId no puede ser nulo');
+    }
+    // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
+    final response = await supabase
+        .from('asignaturas')
         .select('nombre')
         .eq('id_usuario', userId as Object);
 
