@@ -216,7 +216,7 @@ class PaginaInicio extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          const Text("Próximas tareas"),
+          const Text("Próximos Examenes"),
           FutureBuilder(
               future: obtenerNombresExamenes(),
               builder: (context, snapshot) {
@@ -255,7 +255,7 @@ class PaginaInicio extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          const Text("Próximas tareas"),
+          const Text("Próximas Reuniones"),
           FutureBuilder(
               future: obtenerNombresReuniones(),
               builder: (context, snapshot) {
