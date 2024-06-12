@@ -144,8 +144,7 @@ crearCuenta(BuildContext context) async {
         content: Text(
             'Debe aceptar nuestros términos y condiciones para crear una cuenta')));
   }
-  // Creamos una instancia de nuestro servicio de base de datos para utilizar sus métodos
-  // Creamos una instancia de nuestro servicio de base de datos para utilizar sus métodos
+
   final ServicioRegistroBaseDatos servicioBaseDatosRegistro =
       ServicioRegistroBaseDatos();
 
@@ -211,12 +210,12 @@ politicas(BuildContext context) {
 
 terminos(BuildContext context) {
   if (!kIsWeb) {
-  if (Platform.isAndroid || Platform.isIOS) {
-    Navigator.pushNamed(
-      context,
-      '/terminos',
-      arguments: 'lib/Assets/terms.html',
-    );
+    if (Platform.isAndroid || Platform.isIOS) {
+      Navigator.pushNamed(
+        context,
+        '/terminos',
+        arguments: 'lib/Assets/terms.html',
+      );
     }
   }
 }
