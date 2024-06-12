@@ -8,7 +8,6 @@ import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
 import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
-import 'package:studysphere/Vistas/en_progreso.dart';
 import 'package:studysphere/Vistas/horario.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
