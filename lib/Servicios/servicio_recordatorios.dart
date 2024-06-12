@@ -7,9 +7,10 @@ class ServicioRegistroRecordatorios {
   final supabase = Supabase.instance.client;
   int pruebaasignatura = 1;
 
-  Future<String> registrarRecordatorio(
+  Future<bool> registrarRecordatorio(
     String nombre,
-    String asignatura,
+    String id,
+    String tipoDato,
     String tipo,
     DateTime fecha,
     TimeOfDay horaInicio,
@@ -24,110 +25,127 @@ class ServicioRegistroRecordatorios {
       final String horaInicioStr = horaInicio.format(context);
       final String horaFinStr = horaFinal.format(context);
 
+      print(id);
+
       // Inserta el nuevo recordatorio en la tabla Recordatorios
       final Session? session = supabase.auth.currentSession;
-      final response = await supabase.from('recordatorios').insert({
-        'nombre': nombre,
-        'usuario': session?.user.id,
-        'asignatura': pruebaasignatura,
-        'tipo': tipo,
-        'fecha': fecha.toIso8601String(),
-        'hora_inicio': horaInicioStr,
-        'hora_final': horaFinStr,
-        'prioridad': prioridad,
-        'temas': temas,
-        'alarma': alarma
-      });
+      var response;
 
-      // Verifica si la inserción fue exitosa
-      if (response.error != null) {
-        // Maneja el error si la inserción falla
-        print('Error al guardar el recordatorio: ${response.error!.message}');
-        return 'Error al guardar el recordatorio';
+      if (tipoDato == '0') {
+        response = await supabase.from('recordatorios').insert({
+          'nombre': nombre,
+          'usuario': session?.user.id,
+          'id_proyecto': int.parse(id),
+          'tipo': tipo,
+          'fecha': fecha.toIso8601String(),
+          'hora_inicio': horaInicioStr,
+          'hora_final': horaFinStr,
+          'prioridad': prioridad,
+          'temas': temas,
+          'alarma': alarma
+        });
       } else {
-        // Maneja la inserción exitosa
-        print('Recordatorio guardado exitosamente en Supabase.');
-        return 'Recordatorio guardado correctamente';
+        response = await supabase.from('recordatorios').insert({
+          'nombre': nombre,
+          'usuario': session?.user.id,
+          'id_asignatura': int.parse(id),
+          'tipo': tipo,
+          'fecha': fecha.toIso8601String(),
+          'hora_inicio': horaInicioStr,
+          'hora_final': horaFinStr,
+          'prioridad': prioridad,
+          'temas': temas,
+          'alarma': alarma
+        });
       }
+      print("retorna true");
+      return true;
     } catch (error) {
       // Maneja cualquier error que pueda ocurrir durante el proceso de inserción
       print('Error al guardar el recordatorio: $error');
-      return 'Error al guardar el recordatorio';
+      return false;
     }
   }
 
-  Future<List<String>> obtenerNombresProyectosPorUsuario() async {
-    // try {
-    final supabase = Supabase.instance.client;
-    final Session? session = supabase.auth.currentSession;
-    final userId = session?.user.id;
-    print(userId);
-    if (userId == null) {
-      throw ArgumentError('El userId no puede ser nulo');
-    }
-    // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
-    final response = await supabase
-        .from('proyectos')
-        .select('nombre')
-        .eq('id_usuario', userId as Object);
+  Future<List<Map<String, dynamic>>> obtenerProyectosPorUsuario() async {
+    try {
+      final supabase = Supabase.instance.client;
+      final Session? session = supabase.auth.currentSession;
+      final userId = session?.user.id;
+      print(userId);
+      if (userId == null) {
+        throw ArgumentError('El userId no puede ser nulo');
+      }
 
-    print(response);
-    // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
-    if (response.isEmpty) {
-      print('No se encontraron proyectos para el usuario con ID: $userId');
-      return [];
-    }
+      final response = await supabase
+          .from('proyectos')
+          .select('id, nombre')
+          .eq('id_usuario', userId as Object);
 
-    // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
-    List<String> nombresProyectos = [];
-    for (var row in response) {
-      nombresProyectos.add(row['nombre'] as String);
-    }
-    print(nombresProyectos);
+      print(response);
+      if (response.isEmpty) {
+        print('No se encontraron proyectos para el usuario con ID: $userId');
+        return [];
+      }
 
-    return nombresProyectos;
-    // } catch (error) {
-    //   // Manejar cualquier error que pueda ocurrir durante la obtención de los nombres de los proyectos
-    //   print('Error en obtenerNombresProyectosPorUsuario: $error');
-    //   rethrow; // relanzar el error para que el widget pueda manejarlo
-    // }
+      List<Map<String, dynamic>> proyectos = [];
+      for (var row in response) {
+        final id = row['id'];
+        final nombre = row['nombre'];
+        if (id != null && nombre != null) {
+          proyectos.add({
+            'id': row['id'].toString(),
+            'nombre': nombre as String,
+          });
+        } else {
+          print('Datos incompletos: $row');
+        }
+      }
+      return proyectos;
+    } catch (error) {
+      print('Error en obtenerProyectosPorUsuario: $error');
+      rethrow;
+    }
   }
 
-  Future<List<String>> obtenerNombresAsignaturasPorUsuario() async {
-    // try {
-    final supabase = Supabase.instance.client;
-    final Session? session = supabase.auth.currentSession;
-    final userId = session?.user.id;
-    print(userId);
-    if (userId == null) {
-      throw ArgumentError('El userId no puede ser nulo');
-    }
-    // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
-    final response = await supabase
-        .from('asignaturas')
-        .select('nombre')
-        .eq('id_usuario', userId as Object);
+  Future<List<Map<String, dynamic>>> obtenerAsignaturasPorUsuario() async {
+    try {
+      final supabase = Supabase.instance.client;
+      final Session? session = supabase.auth.currentSession;
+      final userId = session?.user.id;
+      print(userId);
+      if (userId == null) {
+        throw ArgumentError('El userId no puede ser nulo');
+      }
+      // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
+      final response = await supabase
+          .from('asignaturas')
+          .select('nombre, id')
+          .eq('id_usuario', userId as Object);
 
-    print(response);
-    // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
-    if (response.isEmpty) {
-      print('No se encontraron proyectos para el usuario con ID: $userId');
-      return [];
-    }
+      print(response);
+      // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
+      if (response.isEmpty) {
+        print('No se encontraron asignaturas para el usuario con ID: $userId');
+        return [];
+      }
 
-    // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
-    List<String> nombresProyectos = [];
-    for (var row in response) {
-      nombresProyectos.add(row['nombre'] as String);
-    }
-    print(nombresProyectos);
+      // Extrae los nombres y IDs de las asignaturas de la respuesta y los devuelve como una lista de mapas
+      List<Map<String, dynamic>> asignaturas = [];
+      for (var row in response) {
+        asignaturas.add({
+          'id': row['id'].toString(),
+          'nombre': row['nombre'] as String,
+        });
+      }
+      print(asignaturas);
 
-    return nombresProyectos;
-    // } catch (error) {
-    //   // Manejar cualquier error que pueda ocurrir durante la obtención de los nombres de los proyectos
-    //   print('Error en obtenerNombresProyectosPorUsuario: $error');
-    //   rethrow; // relanzar el error para que el widget pueda manejarlo
-    // }
+      return asignaturas;
+    } catch (error) {
+      // Manejar cualquier error que pueda ocurrir durante la obtención de los nombres de los proyectos
+      print('Error en obtenerAsignaturasPorUsuario: $error');
+      rethrow; // relanzar el error para que el widget pueda manejarlo
+    }
   }
 }
 
