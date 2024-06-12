@@ -9,8 +9,11 @@ import 'package:studysphere/Vistas/editar_asignatura.dart';
 import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
 import 'package:studysphere/Vistas/en_progreso.dart';
+import 'package:studysphere/Vistas/enviar_correo_nueva_contrasena.dart';
 import 'package:studysphere/Vistas/horario.dart';
+import 'package:studysphere/Vistas/ingreso_codigo.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
+import 'package:studysphere/Vistas/nueva_contrasena.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
 import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
@@ -20,10 +23,12 @@ import 'package:studysphere/Vistas/ver_proyectos.dart';
 import 'package:studysphere/Vistas/ver_proyectos_pasados.dart';
 import 'package:studysphere/color_schemes.g.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  print("Holas1");
   await Supabase.initialize(
     url: 'https://yvesvjnkzjfsesaxbtys.supabase.co',
     anonKey:
@@ -61,6 +66,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => const IniciarSesion(),
         '/inicio': (context) => const PaginaInicio(),
         '/registro': (context) => const Registro(),
+        '/correo_recuperar_contrasena': (context) => const CorreoNuevaContrasena(),
+        '/correo_ingresar_codigo': (context) => const IngresoCodigoVerificacion(),
+        '/nueva_contrasena': (context) => const NuevaContrasena(),
         '/terminos': (context) => const HTMLScreen(),
         '/inicio/crear_asignaturas': (context) => const CrearAsignatura(),
         '/inicio/asignaturas': (context) => const VerAsignaturas(),

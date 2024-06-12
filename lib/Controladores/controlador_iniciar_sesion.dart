@@ -83,3 +83,7 @@ iniciarSesion(BuildContext context) async {
 irRegistro(BuildContext context) {
   Navigator.pushNamed(context, '/registro');
 }
+
+irRecuperarContrasena(BuildContext context) {
+  Navigator.pushNamed(context, '/correo_recuperar_contrasena');
+}
