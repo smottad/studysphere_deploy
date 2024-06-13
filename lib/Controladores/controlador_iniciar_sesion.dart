@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:studysphere/Servicios/servicio_iniciar_sesion.dart';
 
@@ -11,23 +13,27 @@ iniciarSesion(BuildContext context) async {
   print("lugo de la conexion");
 
   try {
-    Future<bool> resultado =
+    bool resultado = await 
         servicioBaseDatosInicioSesion.iniciarSesion(email.text, password.text);
 
-    if (await resultado == true) {
-      Navigator.popAndPushNamed(context, '/inicio');
-      Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Correo electrónico o contraseña incorrectos"),
-          backgroundColor: Colors.red,
-        ),
-      );
+    if (context.mounted) {
+      if (resultado == true) {
+        Navigator.popAndPushNamed(context, '/inicio');
+        Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Correo electrónico o contraseña incorrectos"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   } catch (e) {
-    print('An error occurred: $e');
-    Navigator.pop(context);
+    if (context.mounted) {
+      print('An error occurred: $e');
+      Navigator.pop(context);
+    }
   }
 }
 

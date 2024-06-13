@@ -6,25 +6,50 @@ import 'package:flutter/material.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
+class AsignaturaOProyecto {
+  final String id;
+  final String nombre;
+  final String tipo;
+  //Proyect es 0, Asignatura es 1
+
+  AsignaturaOProyecto(this.id, this.nombre, this.tipo);
+
+  @override
+  String toString() {
+    return nombre; // Esto es lo que se mostrará en el dropdown
+  }
+}
+
 // Lista inicial con una entrada de proyecto vacía
 List<DropdownMenuEntry<String>> listaProyectos = [
   const DropdownMenuEntry(value: 'Ninguna', label: ''),
 ];
 
-// Función para obtener los proyectos de la base de datos
-Future<List<DropdownMenuEntry<String>>> getProyectos() async {
+Future<List<DropdownMenuEntry<AsignaturaOProyecto>>> getProyectos() async {
   final ServicioRegistroRecordatorios servicioRegistroRecordatorios =
       ServicioRegistroRecordatorios();
-  List<String> proyectos =
-      await servicioRegistroRecordatorios.obtenerNombresProyectosPorUsuario();
 
-  // Actualiza la lista de proyectos con los nombres obtenidos
-  listaProyectos.clear();
-  listaProyectos.addAll(proyectos.map((nombre) {
-    return DropdownMenuEntry(value: nombre, label: nombre);
+  List<Map<String, dynamic>> proyectos =
+      await servicioRegistroRecordatorios.obtenerProyectosPorUsuario();
+  List<Map<String, dynamic>> asignaturas =
+      await servicioRegistroRecordatorios.obtenerAsignaturasPorUsuario();
+
+  List<DropdownMenuEntry<AsignaturaOProyecto>> listaProyectos = [];
+
+  listaProyectos.addAll(proyectos.map((proyecto) {
+    return DropdownMenuEntry(
+      value: AsignaturaOProyecto(proyecto['id'], proyecto['nombre'], "0"),
+      label: proyecto['nombre'],
+    );
   }));
 
-  // Devuelve la lista actualizada de proyectos
+  listaProyectos.addAll(asignaturas.map((asignatura) {
+    return DropdownMenuEntry(
+      value: AsignaturaOProyecto(asignatura['id'], asignatura['nombre'], "1"),
+      label: asignatura['nombre'],
+    );
+  }));
+
   return listaProyectos;
 }
 
@@ -46,6 +71,7 @@ String? tipo;
 TimeOfDay? startHour;
 TimeOfDay? endHour;
 DateTime? date;
+String? tipoDato;
 //estos son formato String y las que estan en ingles fecha y tiempo
 var horaInicio = TextEditingController();
 var horaFin = TextEditingController();
@@ -56,7 +82,7 @@ var temas = TextEditingController();
 String? nombreValidator_;
 String? prioridadValidator_;
 
-sendToBD(BuildContext context) async {
+Future<bool> sendToBD(BuildContext context) async {
   final ServicioRegistroRecordatorios servicioRegistroRecordatorios =
       ServicioRegistroRecordatorios();
 
@@ -64,11 +90,12 @@ sendToBD(BuildContext context) async {
     print(startHour);
     print(endHour);
     print(date);
+    print("id: $asignatura");
 
-    String resultado =
-        await servicioRegistroRecordatorios.registrarRecordatorio(
+    bool resultado = await servicioRegistroRecordatorios.registrarRecordatorio(
       nombre.text,
       asignatura!,
+      tipoDato!,
       tipo!,
       date!,
       startHour!,
@@ -79,17 +106,14 @@ sendToBD(BuildContext context) async {
       context, // Pasar context como un parámetro adicional
     );
 
-    // Verificar si el registro fue exitoso
-    if (resultado == "Recordatorio guardado correctamente") {
-      // Manejar la navegación o cualquier acción adicional después de un registro exitoso
-      print("Registro de recordatorio exitoso");
-    } else {
-      // Manejar errores si el registro no fue exitoso
-      print("Error al registrar el recordatorio: $resultado");
-    }
+    print("aca2");
+    print(resultado);
+
+    return resultado;
   } catch (error) {
     // Manejar cualquier error que pueda ocurrir durante el proceso de registro
     print('Error al registrar el recordatorio: $error');
+    return false;
   }
 }
 
@@ -149,7 +173,53 @@ funcionGuardar(BuildContext context) async {
         content: Text('Por favor ingrese una prioridad válida')));
   }
   var id = Random(1).nextInt(1000);
-  await sendToBD(context);
+
+  try {
+    bool resultado = await sendToBD(context);
+
+    if (context.mounted) {
+      if (resultado) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Recordatorio guardado correctamente'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Future.delayed(const Duration(seconds: 2), () {
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error al registrar el recordatorio'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        Future.delayed(const Duration(seconds: 2), () {
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        });
+      }
+    }
+  } catch (error) {
+    print('Error al enviar a la base de datos: $error');
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al registrar el recordatorio'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      Future.delayed(const Duration(seconds: 2), () {
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+      });
+    }
+  }
 
   if (alarma!) {
     await crearAlarma(id);
@@ -199,9 +269,9 @@ anadirAlCalendario() async {
 }
 
 //mandar a la bd
-crearRecordatorio(BuildContext context) {
-  Navigator.pushNamed(context, '/inicio');
-}
+// crearRecordatorio(BuildContext context) {
+//   Navigator.pushNamed(context, '/inicio');
+// }
 
 escogerFecha(BuildContext context) async {
   //que no salga el teclado
@@ -240,8 +310,10 @@ escogerHoraFinal(BuildContext context) async {
 }
 
 //recibe en forma de indice
-setAsignatura(String? value) {
+setAsignaturaID(String? value, String? tipoValor) {
   asignatura = value;
+  //tipo de asginatura o proyecto
+  tipoDato = tipoValor;
 }
 
 setTipo(String? value) {
