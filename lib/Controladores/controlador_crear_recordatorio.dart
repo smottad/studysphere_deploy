@@ -175,10 +175,10 @@ funcionGuardar(BuildContext context) async {
   var id = Random(1).nextInt(1000);
 
   try {
-    bool resultado = await sendToBD(context);
+    var resultado = sendToBD(context);
 
-    if (context.mounted) {
-      if (resultado) {
+    if (await resultado) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Recordatorio guardado correctamente'),
@@ -190,7 +190,9 @@ funcionGuardar(BuildContext context) async {
             Navigator.pop(context);
           }
         });
-      } else {
+      }
+    } else {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Error al registrar el recordatorio'),

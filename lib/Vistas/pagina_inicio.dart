@@ -93,13 +93,16 @@ class PaginaInicio extends StatelessWidget {
                     child: FutureBuilder(
                         future: paginaInicioTareas(),
                         builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return snapshot.data!;
+                          }
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
-                            return snapshot.data!;
+                            return const CircularProgressIndicator();
                           }
                         }),
                   ),
@@ -112,13 +115,17 @@ class PaginaInicio extends StatelessWidget {
                     child: FutureBuilder(
                         future: paginaInicioExamenes(),
                         builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return snapshot.data!;
+                          }
+
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
-                            return snapshot.data!;
+                            return const CircularProgressIndicator();
                           }
                         }),
                   ),
@@ -131,13 +138,16 @@ class PaginaInicio extends StatelessWidget {
                     child: FutureBuilder(
                         future: paginaInicioReuniones(),
                         builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return snapshot.data!;
+                          }
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
                             return const CircularProgressIndicator();
                           } else {
-                            return snapshot.data!;
+                            return const CircularProgressIndicator();
                           }
                         }),
                   ),
@@ -181,11 +191,7 @@ class PaginaInicio extends StatelessWidget {
           FutureBuilder(
               future: obtenerNombresTareas(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
+                if (snapshot.hasData) {
                   final count = snapshot.data?.length;
                   return ListView.builder(
                       shrinkWrap: true,
@@ -205,6 +211,13 @@ class PaginaInicio extends StatelessWidget {
 
                         return Column(children: [Text(key), Text(content)]);
                       });
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return const CircularProgressIndicator();
                 }
               })
         ],
@@ -288,6 +301,5 @@ class PaginaInicio extends StatelessWidget {
         ],
       ),
     );
-
   }
 }
