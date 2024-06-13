@@ -14,8 +14,8 @@ class ServicioRegistroProyectoBaseDatos {
       final supabase = Supabase.instance.client;
 
       final Session? session = supabase.auth.currentSession;
-      print(session?.user?.id.toString());
-      print(session?.user?.email);
+      print(session?.user.id.toString());
+      print(session?.user.email);
 
       // Intenta insertar el nuevo proyecto en la tabla Proyectos
       final response = await supabase.from('proyectos').insert({
@@ -55,7 +55,7 @@ class ServicioRegistroProyectoBaseDatos {
 
     // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
     List<String> nombresProyectos = [];
-    for (var row in response as List<Map<String, dynamic>>) {
+    for (var row in response) {
       nombresProyectos.add(row['nombre'] as String);
     }
     print(nombresProyectos);
@@ -93,7 +93,7 @@ class ServicioRegistroProyectoBaseDatos {
 
       // Extrae los nombres y IDs de las asignaturas de la respuesta y los devuelve como un mapa
       Map<String, int> asignaturas = {};
-      for (var row in response as List<Map<String, dynamic>>) {
+      for (var row in response) {
         asignaturas[row['nombre'] as String] = row['id'] as int;
       }
       print(asignaturas);
