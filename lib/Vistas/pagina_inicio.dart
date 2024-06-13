@@ -4,6 +4,7 @@ import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/cards.dart';
 import 'package:studysphere/Componentes/menu_expandible.dart';
 import 'package:studysphere/Controladores/controlador_pagina_inicio.dart';
+import 'package:studysphere/Servicios/servicio_pagina_inicio.dart';
 import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
 class PaginaInicio extends StatefulWidget {
@@ -226,8 +227,19 @@ class _PaginaInicioState extends State<PaginaInicio> {
                                   hoverColor:
                                       Theme.of(context).colorScheme.secondary,
                                   tooltip: 'Marcar como hecha',
-                                  onPressed: tareaHecha(item[3]),
-                                  icon: const Icon(Icons.check_circle))
+                                  onPressed: () => setState(() {
+                                        markAsDone(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.check_circle)),
+                              IconButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Eliminar',
+                                  onPressed: () => setState(() {
+                                        eliminarRecordatorio(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.delete))
                             ],
                           ));
                         }
@@ -299,8 +311,17 @@ class _PaginaInicioState extends State<PaginaInicio> {
                                   hoverColor:
                                       Theme.of(context).colorScheme.secondary,
                                   tooltip: 'Estudiar',
-                                  onPressed: tareaHecha(item[3]),
-                                  icon: const Icon(Icons.book))
+                                  onPressed: markAsDone(item[3]),
+                                  icon: const Icon(Icons.book)),
+                              IconButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Eliminar',
+                                  onPressed: () => setState(() {
+                                        eliminarRecordatorio(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.delete))
                             ],
                           ));
                         }
@@ -363,16 +384,19 @@ class _PaginaInicioState extends State<PaginaInicio> {
                             body += "${item[i].trim()}, ";
                           }
                           rows.add(Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10.0),
-                                child: Text(
-                                  '${body.substring(0, body.length - 2)}.',
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
+                              Text('${body.substring(0, body.length - 2)}.'),
+                              const Spacer(),
+                              IconButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Eliminar',
+                                  onPressed: () => setState(() {
+                                        eliminarRecordatorio(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.delete))
                             ],
                           ));
                         }
@@ -405,6 +429,4 @@ class _PaginaInicioState extends State<PaginaInicio> {
       ),
     );
   }
-
-  tareaHecha(String id_recordatorio) {}
 }

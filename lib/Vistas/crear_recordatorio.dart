@@ -121,7 +121,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 funcion: escogerFecha, teclado: TextInputType.none),
             textFormulario(context, horaInicio, 'Hora inicio',
                 funcion: escogerHoraInicio, teclado: TextInputType.none),
-            textFormulario(context, horaFin, 'Hora fin (Opcional)',
+            textFormulario(context, horaFin, 'Hora fin',
                 funcion: escogerHoraFinal, teclado: TextInputType.none),
             textFormulario(context, prioridad, 'Prioridad',
                 teclado: TextInputType.number,

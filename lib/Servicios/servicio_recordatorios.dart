@@ -198,6 +198,12 @@ Future<Map<String, List<List<String>>>> obtenerNombresTareas() async {
     ];
     final dateFormat = DateFormat('EEEE, MMMM dd');
     final date = DateTime.tryParse(row['fecha']);
+    final checkDate = DateTime.tryParse('${row['fecha']} ${row['hora_final']}');
+    print("estoy aquii");
+    print(checkDate);
+    if (checkDate!.isBefore(DateTime.now())) {
+      continue;
+    }
     nombresTareas.update(dateFormat.format(date!), (value) {
       value.add(arr);
       return value;
