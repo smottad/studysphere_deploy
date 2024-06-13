@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
 import 'package:studysphere/Vistas/ajustes.dart';
+import 'package:studysphere/Vistas/crear_mazo.dart';
 import 'package:studysphere/Vistas/crear_proyecto.dart';
 import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
@@ -21,6 +22,7 @@ import 'package:studysphere/Vistas/ver_asignaturas.dart';
 import 'package:studysphere/Vistas/ver_asignaturas_pasadas.dart';
 import 'package:studysphere/Vistas/ver_proyectos.dart';
 import 'package:studysphere/Vistas/ver_proyectos_pasados.dart';
+import 'package:studysphere/Vistas/mazos.dart';
 import 'package:studysphere/color_schemes.g.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -83,6 +85,8 @@ class MyApp extends StatelessWidget {
         '/inicio/crear_recordatorio': (context) => const CrearRecordatorio(),
         '/inicio/ajustes': (context) => const Ajustes(),
         '/inicio/ajustes/editar_perfil': (context) => const EditProfile(),
+        '/inicio/mazos': (context) => const VerMazos(),
+        '/inicio/mazos/crear_mazo': (context) => const CrearMazo(),
       },
     );
   }

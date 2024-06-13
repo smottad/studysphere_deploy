@@ -13,7 +13,7 @@ class ServicioRegistroProyectoBaseDatos {
     try {
       final supabase = Supabase.instance.client;
 
-      final Session? session = supabase.auth.currentSession;
+      final Session? session =  supabase.auth.currentSession;
       print(session?.user?.id.toString());
       print(session?.user?.email);
 
