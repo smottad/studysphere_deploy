@@ -227,8 +227,8 @@ class _PaginaInicioState extends State<PaginaInicio> {
                                   hoverColor:
                                       Theme.of(context).colorScheme.secondary,
                                   tooltip: 'Marcar como hecha',
-                                  onPressed: () => setState(() {
-                                        markAsDone(item[3]);
+                                  onPressed: () => setState(() async {
+                                        await markAsDone(item[3]);
                                       }),
                                   icon: const Icon(Icons.check_circle)),
                               IconButton(
@@ -236,8 +236,8 @@ class _PaginaInicioState extends State<PaginaInicio> {
                                   hoverColor:
                                       Theme.of(context).colorScheme.secondary,
                                   tooltip: 'Eliminar',
-                                  onPressed: () => setState(() {
-                                        eliminarRecordatorio(item[3]);
+                                  onPressed: () => setState(() async {
+                                        await eliminarRecordatorio(item[3]);
                                       }),
                                   icon: const Icon(Icons.delete))
                             ],
@@ -311,15 +311,16 @@ class _PaginaInicioState extends State<PaginaInicio> {
                                   hoverColor:
                                       Theme.of(context).colorScheme.secondary,
                                   tooltip: 'Estudiar',
-                                  onPressed: markAsDone(item[3]),
+                                  // TODO:
+                                  onPressed: () {},
                                   icon: const Icon(Icons.book)),
                               IconButton(
                                   color: Theme.of(context).colorScheme.primary,
                                   hoverColor:
                                       Theme.of(context).colorScheme.secondary,
                                   tooltip: 'Eliminar',
-                                  onPressed: () => setState(() {
-                                        eliminarRecordatorio(item[3]);
+                                  onPressed: () => setState(() async {
+                                        await eliminarRecordatorio(item[3]);
                                       }),
                                   icon: const Icon(Icons.delete))
                             ],
@@ -393,8 +394,8 @@ class _PaginaInicioState extends State<PaginaInicio> {
                                   hoverColor:
                                       Theme.of(context).colorScheme.secondary,
                                   tooltip: 'Eliminar',
-                                  onPressed: () => setState(() {
-                                        eliminarRecordatorio(item[3]);
+                                  onPressed: () => setState(() async {
+                                        await eliminarRecordatorio(item[3]);
                                       }),
                                   icon: const Icon(Icons.delete))
                             ],
