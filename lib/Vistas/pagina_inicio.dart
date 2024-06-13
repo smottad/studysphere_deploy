@@ -6,7 +6,7 @@ import 'package:studysphere/Componentes/menu_expandible.dart';
 import 'package:studysphere/Controladores/controlador_pagina_inicio.dart';
 import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
-class PaginaInicio extends StatelessWidget {
+class PaginaInicio extends StatefulWidget {
   static const _actionTitles = [
     'Crear recordatorio',
     'Crear flashcard',
@@ -15,6 +15,11 @@ class PaginaInicio extends StatelessWidget {
   ];
   const PaginaInicio({super.key});
 
+  @override
+  State<PaginaInicio> createState() => _PaginaInicioState();
+}
+
+class _PaginaInicioState extends State<PaginaInicio> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -30,7 +35,7 @@ class PaginaInicio extends StatelessWidget {
               ActionButton(
                   onPressed: () => showAction(context, 0),
                   icon: Icon(Icons.alarm, color: colorScheme.onSecondary)),
-              Text(_actionTitles[0])
+              Text(PaginaInicio._actionTitles[0])
             ]),
             Column(children: [
               ActionButton(
@@ -40,7 +45,7 @@ class PaginaInicio extends StatelessWidget {
                   color: colorScheme.onSecondary,
                 ),
               ),
-              Text(_actionTitles[1])
+              Text(PaginaInicio._actionTitles[1])
             ]),
             Column(children: [
               ActionButton(
@@ -50,7 +55,7 @@ class PaginaInicio extends StatelessWidget {
                   color: colorScheme.onSecondary,
                 ),
               ),
-              Text(_actionTitles[2])
+              Text(PaginaInicio._actionTitles[2])
             ]),
             Column(children: [
               ActionButton(
@@ -60,7 +65,7 @@ class PaginaInicio extends StatelessWidget {
                   color: colorScheme.onSecondary,
                 ),
               ),
-              Text(_actionTitles[3])
+              Text(PaginaInicio._actionTitles[3])
             ]),
           ],
         ),
@@ -201,15 +206,38 @@ class PaginaInicio extends StatelessWidget {
                       itemBuilder: (context, index) {
                         String key = snapshot.data!.keys.elementAt(index);
                         List<List<String>>? data = snapshot.data![key];
-                        String content = "";
+                        List<Row> rows = [];
                         for (var item in data!) {
-                          for (var miniitem in item) {
-                            content += "$miniitem ";
+                          String body = "";
+                          for (var i = 0; i < 3; i++) {
+                            body += "${item[i].trim()}, ";
                           }
-                          content += "\n";
+                          rows.add(Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(body),
+                              const Spacer(),
+                              IconButton(
+                                  onPressed: tareaHecha(item[3]),
+                                  icon: const Icon(Icons.check_circle))
+                            ],
+                          ));
                         }
 
-                        return Column(children: [Text(key), Text(content)]);
+                        return Column(children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '⚫ $key:',
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                          ListBody(
+                            children: rows,
+                          )
+                        ]);
                       });
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -302,4 +330,6 @@ class PaginaInicio extends StatelessWidget {
       ),
     );
   }
+
+  tareaHecha(String id_recordatorio) {}
 }

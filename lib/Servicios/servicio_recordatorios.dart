@@ -1,10 +1,8 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class ServicioRegistroRecordatorios {
   final supabase = Supabase.instance.client;
@@ -32,10 +30,9 @@ class ServicioRegistroRecordatorios {
 
       // Inserta el nuevo recordatorio en la tabla Recordatorios
       final Session? session = supabase.auth.currentSession;
-      var response;
 
       if (tipoDato == '0') {
-        response = await supabase.from('recordatorios').insert({
+        var response = await supabase.from('recordatorios').insert({
           'nombre': nombre,
           'usuario': session?.user.id,
           'id_proyecto': int.parse(id),
@@ -48,7 +45,7 @@ class ServicioRegistroRecordatorios {
           'alarma': alarma
         });
       } else {
-        response = await supabase.from('recordatorios').insert({
+        var response = await supabase.from('recordatorios').insert({
           'nombre': nombre,
           'usuario': session?.user.id,
           'id_asignatura': int.parse(id),
@@ -178,18 +175,27 @@ Future<Map<String, List<List<String>>>> obtenerNombresTareas() async {
   Map<String, List<List<String>>> nombresTareas = {};
   for (var row in response) {
     String nombre;
+    int id;
     if (row['id_asignatura'] == null) {
-      var id = row['id_proyecto'];
+      id = row['id_proyecto'];
       var getNombre =
           await supabase.from('proyectos').select('nombre').eq('id', id);
       nombre = getNombre[0]['nombre'] as String;
     } else {
-      var id = row['id_asignatura'];
+      id = row['id_asignatura'];
       var getNombre =
           await supabase.from('asignaturas').select('nombre').eq('id', id);
       nombre = getNombre[0]['nombre'] as String;
     }
-    var arr = [row['nombre'].toString(), row['hora_inicio'].toString(), nombre];
+
+    var arr = [
+      row['nombre'].toString(),
+      row['hora_inicio']
+          .toString()
+          .substring(0, row['hora_inicio'].toString().length - 3),
+      nombre,
+      '${row['id']}'
+    ];
     final dateFormat = DateFormat('EEEE, MMMM dd');
     final date = DateTime.tryParse(row['fecha']);
     nombresTareas.update(dateFormat.format(date!), (value) {
@@ -229,18 +235,27 @@ Future<Map<String, List<List<String>>>> obtenerNombresExamenes() async {
   Map<String, List<List<String>>> nombresExamenes = {};
   for (var row in response) {
     String nombre;
+    int id;
     if (row['id_asignatura'] == null) {
-      var id = row['id_proyecto'];
+      id = row['id_proyecto'];
       var getNombre =
           await supabase.from('proyectos').select('nombre').eq('id', id);
       nombre = getNombre[0]['nombre'] as String;
     } else {
-      var id = row['id_asignatura'];
+      id = row['id_asignatura'];
       var getNombre =
           await supabase.from('asignaturas').select('nombre').eq('id', id);
       nombre = getNombre[0]['nombre'] as String;
     }
-    var arr = [row['nombre'].toString(), row['hora_inicio'].toString(), nombre];
+
+    var arr = [
+      row['nombre'].toString(),
+      row['hora_inicio']
+          .toString()
+          .substring(0, row['hora_inicio'].toString().length - 3),
+      nombre,
+      '${row['id']}'
+    ];
     final dateFormat = DateFormat('EEEE, MMMM dd');
     final date = DateTime.tryParse(row['fecha']);
     nombresExamenes.update(dateFormat.format(date!), (value) {
@@ -280,18 +295,26 @@ Future<Map<String, List<List<String>>>> obtenerNombresReuniones() async {
   Map<String, List<List<String>>> nombresReuniones = {};
   for (var row in response) {
     String nombre;
+    int id;
     if (row['id_asignatura'] == null) {
-      var id = row['id_proyecto'];
+      id = row['id_proyecto'];
       var getNombre =
           await supabase.from('proyectos').select('nombre').eq('id', id);
       nombre = getNombre[0]['nombre'] as String;
     } else {
-      var id = row['id_asignatura'];
+      id = row['id_asignatura'];
       var getNombre =
           await supabase.from('asignaturas').select('nombre').eq('id', id);
       nombre = getNombre[0]['nombre'] as String;
     }
-    var arr = [row['nombre'].toString(), row['hora_inicio'].toString(), nombre];
+
+    var arr = [
+      row['nombre'].toString(),
+      row['hora_inicio'].toString().substring(
+          0, row['hora_inicio'].toString().length - 3), //borrar los segundos
+      nombre,
+      '${row['id']}'
+    ];
     final dateFormat = DateFormat('EEEE, MMMM dd');
     final date = DateTime.tryParse(row['fecha']);
     nombresReuniones.update(dateFormat.format(date!), (value) {
