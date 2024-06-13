@@ -98,7 +98,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 dropdownMenuEntries: const [
                   DropdownMenuEntry(value: 'Tarea', label: 'Tarea'),
                   DropdownMenuEntry(value: 'Examen', label: 'Examen'),
-                  DropdownMenuEntry(value: 'Reunión', label: 'Reunion')
+                  DropdownMenuEntry(value: 'Reunion', label: 'Reunión')
                 ],
                 hintText: 'Tipo',
                 width: (size.width * 0.8).clamp(200, 500),
