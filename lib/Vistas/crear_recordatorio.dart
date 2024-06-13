@@ -57,14 +57,16 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 validator: (val) => nombreValidator_),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: FutureBuilder<List<DropdownMenuEntry<String>>>(
+              child:
+                  FutureBuilder<List<DropdownMenuEntry<AsignaturaOProyecto>>>(
                 future: getProyectos(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return DropdownMenu<String>(
+                    return DropdownMenu<AsignaturaOProyecto>(
                       hintText: 'Asignatura o proyecto',
                       width: (size.width * 0.8).clamp(200, 500),
-                      onSelected: (value) => setAsignatura(value),
+                      onSelected: (value) =>
+                          setAsignaturaID(value?.id, value?.tipo),
                       textStyle: textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurface,
                       ),
@@ -79,7 +81,6 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                         border: const OutlineInputBorder(),
                       ),
                     );
-
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
