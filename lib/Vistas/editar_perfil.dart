@@ -1,19 +1,58 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Controladores/controlador_editar_perfil.dart';
 
-class EditProfile extends StatelessWidget {
+// Controladores de texto para los campos del perfil
+final nombre = TextEditingController();
+final correo = TextEditingController();
+final telefono = TextEditingController();
+final contrasena = TextEditingController();
+final verificarContrasena = TextEditingController();
+
+class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
+
+  @override
+  _EditProfileState createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  @override
+  void initState() {
+    super.initState();
+    cargarDatosUsuario();
+  }
+
+  Future<void> cargarDatosUsuario() async {
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+
+    try {
+      final response =
+          await supabase.from('usuarios').select().eq('id', user!.id).single();
+
+      final data = response;
+      setState(() {
+        nombre.text = data['nombre'] ?? '';
+        correo.text = data['correo'] ?? '';
+        // Convertir el campo 'telefono' a String
+        telefono.text = data['telefono']?.toString() ?? '';
+        contrasena.text = data['contraseña'] ?? '';
+        verificarContrasena.text = data['contraseña'] ?? '';
+      });
+    } on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error al cargar datos')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     IconData hidden = Icons.remove_red_eye_outlined;
-
-    nombre.text = "Anderson Morales";
-    correo.text = "amoralesch@unal.edu.co";
-    telefono.text = "3007174707";
 
     GlobalKey<ProfileTextState> _keyProfileName = GlobalKey();
     GlobalKey<ProfileTextState> _keyProfileEmail = GlobalKey();
@@ -30,12 +69,17 @@ class EditProfile extends StatelessWidget {
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
-              children: [ 
-                ProfileText(key: _keyProfileName, teclado: TextInputType.name, controller: nombre, label: "Nombre",),
+              children: [
+                ProfileText(
+                  key: _keyProfileName,
+                  teclado: TextInputType.name,
+                  controller: nombre,
+                  label: "Nombre",
+                ),
                 IconButton(
                   onPressed: () {
                     _keyProfileName.currentState?.cambiarAHabilitado();
-                  }, 
+                  },
                   icon: const Icon(Icons.edit),
                 ),
               ],
@@ -45,12 +89,17 @@ class EditProfile extends StatelessWidget {
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
-              children: [ 
-                ProfileText(key: _keyProfileEmail, teclado: TextInputType.emailAddress, controller: correo, label: "Correo",),
+              children: [
+                ProfileText(
+                  key: _keyProfileEmail,
+                  teclado: TextInputType.emailAddress,
+                  controller: correo,
+                  label: "Correo",
+                ),
                 IconButton(
                   onPressed: () {
                     _keyProfileEmail.currentState?.cambiarAHabilitado();
-                  }, 
+                  },
                   icon: const Icon(Icons.edit),
                 ),
               ],
@@ -60,12 +109,17 @@ class EditProfile extends StatelessWidget {
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
-              children: [ 
-                ProfileText(key: _keyProfilePhone, teclado: TextInputType.number, controller: telefono, label: "Telefono",),
+              children: [
+                ProfileText(
+                  key: _keyProfilePhone,
+                  teclado: TextInputType.number,
+                  controller: telefono,
+                  label: "Telefono",
+                ),
                 IconButton(
                   onPressed: () {
                     _keyProfilePhone.currentState?.cambiarAHabilitado();
-                  }, 
+                  },
                   icon: const Icon(Icons.edit),
                 ),
               ],
@@ -78,38 +132,55 @@ class EditProfile extends StatelessWidget {
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [ 
+                  children: [
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ProfileText(key: _keyProfilePassword, teclado: TextInputType.name, controller: contrasena, label: "Contraseña", oscurecer: true,),
+                        ProfileText(
+                          key: _keyProfilePassword,
+                          teclado: TextInputType.name,
+                          controller: contrasena,
+                          label: "Contraseña",
+                          oscurecer: true,
+                        ),
                         IconButton(
                           icon: Icon(hidden),
                           onPressed: () {
-                            _keyProfilePassword.currentState?.mostrarContrasena();
-                          }, 
+                            _keyProfilePassword.currentState
+                                ?.mostrarContrasena();
+                          },
                         ),
                       ],
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ProfileText(key: _keyProfileConfimrPassword, teclado: TextInputType.name, controller: verificarContrasena, label: "Confirmar la contraseña", oscurecer: true, validator: true, compareController: contrasena,),
+                        ProfileText(
+                          key: _keyProfileConfimrPassword,
+                          teclado: TextInputType.name,
+                          controller: verificarContrasena,
+                          label: "Confirmar la contraseña",
+                          oscurecer: true,
+                          validator: true,
+                          compareController: contrasena,
+                        ),
                         IconButton(
                           onPressed: () {
-                            _keyProfileConfimrPassword.currentState?.mostrarContrasena();
-                          }, 
+                            _keyProfileConfimrPassword.currentState
+                                ?.mostrarContrasena();
+                          },
                           icon: Icon(hidden),
-                          ),
+                        ),
                       ],
                     ),
                   ],
-                ), 
+                ),
                 IconButton(
                   onPressed: () {
                     _keyProfilePassword.currentState?.cambiarAHabilitado();
-                    _keyProfileConfimrPassword.currentState?.cambiarAHabilitado();
-                  }, 
+                    _keyProfileConfimrPassword.currentState
+                        ?.cambiarAHabilitado();
+                  },
                   icon: const Icon(Icons.edit),
                 ),
               ],
@@ -126,32 +197,25 @@ class EditProfile extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.secondary,
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),    
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
               onPressed: () {
-                if (nombre.text.isNotEmpty && correo.text.isNotEmpty && telefono.text.isNotEmpty) {
-                  print("----- CORRECTO -----");
-                  _keyVisibility.currentState?.changeAllow();
-                  _keyVisibility.currentState?.isCorrect(true, "Datos actualizados exitosamente");
-                  Timer _timer;
-                  int _start = 2;
-
-                  const oneSec = Duration(seconds: 1);
-                  _timer = Timer.periodic(
-                    oneSec,
-                    (Timer timer) {
-                      if (_start == 0) {
-                        timer.cancel();
-                        _keyVisibility.currentState?.changeAllow();
-                      } else {
-                        _start--;
-                      }
-                    },
-                  ); 
+                if (nombre.text.isNotEmpty &&
+                    correo.text.isNotEmpty &&
+                    telefono.text.isNotEmpty) {
+                  actualizarPerfil(
+                      context,
+                      nombre.text,
+                      correo.text,
+                      telefono.text,
+                      contrasena.text,
+                      verificarContrasena
+                          .text); // Llama a la función de actualización
                 } else {
-                  print("----- Ingresar datos -----");
                   _keyVisibility.currentState?.changeAllow();
-                  _keyVisibility.currentState?.isCorrect(false, "Debe llenar todos los campos");
+                  _keyVisibility.currentState
+                      ?.isCorrect(false, "Debe llenar todos los campos");
                   Timer _timer;
                   int _start = 2;
 
@@ -166,7 +230,7 @@ class EditProfile extends StatelessWidget {
                         _start--;
                       }
                     },
-                  ); 
+                  );
                 }
               },
               child: Text(
@@ -224,18 +288,17 @@ class MyVisibilityState extends State<MyVisibility> {
     }
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: allow,
-      child: Container( 
+      child: Container(
         decoration: BoxDecoration(
-          color: bckgColor,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: textColor,
-          )
-        ),
+            color: bckgColor,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: textColor,
+            )),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
@@ -245,13 +308,22 @@ class MyVisibilityState extends State<MyVisibility> {
             ),
           ),
         ),
-      ), 
+      ),
     );
   }
 }
 
 class ProfileText extends StatefulWidget {
-  ProfileText({super.key, this.oscurecer = false, this.padding = 6.0, this.teclado, required this.controller, required this.label, this.validator = false, this.compareController,});
+  ProfileText({
+    super.key,
+    this.oscurecer = false,
+    this.padding = 6.0,
+    this.teclado,
+    required this.controller,
+    required this.label,
+    this.validator = false,
+    this.compareController,
+  });
 
   bool oscurecer;
   final double padding;
@@ -268,7 +340,7 @@ class ProfileText extends StatefulWidget {
 class ProfileTextState extends State<ProfileText> {
   bool habilitar = false;
 
-  void cambiarAHabilitado () {
+  void cambiarAHabilitado() {
     if (habilitar) {
       setState(() {
         habilitar = false;
@@ -280,7 +352,7 @@ class ProfileTextState extends State<ProfileText> {
     }
   }
 
-  void mostrarContrasena () {
+  void mostrarContrasena() {
     if (widget.oscurecer) {
       setState(() {
         widget.oscurecer = false;
@@ -294,11 +366,10 @@ class ProfileTextState extends State<ProfileText> {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.all(widget.padding),
-      child: Row( 
-        mainAxisSize: MainAxisSize.min, 
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
             width: (MediaQuery.of(context).size.width * 0.8).clamp(200, 500),
@@ -312,7 +383,8 @@ class ProfileTextState extends State<ProfileText> {
               enabled: habilitar,
               validator: (value) {
                 if (widget.validator) {
-                  if (widget.controller.text != widget.compareController?.text) {
+                  if (widget.controller.text !=
+                      widget.compareController?.text) {
                     return "Ambos campos deben coincidir";
                   } else {
                     return null;
@@ -322,17 +394,18 @@ class ProfileTextState extends State<ProfileText> {
                 }
               },
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 filled: true,
                 fillColor: Theme.of(context).colorScheme.surface,
                 labelText: widget.label,
                 border: const OutlineInputBorder(),
               ),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
-          ),  
+          ),
         ],
       ),
     );
