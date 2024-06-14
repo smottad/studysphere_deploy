@@ -198,13 +198,15 @@ Future<Map<String, List<List<String>>>> obtenerNombresTareas() async {
     ];
     final dateFormat = DateFormat('EEEE, MMMM dd');
     final date = DateTime.tryParse(row['fecha']);
+    final checkDate = DateTime.tryParse('${row['fecha']} ${row['hora_final']}');
+    if (checkDate!.isBefore(DateTime.now())) {
+      continue;
+    }
     nombresTareas.update(dateFormat.format(date!), (value) {
       value.add(arr);
       return value;
     }, ifAbsent: () => [arr]);
   }
-  print("resultado");
-  print(nombresTareas);
 
   return nombresTareas;
 }
@@ -213,7 +215,6 @@ Future<Map<String, List<List<String>>>> obtenerNombresExamenes() async {
   final supabase = Supabase.instance.client;
   final Session? session = supabase.auth.currentSession;
   final userId = session?.user.id;
-  print(userId);
   if (userId == null) {
     throw ArgumentError('El userId no puede ser nulo');
   }
@@ -224,7 +225,6 @@ Future<Map<String, List<List<String>>>> obtenerNombresExamenes() async {
       .eq('usuario', userId as Object)
       .eq('tipo', 'Examen');
 
-  print(response);
   // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
   if (response.isEmpty) {
     print('No se encontraron exámenes el usuario con ID: $userId');
@@ -263,8 +263,6 @@ Future<Map<String, List<List<String>>>> obtenerNombresExamenes() async {
       return value;
     }, ifAbsent: () => [arr]);
   }
-  print("resultado");
-  print(nombresExamenes);
 
   return nombresExamenes;
 }
@@ -273,7 +271,6 @@ Future<Map<String, List<List<String>>>> obtenerNombresReuniones() async {
   final supabase = Supabase.instance.client;
   final Session? session = supabase.auth.currentSession;
   final userId = session?.user.id;
-  print(userId);
   if (userId == null) {
     throw ArgumentError('El userId no puede ser nulo');
   }
@@ -284,7 +281,6 @@ Future<Map<String, List<List<String>>>> obtenerNombresReuniones() async {
       .eq('usuario', userId as Object)
       .eq('tipo', 'Reunion');
 
-  print(response);
   // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
   if (response.isEmpty) {
     print('No se encontraron reuniones el usuario con ID: $userId');
@@ -322,8 +318,6 @@ Future<Map<String, List<List<String>>>> obtenerNombresReuniones() async {
       return value;
     }, ifAbsent: () => [arr]);
   }
-  print("resultado");
-  print(nombresReuniones);
 
   return nombresReuniones;
 }

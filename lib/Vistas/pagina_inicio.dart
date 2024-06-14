@@ -4,6 +4,7 @@ import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/cards.dart';
 import 'package:studysphere/Componentes/menu_expandible.dart';
 import 'package:studysphere/Controladores/controlador_pagina_inicio.dart';
+import 'package:studysphere/Servicios/servicio_pagina_inicio.dart';
 import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
 class PaginaInicio extends StatefulWidget {
@@ -190,9 +191,13 @@ class _PaginaInicioState extends State<PaginaInicio> {
 
   Future<Card> paginaInicioTareas() async {
     return Card(
+      //color: Theme.of(context).colorScheme.tertiaryContainer,
       child: Column(
         children: [
-          const Text("Próximas tareas"),
+          const Text(
+            "Próximas tareas",
+            style: TextStyle(fontSize: 30),
+          ),
           FutureBuilder(
               future: obtenerNombresTareas(),
               builder: (context, snapshot) {
@@ -215,11 +220,26 @@ class _PaginaInicioState extends State<PaginaInicio> {
                           rows.add(Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(body),
+                              Text('${body.substring(0, body.length - 2)}.'),
                               const Spacer(),
                               IconButton(
-                                  onPressed: tareaHecha(item[3]),
-                                  icon: const Icon(Icons.check_circle))
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Marcar como hecha',
+                                  onPressed: () => setState(() async {
+                                        await markAsDone(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.check_circle)),
+                              IconButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Eliminar',
+                                  onPressed: () => setState(() async {
+                                        await eliminarRecordatorio(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.delete))
                             ],
                           ));
                         }
@@ -255,17 +275,17 @@ class _PaginaInicioState extends State<PaginaInicio> {
 
   Future<Card> paginaInicioExamenes() async {
     return Card(
+      //color: Theme.of(context).colorScheme.tertiaryContainer,
       child: Column(
         children: [
-          const Text("Próximos Examenes"),
+          const Text(
+            "Próximos Examenes",
+            style: TextStyle(fontSize: 30),
+          ),
           FutureBuilder(
               future: obtenerNombresExamenes(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
+                if (snapshot.hasData) {
                   final count = snapshot.data?.length;
                   return ListView.builder(
                       shrinkWrap: true,
@@ -275,16 +295,60 @@ class _PaginaInicioState extends State<PaginaInicio> {
                       itemBuilder: (context, index) {
                         String key = snapshot.data!.keys.elementAt(index);
                         List<List<String>>? data = snapshot.data![key];
-                        String content = "";
+                        List<Row> rows = [];
                         for (var item in data!) {
-                          for (var miniitem in item) {
-                            content += "$miniitem ";
+                          String body = "";
+                          for (var i = 0; i < 3; i++) {
+                            body += "${item[i].trim()}, ";
                           }
-                          content += "\n";
+                          rows.add(Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('${body.substring(0, body.length - 2)}.'),
+                              const Spacer(),
+                              IconButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Estudiar',
+                                  // TODO:
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.book)),
+                              IconButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Eliminar',
+                                  onPressed: () => setState(() async {
+                                        await eliminarRecordatorio(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.delete))
+                            ],
+                          ));
                         }
 
-                        return Column(children: [Text(key), Text(content)]);
+                        return Column(children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '⚫ $key:',
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                          ListBody(
+                            children: rows,
+                          )
+                        ]);
                       });
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return const CircularProgressIndicator();
                 }
               })
         ],
@@ -294,17 +358,17 @@ class _PaginaInicioState extends State<PaginaInicio> {
 
   Future<Card> paginaInicioReuniones() async {
     return Card(
+      //color: Theme.of(context).colorScheme.tertiaryContainer,
       child: Column(
         children: [
-          const Text("Próximas Reuniones"),
+          const Text(
+            "Próximas Reuniones",
+            style: TextStyle(fontSize: 30),
+          ),
           FutureBuilder(
               future: obtenerNombresReuniones(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
+                if (snapshot.hasData) {
                   final count = snapshot.data?.length;
                   return ListView.builder(
                       shrinkWrap: true,
@@ -314,22 +378,56 @@ class _PaginaInicioState extends State<PaginaInicio> {
                       itemBuilder: (context, index) {
                         String key = snapshot.data!.keys.elementAt(index);
                         List<List<String>>? data = snapshot.data![key];
-                        String content = "";
+                        List<Row> rows = [];
                         for (var item in data!) {
-                          for (var miniitem in item) {
-                            content += "$miniitem ";
+                          String body = "";
+                          for (var i = 0; i < 3; i++) {
+                            body += "${item[i].trim()}, ";
                           }
-                          content += "\n";
+                          rows.add(Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('${body.substring(0, body.length - 2)}.'),
+                              const Spacer(),
+                              IconButton(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  hoverColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  tooltip: 'Eliminar',
+                                  onPressed: () => setState(() async {
+                                        await eliminarRecordatorio(item[3]);
+                                      }),
+                                  icon: const Icon(Icons.delete))
+                            ],
+                          ));
                         }
 
-                        return Column(children: [Text(key), Text(content)]);
+                        return Column(children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '⚫ $key:',
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                          ListBody(
+                            children: rows,
+                          )
+                        ]);
                       });
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return const CircularProgressIndicator();
                 }
               })
         ],
       ),
     );
   }
-
-  tareaHecha(String id_recordatorio) {}
 }
