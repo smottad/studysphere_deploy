@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:studysphere/Servicios/servicio_horario.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -145,14 +143,10 @@ class _HorarioState extends State<Horario> {
                       "No es posible modificar horarios de asignaturas desde aquí")));
               return;
             }
-            for (var idx = 0; idx < idk.length; idx++) {
-              print(idx);
-              print(idk[idx]);
-            }
-            var fecha_inicio = DateTime.tryParse(idk[12].split(',')[0].trim());
-            var fecha_final = DateTime.tryParse(idk[13].split(',')[0].trim());
+            var fechaInicio = DateTime.tryParse(idk[12].split(',')[0].trim());
+            var fechaFinal = DateTime.tryParse(idk[13].split(',')[0].trim());
             var id = idk[10].split(',')[0].trim();
-            actualizarHoraRecordatorio(id, fecha_inicio, fecha_final);
+            actualizarHoraRecordatorio(id, fechaInicio, fechaFinal);
           },
           monthViewSettings: const MonthViewSettings(
             showAgenda: true,
