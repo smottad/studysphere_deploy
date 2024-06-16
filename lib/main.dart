@@ -9,7 +9,6 @@ import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
 import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
-import 'package:studysphere/Vistas/en_progreso.dart';
 import 'package:studysphere/Vistas/enviar_correo_nueva_contrasena.dart';
 import 'package:studysphere/Vistas/horario.dart';
 import 'package:studysphere/Vistas/ingreso_codigo.dart';
@@ -25,8 +24,6 @@ import 'package:studysphere/Vistas/ver_proyectos_pasados.dart';
 import 'package:studysphere/Vistas/mazos.dart';
 import 'package:studysphere/color_schemes.g.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

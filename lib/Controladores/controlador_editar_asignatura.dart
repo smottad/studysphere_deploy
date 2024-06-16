@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:studysphere/Controladores/controlador_crear_asignatura.dart';
 import 'package:studysphere/Servicios/servicio_asignatura.dart';
 
 class ControladorEditarAsignatura {

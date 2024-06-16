@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_crear_mazo.dart';
+import 'package:studysphere/Servicios/servicio_mazo.dart';
 
 String selectedMateria = ""; // Variable para almacenar el nombre de la materia seleccionada
 int selectedMateriaId = 0; // Variable para almacenar el ID de la materia seleccionada
@@ -118,11 +119,31 @@ class CrearMazo extends StatelessWidget {
                   ),
                   onPressed: () {
                     if(nombreMazo.text.isNotEmpty && selectedMateria != "") {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Se ha guardado con exito"),
-                          duration: Duration(seconds: 2),),
+                      try {
+                        ServicioBaseDatosMazo bdMazo = ServicioBaseDatosMazo();
+                        Mazo nuevoMazo = Mazo(nombreMazo: nombreMazo.text, asignaturaMazo: selectedMateriaId);
+                        
+                        bdMazo.guardarMazo(nuevoMazo);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Se ha guardado con exito"),
+                            duration: Duration(seconds: 2),),
                           );
+                      } catch(error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Error al guardar el mazo: $error",
+                              style: TextStyle(
+                                color: colorScheme.onTertiary,
+                              ),
+                            ),
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
+                          )
+                        );
+                      }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -132,8 +153,8 @@ class CrearMazo extends StatelessWidget {
                               color: colorScheme.onTertiary,
                             ),
                           ),
-                          duration: Duration(seconds: 2),
-                          backgroundColor: Color.fromRGBO(255, 50, 50, 1),
+                          duration: const Duration(seconds: 2),
+                          backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
                         )
                       );
                     }

@@ -4,7 +4,7 @@ import 'package:studysphere/Componentes/card_proyecto.dart';
 import 'package:studysphere/Controladores/controlador_ver_proyectos.dart';
 
 class VerProyectos extends StatelessWidget {
-  const VerProyectos({Key? key});
+  const VerProyectos({super.key});
 
   @override
   Widget build(BuildContext context) {

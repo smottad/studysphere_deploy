@@ -10,18 +10,18 @@ class IngresoCodigoVerificacion extends StatelessWidget {
   const IngresoCodigoVerificacion({super.key,});
 
   void timerPopUp(GlobalKey<MyPopUpState> keyVisibility) {
-    Timer _timer;
-    int _start = 2;
+    Timer timer;
+    int start = 2;
 
     const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
+    timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (_start == 0) {
+        if (start == 0) {
           timer.cancel();
           keyVisibility.currentState?.changeAllow();
         } else {
-          _start--;
+          start--;
         }
       },
     );
@@ -30,7 +30,7 @@ class IngresoCodigoVerificacion extends StatelessWidget {
   @override
   Widget build (BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    GlobalKey<MyPopUpState> _keyVisibility = GlobalKey();
+    GlobalKey<MyPopUpState> keyVisibility = GlobalKey();
 
     return Scaffold(
       appBar: appBar(context, "Ingresar código", color: 0),
@@ -89,7 +89,7 @@ class IngresoCodigoVerificacion extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            MyPopUp(key: _keyVisibility,),
+            MyPopUp(key: keyVisibility,),
             const SizedBox(
               height: 20,
             ),
@@ -98,13 +98,13 @@ class IngresoCodigoVerificacion extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   if (controllerNumber1.text.isEmpty || controllerNumber2.text.isEmpty || controllerNumber3.text.isEmpty || controllerNumber4.text.isEmpty || controllerNumber5.text.isEmpty || controllerNumber6.text.isEmpty) {
-                    _keyVisibility.currentState?.changeAllow();
-                    _keyVisibility.currentState?.isCorrect(false, "Llene los campos");
-                    timerPopUp(_keyVisibility);
+                    keyVisibility.currentState?.changeAllow();
+                    keyVisibility.currentState?.isCorrect(false, "Llene los campos");
+                    timerPopUp(keyVisibility);
                   } else {
-                    _keyVisibility.currentState?.changeAllow();
-                    _keyVisibility.currentState?.isCorrect(true, "Código correcto");
-                    timerPopUp(_keyVisibility);
+                    keyVisibility.currentState?.changeAllow();
+                    keyVisibility.currentState?.isCorrect(true, "Código correcto");
+                    timerPopUp(keyVisibility);
                     goToNuevaContrasena(context);
                   }
                 },

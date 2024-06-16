@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:studysphere/Componentes/select_days.dart';
 import 'package:studysphere/Servicios/servicio_asignatura.dart';
 
 var name = TextEditingController();

@@ -5,24 +5,23 @@ import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/pop_up_confirm.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_enviar_correo_nueva_contrasena.dart';
-import 'package:studysphere/Controladores/controlador_registro.dart';
 
 class CorreoNuevaContrasena extends StatelessWidget {
   const CorreoNuevaContrasena({super.key,});
 
   void timerPopUp(GlobalKey<MyPopUpState> keyVisibility) {
-    Timer _timer;
-    int _start = 2;
+    Timer timer;
+    int start = 2;
 
     const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
+    timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (_start == 0) {
+        if (start == 0) {
           timer.cancel();
           keyVisibility.currentState?.changeAllow();
         } else {
-          _start--;
+          start--;
         }
       },
     );
@@ -31,7 +30,7 @@ class CorreoNuevaContrasena extends StatelessWidget {
   @override
   Widget build (BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    GlobalKey<MyPopUpState> _keyVisibility = GlobalKey();
+    GlobalKey<MyPopUpState> keyVisibility = GlobalKey();
 
     return Scaffold(
       appBar: appBar(context, "Recuperar contraseña", color: 0),
@@ -70,17 +69,17 @@ class CorreoNuevaContrasena extends StatelessWidget {
                     RegExp regExp = RegExp(r"^[a-zA-Z0-9!#$%&'*+-\/=?^_`{|]+@[a-zA-Z0-9]+(.[a-zA-Z0-9]+)+$");
 
                     if (recoverEmail.text.isEmpty) {
-                      _keyVisibility.currentState?.changeAllow();
-                      _keyVisibility.currentState?.isCorrect(false, "Llene el campo");
-                      timerPopUp(_keyVisibility);
+                      keyVisibility.currentState?.changeAllow();
+                      keyVisibility.currentState?.isCorrect(false, "Llene el campo");
+                      timerPopUp(keyVisibility);
                     } else if (!regExp.hasMatch(recoverEmail.text)) {
-                      _keyVisibility.currentState?.changeAllow();
-                      _keyVisibility.currentState?.isCorrect(false, "Ingrese un correo válido");
-                      timerPopUp(_keyVisibility);
+                      keyVisibility.currentState?.changeAllow();
+                      keyVisibility.currentState?.isCorrect(false, "Ingrese un correo válido");
+                      timerPopUp(keyVisibility);
                     } else {
-                      _keyVisibility.currentState?.changeAllow();
-                      _keyVisibility.currentState?.isCorrect(true, "Se ha enviado un correo con un código de verificación");
-                      timerPopUp(_keyVisibility);
+                      keyVisibility.currentState?.changeAllow();
+                      keyVisibility.currentState?.isCorrect(true, "Se ha enviado un correo con un código de verificación");
+                      timerPopUp(keyVisibility);
                       irIngresarCodigo(context);
                     }
                   },
@@ -103,7 +102,7 @@ class CorreoNuevaContrasena extends StatelessWidget {
                 ),
               ],
             ),
-            MyPopUp(key: _keyVisibility,),
+            MyPopUp(key: keyVisibility,),
           ],
         ),
       ),

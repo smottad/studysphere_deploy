@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
@@ -14,7 +15,6 @@ class CrearRecordatorio extends StatefulWidget {
 
 class _CrearRecordatorioState extends State<CrearRecordatorio> {
   final titulo = 'Nuevo recordatorio';
-  final listaAsignaturas = getProyectos();
 
   @override
   void initState() {
@@ -57,18 +57,16 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 validator: (val) => nombreValidator_),
             Padding(
               padding: const EdgeInsets.all(8),
-              child: FutureBuilder<List<DropdownMenuEntry<String>>>(
+              child:
+                  FutureBuilder<List<DropdownMenuEntry<AsignaturaOProyecto>>>(
                 future: getProyectos(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return DropdownMenu<String>(
-                      hintText: 'Proyecto',
+                  if (snapshot.hasData) {
+                    return DropdownMenu<AsignaturaOProyecto>(
+                      hintText: 'Asignatura o proyecto',
                       width: (size.width * 0.8).clamp(200, 500),
-                      onSelected: (value) => setAsignatura(value),
+                      onSelected: (value) =>
+                          setAsignaturaID(value?.id, value?.tipo),
                       textStyle: textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurface,
                       ),
@@ -83,6 +81,13 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                         border: const OutlineInputBorder(),
                       ),
                     );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const CircularProgressIndicator();
                   }
                 },
               ),
@@ -122,26 +127,28 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 teclado: TextInputType.number,
                 validator: (val) => prioridadValidator_),
             textFormulario(context, temas, 'Temas'),
-            SizedBox(
-                width: (size.width * 0.6).clamp(200, 500),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        '¿Activar alarma?',
-                        style: textTheme.bodyLarge
-                            ?.copyWith(color: colorScheme.onBackground),
+            kIsWeb //verifica si es una webapp
+                ? const Spacer()
+                : SizedBox(
+                    width: (size.width * 0.6).clamp(200, 500),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            '¿Activar alarma?',
+                            style: textTheme.bodyLarge
+                                ?.copyWith(color: colorScheme.onSurface),
+                          ),
+                          const Spacer(),
+                          Checkbox(
+                              value: alarma,
+                              onChanged: (value) async {
+                                botonAlarma(value);
+                              }),
+                        ],
                       ),
-                      const Spacer(),
-                      Checkbox(
-                          value: alarma,
-                          onChanged: (value) async {
-                            botonAlarma(value);
-                          }),
-                    ],
-                  ),
-                )),
+                    )),
             boton(context, 'Guardar', funcionGuardar),
             const Spacer(),
           ],

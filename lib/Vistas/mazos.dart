@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
+import 'package:studysphere/Componentes/card_mazos.dart';
+import 'package:studysphere/Servicios/servicio_mazo.dart';
 import 'package:studysphere/Controladores/controlador_ver_mazos.dart';
 
 class VerMazos extends StatelessWidget {
@@ -29,7 +31,7 @@ class VerMazos extends StatelessWidget {
           backgroundColor: colorScheme.primary,
         ),       
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         scrollDirection: Axis.vertical,  
         child: Column( 
           mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +42,19 @@ class VerMazos extends StatelessWidget {
                 // runAlignment: WrapAlignment.center,
                 // crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  Text("Algo")      
+                  const CardMazo(nameMaze: "Sustantivos", subjectMaze: "Alemán",),
+                  const CardMazo(nameMaze: "SCRUM", subjectMaze: "Ingeniería de software",),
+                  ElevatedButton(
+                    onPressed: () {
+                      try {
+                        ServicioBaseDatosMazo dbMazo = ServicioBaseDatosMazo();
+                        dbMazo.traerMazos();
+                      } catch(error) {
+                        print(error);
+                      }
+                    }, 
+                    child: const Text("Traer mazos"), 
+                  ),      
                 ],
               ),
             ),
