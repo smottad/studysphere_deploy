@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_crear_mazo.dart';
+import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
 import 'package:studysphere/Servicios/servicio_mazo.dart';
 
 String selectedMateria = ""; // Variable para almacenar el nombre de la materia seleccionada
@@ -13,7 +14,7 @@ Map<String, int> asignaturas = {};
 
 Future<void> actualizarAsignaturas() async {
   try {
-    asignaturas = await getAsignaturas();
+    asignaturas = await getAsignaturasCrearMazo();
     // print(asignaturas.keys.toList());
     for (var asignatura in asignaturas.keys) {
       print(asignatura is String);
@@ -60,7 +61,7 @@ class CrearMazo extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                textFormulario(context, nombreMazo, "Ingrese el nombre del mazo"),
+                textFormulario(context, nombreMazoCrear, "Ingrese el nombre del mazo"),
                 const SizedBox(
                   height: 20,
                 ),
@@ -83,32 +84,90 @@ class CrearMazo extends StatelessWidget {
                         ),
                       )),
                   width: 300,
-                  child: DropdownButtonFormField(
-                    alignment: Alignment.center,
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    items: asignaturas.keys.map((e) {
-                      print("Entro Drop");
-                      return DropdownMenuItem(
-                        alignment: Alignment.center,
-                        value: e,
-                        child: Text(e),
-                      );
-                    }).toList(),
-                    isExpanded: true,
-                    hint: const Text("Seleccione la materia"),
-                    onChanged: (value) {
-                      selectedMateria = value!;
-                      selectedMateriaId = asignaturas[value]!;
+                  child: FutureBuilder<Map<String, int>>(
+                    future: getAsignaturasCrearMazo(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return DropdownButtonFormField(
+                          alignment: Alignment.center,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          items: List.empty(),
+                          isExpanded: true,
+                          hint: const Text("Seleccione la materia"),
+                          onChanged: (value) {},
+                        );
+                      } else if (snapshot.hasError) {
+                        return DropdownButtonFormField(
+                          alignment: Alignment.center,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          items: List.empty(),
+                          isExpanded: true,
+                          hint: const Text("Seleccione la materia"),
+                          onChanged: (value) {},
+                        );
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty){
+                        return DropdownButtonFormField(
+                          alignment: Alignment.center,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          items: List.empty(),
+                          isExpanded: true,
+                          hint: const Text("Seleccione la materia"),
+                          onChanged: (value) {},
+                        );
+                      } else {
+                        return DropdownButtonFormField(
+                          alignment: Alignment.center,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          items: asignaturas.keys.map((e) {
+                            print("Entro Drop");
+                            return DropdownMenuItem(
+                              alignment: Alignment.center,
+                              value: e,
+                              child: Text(e),
+                            );
+                          }).toList(),
+                          isExpanded: true,
+                          hint: const Text("Seleccione la materia"),
+                          onChanged: (value) {
+                            selectedMateria = value!;
+                            selectedMateriaId = asignaturas[value]!;
+                          },
+                        );
+                      }
                     },
-                  ),
+                  ), 
                 ),
                 const SizedBox(
                   height: 20,
@@ -118,10 +177,10 @@ class CrearMazo extends StatelessWidget {
                     backgroundColor: colorScheme.primary,
                   ),
                   onPressed: () {
-                    if(nombreMazo.text.isNotEmpty && selectedMateria != "") {
+                    if(nombreMazoCrear.text.isNotEmpty && selectedMateria != "") {
                       try {
                         ServicioBaseDatosMazo bdMazo = ServicioBaseDatosMazo();
-                        Mazo nuevoMazo = Mazo(nombreMazo: nombreMazo.text, asignaturaMazo: selectedMateriaId);
+                        Mazo nuevoMazo = Mazo(nombreMazo: nombreMazoCrear.text, idAsignaturaMazo: selectedMateriaId, nombreAsignaturaMazo: selectedMateria);
                         
                         bdMazo.guardarMazo(nuevoMazo);
 
@@ -130,6 +189,8 @@ class CrearMazo extends StatelessWidget {
                             content: Text("Se ha guardado con exito"),
                             duration: Duration(seconds: 2),),
                           );
+                        nombreMazoCrear.clear();
+                        goToMazes(context);
                       } catch(error) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

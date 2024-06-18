@@ -1,16 +1,24 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
 import 'package:studysphere/my_flutter_app_icons.dart';
+import 'package:studysphere/Servicios/servicio_mazo.dart';
 
 class CardMazo extends StatelessWidget {
-  const CardMazo({
+  CardMazo({
     super.key,
+    this.idMaze,
     required this.nameMaze,
+    required this.idSubject,
     required this.subjectMaze,
   });
 
+  final int? idMaze;
   final String nameMaze;
+  final int idSubject;
   final String subjectMaze;
+
+  final ServicioBaseDatosMazo dbMazo = ServicioBaseDatosMazo();
 
   @override
   Widget build(BuildContext context) {
@@ -72,35 +80,44 @@ class CardMazo extends StatelessWidget {
                     width: 30,
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      goToEditMaze(context, EditMazeArguments(idMaze!, subjectMaze, nameMaze));
+                    },
                     icon: const Icon(MyFlutterApp.edit),
                   ),
                   IconButton(
                     onPressed: () {
                       AwesomeDialog(
-                              context: context,
-                              animType: AnimType.scale,
-                              dialogType: DialogType.warning,
-                              width: 700,
-                              dismissOnTouchOutside: true,
-                              onDismissCallback: (type) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Dismissed by $type'),
-                                  ),
-                                );
-                              },
-                              // body: const Center(child: Text(
-                              //         'If the body is specified, then title and description will be ignored, this allows to 											further customize the dialogue.',
-                              //   style: TextStyle(fontStyle: FontStyle.italic),
-                              // ),),
-                              title:
-                                  '¿Está seguro que quiere eliminar el mazo $nameMaze?',
-                              desc:
-                                  'Estas a punto de eliminar el mazo $nameMaze permanenetemente.',
-                              btnOkOnPress: () {},
-                              btnCancelOnPress: () {})
-                          .show();
+                        context: context,
+                        animType: AnimType.scale,
+                        dialogType: DialogType.warning,
+                        width: 700,
+                        dismissOnTouchOutside: true,
+                        onDismissCallback: (type) {},
+                        // body: const Center(child: Text(
+                        //         'If the body is specified, then title and description will be ignored, this allows to 											further customize the dialogue.',
+                        //   style: TextStyle(fontStyle: FontStyle.italic),
+                        // ),),
+                        title:
+                            '¿Está seguro que quiere eliminar el mazo $nameMaze?',
+                        desc:
+                            'Estas a punto de eliminar el mazo $nameMaze permanenetemente.',
+                        btnOkOnPress: () {
+                          dbMazo.eliminarMazo(Mazo(
+                            id: idMaze,
+                            idAsignaturaMazo: idSubject,
+                            nombreMazo: nameMaze,
+                            nombreAsignaturaMazo: subjectMaze
+                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Mazo eliminado con éxito'),
+                            ),
+                          );
+                          goToMazes(context);
+                        },
+                        btnCancelOnPress: () {})
+                      .show();
                     },
                     icon: const Icon(Icons.delete),
                   ),

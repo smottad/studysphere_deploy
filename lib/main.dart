@@ -2,11 +2,13 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
+import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
 import 'package:studysphere/Vistas/ajustes.dart';
 import 'package:studysphere/Vistas/crear_mazo.dart';
 import 'package:studysphere/Vistas/crear_proyecto.dart';
 import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
+import 'package:studysphere/Vistas/editar_mazo.dart';
 import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
 import 'package:studysphere/Vistas/enviar_correo_nueva_contrasena.dart';
@@ -60,7 +62,20 @@ class MyApp extends StatelessWidget {
 
       themeMode: ThemeMode.light,
       initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if(settings.name == EditarMazo.routeName) {
+          final args = settings.arguments as EditMazeArguments;
 
+          return MaterialPageRoute(
+            builder: (context) {
+              return EditarMazo(
+                idMaze: args.idMaze, 
+                nameMaze: args.nameMaze, 
+                subjectMaze: args.subjectMaze);
+            }
+          );
+        }
+      },
       routes: {
         '/': (context) => const IniciarSesion(),
         '/inicio': (context) => const PaginaInicio(),
