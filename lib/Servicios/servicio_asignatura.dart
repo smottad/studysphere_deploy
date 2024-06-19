@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:studysphere/Controladores/controlador_crear_recordatorio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Define una clase para representar las asignaturas
@@ -27,14 +25,14 @@ class ServicioBaseDatosAsignatura {
     required TimeOfDay horaDeInicio,
     required TimeOfDay horaDeFin,
   }) async {
-    String _timeOfDayToString(TimeOfDay time) {
+    String timeOfDayToString(TimeOfDay time) {
       final hours = time.hour.toString().padLeft(2, '0');
       final minutes = time.minute.toString().padLeft(2, '0');
       return '$hours:$minutes:00';
     }
 
-    final horaInicio24 = _timeOfDayToString(horaDeInicio);
-    final horaFin24 = _timeOfDayToString(horaDeFin);
+    final horaInicio24 = timeOfDayToString(horaDeInicio);
+    final horaFin24 = timeOfDayToString(horaDeFin);
 
     final Session? session = supabase.auth.currentSession;
 
@@ -78,7 +76,7 @@ class ServicioBaseDatosAsignatura {
 
     print(response);
     List<Asignatura> asignaturas = [];
-    for (var row in response as List<Map<String, dynamic>>) {
+    for (var row in response) {
       // Convertir la lista de strings 'true'/'false' a List<bool>
       List<bool> diasSeleccionados = (row['dias_semana'] as List<dynamic>)
           .map((e) => e == 'true')
@@ -102,7 +100,7 @@ Future<void> updateAsignatura({
   required DateTime fechaDeFin,
 }) async {
   final SupabaseClient supabase = Supabase.instance.client;
-  String _timeOfDayToString(TimeOfDay time) {
+  String timeOfDayToString(TimeOfDay time) {
     final hours = time.hour.toString().padLeft(2, '0');
     final minutes = time.minute.toString().padLeft(2, '0');
     return '$hours:$minutes:00';

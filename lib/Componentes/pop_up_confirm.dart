@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyPopUp extends StatefulWidget {
-  MyPopUp({super.key});
+  const MyPopUp({super.key});
 
   @override
   State<MyPopUp> createState() => MyPopUpState();

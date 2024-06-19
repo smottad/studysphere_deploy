@@ -10,18 +10,18 @@ class NuevaContrasena extends StatelessWidget {
   const NuevaContrasena({super.key,});
 
   void timerPopUp(GlobalKey<MyPopUpState> keyVisibility) {
-    Timer _timer;
-    int _start = 2;
+    Timer timer;
+    int start = 2;
 
     const oneSec = Duration(seconds: 1);
-    _timer = Timer.periodic(
+    timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (_start == 0) {
+        if (start == 0) {
           timer.cancel();
           keyVisibility.currentState?.changeAllow();
         } else {
-          _start--;
+          start--;
         }
       },
     );
@@ -32,9 +32,9 @@ class NuevaContrasena extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     IconData hidden = Icons.remove_red_eye_outlined;
 
-    GlobalKey<ProfileTextState> _keyProfilePassword = GlobalKey();
-    GlobalKey<ProfileTextState> _keyProfileConfimrPassword = GlobalKey();
-    GlobalKey<MyPopUpState> _keyVisibility = GlobalKey();
+    GlobalKey<ProfileTextState> keyProfilePassword = GlobalKey();
+    GlobalKey<ProfileTextState> keyProfileConfimrPassword = GlobalKey();
+    GlobalKey<MyPopUpState> keyVisibility = GlobalKey();
 
     return Scaffold(
       appBar: appBar(context, "Ingresar código", color: 0),
@@ -62,11 +62,11 @@ class NuevaContrasena extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ProfileText(key: _keyProfilePassword, teclado: TextInputType.name, controller: contrasena, label: "Contraseña", oscurecer: true,),
+                        ProfileText(key: keyProfilePassword, teclado: TextInputType.name, controller: contrasena, label: "Contraseña", oscurecer: true,),
                         IconButton(
                           icon: Icon(hidden),
                           onPressed: () {
-                            _keyProfilePassword.currentState?.mostrarContrasena();
+                            keyProfilePassword.currentState?.mostrarContrasena();
                           }, 
                         ),
                       ],
@@ -74,10 +74,10 @@ class NuevaContrasena extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ProfileText(key: _keyProfileConfimrPassword, teclado: TextInputType.name, controller: verificarContrasena, label: "Confirmar la contraseña", oscurecer: true, validator: true, compareController: contrasena,),
+                        ProfileText(key: keyProfileConfimrPassword, teclado: TextInputType.name, controller: verificarContrasena, label: "Confirmar la contraseña", oscurecer: true, validator: true, compareController: contrasena,),
                         IconButton(
                           onPressed: () {
-                            _keyProfileConfimrPassword.currentState?.mostrarContrasena();
+                            keyProfileConfimrPassword.currentState?.mostrarContrasena();
                           }, 
                           icon: Icon(hidden),
                           ),
@@ -87,8 +87,8 @@ class NuevaContrasena extends StatelessWidget {
                 ), 
                 IconButton(
                   onPressed: () {
-                    _keyProfilePassword.currentState?.cambiarAHabilitado();
-                    _keyProfileConfimrPassword.currentState?.cambiarAHabilitado();
+                    keyProfilePassword.currentState?.cambiarAHabilitado();
+                    keyProfileConfimrPassword.currentState?.cambiarAHabilitado();
                   }, 
                   icon: const Icon(Icons.edit),
                 ),
@@ -97,7 +97,7 @@ class NuevaContrasena extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            MyPopUp(key: _keyVisibility,),
+            MyPopUp(key: keyVisibility,),
             const SizedBox(
               height: 20,
             ),
@@ -106,17 +106,17 @@ class NuevaContrasena extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   if (contrasena.text.isEmpty || verificarContrasena.text.isEmpty) {
-                    _keyVisibility.currentState?.changeAllow();
-                    _keyVisibility.currentState?.isCorrect(false, "Llene todos los campos");
-                    timerPopUp(_keyVisibility);
+                    keyVisibility.currentState?.changeAllow();
+                    keyVisibility.currentState?.isCorrect(false, "Llene todos los campos");
+                    timerPopUp(keyVisibility);
                   } else if (contrasena.text != verificarContrasena.text) {
-                    _keyVisibility.currentState?.changeAllow();
-                    _keyVisibility.currentState?.isCorrect(false, "Los campos tienen que coincidir");
-                    timerPopUp(_keyVisibility);
+                    keyVisibility.currentState?.changeAllow();
+                    keyVisibility.currentState?.isCorrect(false, "Los campos tienen que coincidir");
+                    timerPopUp(keyVisibility);
                   } else {
-                    _keyVisibility.currentState?.changeAllow();
-                    _keyVisibility.currentState?.isCorrect(true, "Contraseña cambiada");
-                    timerPopUp(_keyVisibility);
+                    keyVisibility.currentState?.changeAllow();
+                    keyVisibility.currentState?.isCorrect(true, "Contraseña cambiada");
+                    timerPopUp(keyVisibility);
                     goToLogin(context);
                   }
                 },
