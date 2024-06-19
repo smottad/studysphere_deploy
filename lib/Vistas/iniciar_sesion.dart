@@ -63,6 +63,14 @@ class IniciarSesion extends StatelessWidget {
                       ?.copyWith(color: colorScheme.tertiary),
                 ),
               ),
+              TextButton(
+                onPressed: () => irRecuperarContrasena(context),
+                child: Text(
+                  "¿Te has olvidado de tu contraseña? Recuperar contraseña",
+                  style: textTheme.bodyMedium
+                      ?.copyWith(color: colorScheme.tertiary),
+                ),
+              ),
               const Spacer(),
             ],
           ),

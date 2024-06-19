@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studysphere/Servicios/servicio_horario.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:studysphere/Controladores/controlador_horario.dart';
 
@@ -21,18 +22,38 @@ class _HorarioState extends State<Horario> {
   Future<void> _loadEvents() async {
     try {
       List<Map<String, dynamic>> data = await fetchData();
+      List<Map<String, dynamic>> data2 = await obtenerRecordatoriosPorUsuario();
 
       setState(() {
-        _appointments = _processData(data);
+        _appointments = _processData(data, data2);
       });
     } catch (e) {
       setState(() {});
     }
   }
 
-  List<Appointment> _processData(List<Map<String, dynamic>> data) {
+  List<Appointment> _processData(List<Map<String, dynamic>> data, data2) {
     List<Appointment> appointments = [];
 
+    for (var event in data2) {
+      String fecha = event['fecha'];
+      String nombre = event['nombre'];
+      String horaInicio = event['hora_inicio'];
+      String horaFinal = event['hora_final'];
+      DateTime startTime = DateTime.tryParse('$fecha $horaInicio')!;
+      DateTime endTime = DateTime.tryParse('$fecha $horaFinal')!;
+      if (endTime.isBefore(startTime)) {
+        endTime = endTime.add(const Duration(days: 1));
+      }
+
+      appointments.add(Appointment(
+        id: '${event['id']}',
+        startTime: startTime,
+        endTime: endTime,
+        subject: nombre,
+        color: Colors.green,
+      ));
+    }
     for (var event in data) {
       DateTime fechaInicio = DateTime.parse(event['fecha_inicio']);
       DateTime fechaFinal = DateTime.parse(event['fecha_final']);
@@ -103,13 +124,29 @@ class _HorarioState extends State<Horario> {
           allowDragAndDrop: true,
           showDatePickerButton: true,
           onAppointmentResizeEnd: (AppointmentResizeEndDetails details) {
-            // ACA VA EL CODIGO DE ACTUALIZAR
-            print(details.appointment);
-
+            if (details.appointment.color != Colors.green) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text(
+                      "No es posible modificar horarios de asignaturas desde aquí")));
+              return;
+            }
+            actualizarHoraRecordatorio(
+                details.appointment.id, details.startTime, details.endTime);
           },
           onDragEnd: (AppointmentDragEndDetails details) {
-            //ACA VA EL CODIFO DE ACTUALIZAR
-            print(details);
+            var idk = details.appointment.toString().split(': ');
+            if (idk[8].contains('0xff4caf50') == false) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text(
+                      "No es posible modificar horarios de asignaturas desde aquí")));
+              return;
+            }
+            var fechaInicio = DateTime.tryParse(idk[12].split(',')[0].trim());
+            var fechaFinal = DateTime.tryParse(idk[13].split(',')[0].trim());
+            var id = idk[10].split(',')[0].trim();
+            actualizarHoraRecordatorio(id, fechaInicio, fechaFinal);
           },
           monthViewSettings: const MonthViewSettings(
             showAgenda: true,

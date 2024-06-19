@@ -1,6 +1,7 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ServicioRegistroRecordatorios {
@@ -29,10 +30,9 @@ class ServicioRegistroRecordatorios {
 
       // Inserta el nuevo recordatorio en la tabla Recordatorios
       final Session? session = supabase.auth.currentSession;
-      var response;
 
       if (tipoDato == '0') {
-        response = await supabase.from('recordatorios').insert({
+        var response = await supabase.from('recordatorios').insert({
           'nombre': nombre,
           'usuario': session?.user.id,
           'id_proyecto': int.parse(id),
@@ -45,7 +45,7 @@ class ServicioRegistroRecordatorios {
           'alarma': alarma
         });
       } else {
-        response = await supabase.from('recordatorios').insert({
+        var response = await supabase.from('recordatorios').insert({
           'nombre': nombre,
           'usuario': session?.user.id,
           'id_asignatura': int.parse(id),
@@ -160,37 +160,53 @@ Future<Map<String, List<List<String>>>> obtenerNombresTareas() async {
   // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
   final response = await supabase
       .from('recordatorios')
-      .select('nombre')
+      .select('*')
       .eq('usuario', userId as Object)
       .eq('tipo', 'Tarea');
 
   print(response);
   // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
   if (response.isEmpty) {
-    print('No se encontraron proyectos para el usuario con ID: $userId');
+    print('No se encontraron tareas el usuario con ID: $userId');
     return {};
   }
 
   // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
   Map<String, List<List<String>>> nombresTareas = {};
   for (var row in response) {
-    nombresTareas.update(row['fecha'] as String, (value) {
-      value.add([
-        row['nombre'] as String,
-        row['hora_inicio'] as String,
-        row['asignatura'] as String
-      ]);
+    String nombre;
+    int id;
+    if (row['id_asignatura'] == null) {
+      id = row['id_proyecto'];
+      var getNombre =
+          await supabase.from('proyectos').select('nombre').eq('id', id);
+      nombre = getNombre[0]['nombre'] as String;
+    } else {
+      id = row['id_asignatura'];
+      var getNombre =
+          await supabase.from('asignaturas').select('nombre').eq('id', id);
+      nombre = getNombre[0]['nombre'] as String;
+    }
+
+    var arr = [
+      row['nombre'].toString(),
+      row['hora_inicio']
+          .toString()
+          .substring(0, row['hora_inicio'].toString().length - 3),
+      nombre,
+      '${row['id']}'
+    ];
+    final dateFormat = DateFormat('EEEE, MMMM dd');
+    final date = DateTime.tryParse(row['fecha']);
+    final checkDate = DateTime.tryParse('${row['fecha']} ${row['hora_final']}');
+    if (checkDate!.isBefore(DateTime.now())) {
+      continue;
+    }
+    nombresTareas.update(dateFormat.format(date!), (value) {
+      value.add(arr);
       return value;
-    },
-        ifAbsent: () => [
-              [
-                row['nombre'] as String,
-                row['hora_inicio'] as String,
-                row['asignatura'] as String
-              ]
-            ]);
+    }, ifAbsent: () => [arr]);
   }
-  print(nombresTareas);
 
   return nombresTareas;
 }
@@ -199,44 +215,54 @@ Future<Map<String, List<List<String>>>> obtenerNombresExamenes() async {
   final supabase = Supabase.instance.client;
   final Session? session = supabase.auth.currentSession;
   final userId = session?.user.id;
-  print(userId);
   if (userId == null) {
     throw ArgumentError('El userId no puede ser nulo');
   }
   // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
   final response = await supabase
       .from('recordatorios')
-      .select('nombre')
+      .select('*')
       .eq('usuario', userId as Object)
       .eq('tipo', 'Examen');
 
-  print(response);
   // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
   if (response.isEmpty) {
-    print('No se encontraron proyectos para el usuario con ID: $userId');
+    print('No se encontraron exámenes el usuario con ID: $userId');
     return {};
   }
 
   // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
   Map<String, List<List<String>>> nombresExamenes = {};
   for (var row in response) {
-    nombresExamenes.update(row['fecha'] as String, (value) {
-      value.add([
-        row['nombre'] as String,
-        row['hora_inicio'] as String,
-        row['asignatura'] as String
-      ]);
+    String nombre;
+    int id;
+    if (row['id_asignatura'] == null) {
+      id = row['id_proyecto'];
+      var getNombre =
+          await supabase.from('proyectos').select('nombre').eq('id', id);
+      nombre = getNombre[0]['nombre'] as String;
+    } else {
+      id = row['id_asignatura'];
+      var getNombre =
+          await supabase.from('asignaturas').select('nombre').eq('id', id);
+      nombre = getNombre[0]['nombre'] as String;
+    }
+
+    var arr = [
+      row['nombre'].toString(),
+      row['hora_inicio']
+          .toString()
+          .substring(0, row['hora_inicio'].toString().length - 3),
+      nombre,
+      '${row['id']}'
+    ];
+    final dateFormat = DateFormat('EEEE, MMMM dd');
+    final date = DateTime.tryParse(row['fecha']);
+    nombresExamenes.update(dateFormat.format(date!), (value) {
+      value.add(arr);
       return value;
-    },
-        ifAbsent: () => [
-              [
-                row['nombre'] as String,
-                row['hora_inicio'] as String,
-                row['asignatura'] as String
-              ]
-            ]);
+    }, ifAbsent: () => [arr]);
   }
-  print(nombresExamenes);
 
   return nombresExamenes;
 }
@@ -245,45 +271,53 @@ Future<Map<String, List<List<String>>>> obtenerNombresReuniones() async {
   final supabase = Supabase.instance.client;
   final Session? session = supabase.auth.currentSession;
   final userId = session?.user.id;
-  print(userId);
   if (userId == null) {
     throw ArgumentError('El userId no puede ser nulo');
   }
   // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
   final response = await supabase
       .from('recordatorios')
-      .select('nombre')
+      .select('*')
       .eq('usuario', userId as Object)
       .eq('tipo', 'Reunion');
 
-  print(response);
   // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
   if (response.isEmpty) {
-    print('No se encontraron proyectos para el usuario con ID: $userId');
+    print('No se encontraron reuniones el usuario con ID: $userId');
     return {};
   }
 
   // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
   Map<String, List<List<String>>> nombresReuniones = {};
   for (var row in response) {
-    nombresReuniones.update(row['fecha'] as String, (value) {
-      value.add([
-        row['nombre'] as String,
-        row['hora_inicio'] as String,
-        row['asignatura'] as String
-      ]);
+    String nombre;
+    int id;
+    if (row['id_asignatura'] == null) {
+      id = row['id_proyecto'];
+      var getNombre =
+          await supabase.from('proyectos').select('nombre').eq('id', id);
+      nombre = getNombre[0]['nombre'] as String;
+    } else {
+      id = row['id_asignatura'];
+      var getNombre =
+          await supabase.from('asignaturas').select('nombre').eq('id', id);
+      nombre = getNombre[0]['nombre'] as String;
+    }
+
+    var arr = [
+      row['nombre'].toString(),
+      row['hora_inicio'].toString().substring(
+          0, row['hora_inicio'].toString().length - 3), //borrar los segundos
+      nombre,
+      '${row['id']}'
+    ];
+    final dateFormat = DateFormat('EEEE, MMMM dd');
+    final date = DateTime.tryParse(row['fecha']);
+    nombresReuniones.update(dateFormat.format(date!), (value) {
+      value.add(arr);
       return value;
-    },
-        ifAbsent: () => [
-              [
-                row['nombre'] as String,
-                row['hora_inicio'] as String,
-                row['asignatura'] as String
-              ]
-            ]);
+    }, ifAbsent: () => [arr]);
   }
-  print(nombresReuniones);
 
   return nombresReuniones;
-  // } catch (error) {
 }

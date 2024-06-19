@@ -98,7 +98,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 dropdownMenuEntries: const [
                   DropdownMenuEntry(value: 'Tarea', label: 'Tarea'),
                   DropdownMenuEntry(value: 'Examen', label: 'Examen'),
-                  DropdownMenuEntry(value: 'Reunión', label: 'Reunion')
+                  DropdownMenuEntry(value: 'Reunion', label: 'Reunión')
                 ],
                 hintText: 'Tipo',
                 width: (size.width * 0.8).clamp(200, 500),
@@ -121,7 +121,7 @@ class _CrearRecordatorioState extends State<CrearRecordatorio> {
                 funcion: escogerFecha, teclado: TextInputType.none),
             textFormulario(context, horaInicio, 'Hora inicio',
                 funcion: escogerHoraInicio, teclado: TextInputType.none),
-            textFormulario(context, horaFin, 'Hora fin (Opcional)',
+            textFormulario(context, horaFin, 'Hora fin',
                 funcion: escogerHoraFinal, teclado: TextInputType.none),
             textFormulario(context, prioridad, 'Prioridad',
                 teclado: TextInputType.number,
