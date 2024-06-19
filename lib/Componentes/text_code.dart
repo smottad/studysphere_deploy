@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:postgres/postgres.dart';
 
 class TextCodigo extends StatelessWidget {
   const TextCodigo({super.key, required this.validator});

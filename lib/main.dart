@@ -2,10 +2,16 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
+import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
+import 'package:studysphere/Controladores/controlador_flashcards.dart';
 import 'package:studysphere/Vistas/ajustes.dart';
+import 'package:studysphere/Vistas/crear_flashcard.dart';
+import 'package:studysphere/Vistas/crear_mazo.dart';
 import 'package:studysphere/Vistas/crear_proyecto.dart';
 import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
+import 'package:studysphere/Vistas/editar_flashcard.dart';
+import 'package:studysphere/Vistas/editar_mazo.dart';
 import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
 import 'package:studysphere/Vistas/enviar_correo_nueva_contrasena.dart';
@@ -18,12 +24,12 @@ import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
 import 'package:studysphere/Vistas/ver_asignaturas.dart';
 import 'package:studysphere/Vistas/ver_asignaturas_pasadas.dart';
+import 'package:studysphere/Vistas/ver_flashcards.dart';
 import 'package:studysphere/Vistas/ver_proyectos.dart';
 import 'package:studysphere/Vistas/ver_proyectos_pasados.dart';
+import 'package:studysphere/Vistas/mazos.dart';
 import 'package:studysphere/color_schemes.g.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,7 +66,35 @@ class MyApp extends StatelessWidget {
 
       themeMode: ThemeMode.light,
       initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if(settings.name == EditarMazo.routeName) {
+          final args = settings.arguments as EditMazeArguments;
 
+          return MaterialPageRoute(
+            builder: (context) {
+              return EditarMazo(
+                idMaze: args.idMaze, 
+                nameMaze: args.nameMaze, 
+                subjectMaze: args.subjectMaze,
+                cantidad: args.cantidad,
+              );
+            }
+          );
+        } else if(settings.name == VerFlashcards.routeName) {
+          final args = settings.arguments as ArgumentsFlashcards;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return VerFlashcards(
+                idMaze: args.idMaze, 
+                nameMaze: args.nameMaze
+              );
+            }
+          );
+        }
+
+        return null;
+      },
       routes: {
         '/': (context) => const IniciarSesion(),
         '/inicio': (context) => const PaginaInicio(),
@@ -82,6 +116,10 @@ class MyApp extends StatelessWidget {
         '/inicio/crear_recordatorio': (context) => const CrearRecordatorio(),
         '/inicio/ajustes': (context) => const Ajustes(),
         '/inicio/ajustes/editar_perfil': (context) => const EditProfile(),
+        '/inicio/mazos': (context) => const VerMazos(),
+        '/inicio/mazos/crear_mazo': (context) => const CrearMazo(),
+        '/inicio/flashcards/crear_flashcard': (context) => CrearFlashcard(),
+        '/inicio/flashcards/editar_flashcard': (context) => EditarFlashcard(),
       },
     );
   }

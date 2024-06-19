@@ -27,7 +27,7 @@ class _CrearAsignaturaState extends State<CrearAsignatura> {
     "false"
   ];
   DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now().add(Duration(days: 1));
+  DateTime endDate = DateTime.now().add(const Duration(days: 1));
   TimeOfDay startTime = TimeOfDay.now();
   TimeOfDay endTime = TimeOfDay.now().replacing(hour: TimeOfDay.now().hour + 1);
 

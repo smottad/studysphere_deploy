@@ -189,7 +189,7 @@ class _EditProfileState extends State<EditProfile> {
               height: 15,
             ),
             MyVisibility(
-              key: _keyVisibility,
+              key: keyVisibility,
             ),
             const SizedBox(
               height: 15,
@@ -248,7 +248,7 @@ class _EditProfileState extends State<EditProfile> {
 }
 
 class MyVisibility extends StatefulWidget {
-  MyVisibility({super.key});
+  const MyVisibility({super.key});
 
   @override
   State<MyVisibility> createState() => MyVisibilityState();

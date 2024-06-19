@@ -102,7 +102,7 @@ class ServicioRegistroProyectoBaseDatos {
     } catch (error) {
       // Manejar cualquier error que pueda ocurrir durante la obtención de las asignaturas
       print('Error en obtenerAsignaturasPorUsuario: $error');
-      throw error; // Relanzar el error para que el widget pueda manejarlo
+      rethrow; // Relanzar el error para que el widget pueda manejarlo
     }
   }
 }
