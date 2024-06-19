@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
 import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
+import 'package:studysphere/Controladores/controlador_flashcards.dart';
 import 'package:studysphere/Vistas/ajustes.dart';
+import 'package:studysphere/Vistas/crear_flashcard.dart';
 import 'package:studysphere/Vistas/crear_mazo.dart';
 import 'package:studysphere/Vistas/crear_proyecto.dart';
 import 'package:studysphere/Vistas/crear_recordatorio.dart';
 import 'package:studysphere/Vistas/editar_asignatura.dart';
+import 'package:studysphere/Vistas/editar_flashcard.dart';
 import 'package:studysphere/Vistas/editar_mazo.dart';
 import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
@@ -21,6 +24,7 @@ import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
 import 'package:studysphere/Vistas/ver_asignaturas.dart';
 import 'package:studysphere/Vistas/ver_asignaturas_pasadas.dart';
+import 'package:studysphere/Vistas/ver_flashcards.dart';
 import 'package:studysphere/Vistas/ver_proyectos.dart';
 import 'package:studysphere/Vistas/ver_proyectos_pasados.dart';
 import 'package:studysphere/Vistas/mazos.dart';
@@ -74,7 +78,20 @@ class MyApp extends StatelessWidget {
                 subjectMaze: args.subjectMaze);
             }
           );
+        } else if(settings.name == VerFlashcards.routeName) {
+          final args = settings.arguments as ArgumentsFlashcards;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return VerFlashcards(
+                idMaze: args.idMaze, 
+                nameMaze: args.nameMaze
+              );
+            }
+          );
         }
+
+        return null;
       },
       routes: {
         '/': (context) => const IniciarSesion(),
@@ -99,6 +116,8 @@ class MyApp extends StatelessWidget {
         '/inicio/ajustes/editar_perfil': (context) => const EditProfile(),
         '/inicio/mazos': (context) => const VerMazos(),
         '/inicio/mazos/crear_mazo': (context) => const CrearMazo(),
+        '/inicio/flashcards/crear_flashcard': (context) => CrearFlashcard(),
+        '/inicio/flashcards/editar_flashcard': (context) => EditarFlashcard(),
       },
     );
   }

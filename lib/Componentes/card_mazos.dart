@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
+import 'package:studysphere/Controladores/controlador_flashcards.dart';
 import 'package:studysphere/my_flutter_app_icons.dart';
 import 'package:studysphere/Servicios/servicio_mazo.dart';
 
@@ -138,7 +139,13 @@ class CardMazo extends StatelessWidget {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    goToSeeFlashcards(context, 
+                    ArgumentsFlashcards(
+                      idMaze: idMaze!, 
+                      nameMaze: nameMaze
+                    ));
+                  },
                   child: Text(
                     "Ver flashcards",
                     style: TextStyle(

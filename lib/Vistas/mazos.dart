@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/card_mazos.dart';
 import 'package:studysphere/Servicios/servicio_mazo.dart';
