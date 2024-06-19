@@ -67,6 +67,7 @@ class VerMazos extends StatelessWidget {
                           nameMaze: mazo.nombreMazo, 
                           idSubject: mazo.idAsignaturaMazo,
                           subjectMaze: mazo.nombreAsignaturaMazo,
+                          cantidad: mazo.cantidad,
                         );
                       }).toList(),
                     ),

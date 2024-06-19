@@ -18,9 +18,15 @@ goToMazes(BuildContext context,) {
 }
 
 class EditMazeArguments {
-  EditMazeArguments(this.idMaze, this.subjectMaze, this.nameMaze);
+  EditMazeArguments(
+    this.idMaze, 
+    this.subjectMaze, 
+    this.nameMaze,
+    this.cantidad,
+  );
 
   int idMaze;
+  int cantidad;
   String subjectMaze;
   String nameMaze;
 }

@@ -12,12 +12,14 @@ class CardMazo extends StatelessWidget {
     required this.nameMaze,
     required this.idSubject,
     required this.subjectMaze,
+    required this.cantidad,
   });
 
   final int? idMaze;
   final String nameMaze;
   final int idSubject;
   final String subjectMaze;
+  final int cantidad;
 
   final ServicioBaseDatosMazo dbMazo = ServicioBaseDatosMazo();
 
@@ -82,7 +84,7 @@ class CardMazo extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      goToEditMaze(context, EditMazeArguments(idMaze!, subjectMaze, nameMaze));
+                      goToEditMaze(context, EditMazeArguments(idMaze!, subjectMaze, nameMaze, cantidad));
                     },
                     icon: const Icon(MyFlutterApp.edit),
                   ),
@@ -95,10 +97,6 @@ class CardMazo extends StatelessWidget {
                         width: 700,
                         dismissOnTouchOutside: true,
                         onDismissCallback: (type) {},
-                        // body: const Center(child: Text(
-                        //         'If the body is specified, then title and description will be ignored, this allows to 											further customize the dialogue.',
-                        //   style: TextStyle(fontStyle: FontStyle.italic),
-                        // ),),
                         title:
                             '¿Está seguro que quiere eliminar el mazo $nameMaze?',
                         desc:
@@ -108,7 +106,8 @@ class CardMazo extends StatelessWidget {
                             id: idMaze,
                             idAsignaturaMazo: idSubject,
                             nombreMazo: nameMaze,
-                            nombreAsignaturaMazo: subjectMaze
+                            nombreAsignaturaMazo: subjectMaze,
+                            cantidad: cantidad
                           ));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -126,7 +125,7 @@ class CardMazo extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Text("Cantidad de flashcards: 0"),
+            Text("Cantidad de flashcards: $cantidad"),
             const SizedBox(
               height: 20,
             ),

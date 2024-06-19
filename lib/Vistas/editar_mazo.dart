@@ -26,11 +26,12 @@ Future<void> actualizarAsignaturas() async {
 }
 
 class EditarMazo extends StatelessWidget {
-  EditarMazo({super.key, required this.idMaze, required this.nameMaze, required this.subjectMaze});
+  EditarMazo({super.key, required this.idMaze, required this.nameMaze, required this.subjectMaze, required this.cantidad});
 
   final int idMaze;
   final String nameMaze;
   String subjectMaze;
+  final int cantidad;
 
   static const routeName = '/inicio/mazos/editar_mazo';
 
@@ -175,7 +176,8 @@ class EditarMazo extends StatelessWidget {
                           id: idMaze,
                           nombreMazo: nombreMazo.text, 
                           idAsignaturaMazo: selectedMateriaId, 
-                          nombreAsignaturaMazo: selectedMateria
+                          nombreAsignaturaMazo: selectedMateria,
+                          cantidad: cantidad
                         );
                         
                         bdMazo.actualizarMazo(nuevoMazo);

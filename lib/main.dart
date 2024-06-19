@@ -75,7 +75,9 @@ class MyApp extends StatelessWidget {
               return EditarMazo(
                 idMaze: args.idMaze, 
                 nameMaze: args.nameMaze, 
-                subjectMaze: args.subjectMaze);
+                subjectMaze: args.subjectMaze,
+                cantidad: args.cantidad,
+              );
             }
           );
         } else if(settings.name == VerFlashcards.routeName) {

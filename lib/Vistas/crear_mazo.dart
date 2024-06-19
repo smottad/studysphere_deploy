@@ -180,7 +180,11 @@ class CrearMazo extends StatelessWidget {
                     if(nombreMazoCrear.text.isNotEmpty && selectedMateria != "") {
                       try {
                         ServicioBaseDatosMazo bdMazo = ServicioBaseDatosMazo();
-                        Mazo nuevoMazo = Mazo(nombreMazo: nombreMazoCrear.text, idAsignaturaMazo: selectedMateriaId, nombreAsignaturaMazo: selectedMateria);
+                        Mazo nuevoMazo = Mazo(
+                          nombreMazo: nombreMazoCrear.text, 
+                          idAsignaturaMazo: selectedMateriaId, nombreAsignaturaMazo: selectedMateria,
+                          cantidad: 0
+                        );
                         
                         bdMazo.guardarMazo(nuevoMazo);
 

@@ -1,9 +1,16 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Mazo {
-  Mazo({this.id, required this.nombreMazo, required this.idAsignaturaMazo, required this.nombreAsignaturaMazo});
+  Mazo({
+    this.id, 
+    required this.nombreMazo, 
+    required this.idAsignaturaMazo, 
+    required this.nombreAsignaturaMazo,
+    required this.cantidad,
+  });
 
   int? id;
+  int cantidad;
   String nombreMazo;
   int idAsignaturaMazo;
   String nombreAsignaturaMazo;
@@ -74,7 +81,7 @@ class ServicioBaseDatosMazo {
 
       final data = await supabase
       .from("mazos")
-      .select("*, asignaturas(nombre)")
+      .select("*, asignaturas(nombre), flashcards(id)")
       .eq('id_usuario', userId)
       .order("nombre", ascending: true);
 
@@ -83,7 +90,9 @@ class ServicioBaseDatosMazo {
           id: maze["id"],
           nombreMazo: maze["nombre"], 
           idAsignaturaMazo: maze["id_asignatura"],
-          nombreAsignaturaMazo: maze["asignaturas"]["nombre"]));
+          nombreAsignaturaMazo: maze["asignaturas"]["nombre"],
+          cantidad: maze["flashcards"].length
+        ));
       }
 
       print(data);
