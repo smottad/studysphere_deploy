@@ -189,7 +189,7 @@ class _EditProfileState extends State<EditProfile> {
               height: 15,
             ),
             MyVisibility(
-              key: keyVisibility,
+              key: _keyVisibility,
             ),
             const SizedBox(
               height: 15,
