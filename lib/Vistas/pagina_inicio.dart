@@ -199,7 +199,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
             style: TextStyle(fontSize: 30),
           ),
           FutureBuilder(
-              future: obtenerNombresTareas(),
+              future: obtenerNombresTareasActuales(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final count = snapshot.data?.length;
@@ -283,7 +283,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
             style: TextStyle(fontSize: 30),
           ),
           FutureBuilder(
-              future: obtenerNombresExamenes(),
+              future: obtenerNombresExamenesActuales(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final count = snapshot.data?.length;
@@ -366,7 +366,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
             style: TextStyle(fontSize: 30),
           ),
           FutureBuilder(
-              future: obtenerNombresReuniones(),
+              future: obtenerNombresReunionesActuales(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final count = snapshot.data?.length;
