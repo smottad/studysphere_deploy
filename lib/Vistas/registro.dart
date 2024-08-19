@@ -43,7 +43,7 @@ class _RegistroState extends State<Registro> {
 
     return Scaffold(
       appBar: appBar(context, "Crear cuenta", color: 1),
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
@@ -93,7 +93,7 @@ class _RegistroState extends State<Registro> {
                             context, colorScheme, textTheme))),
                 Checkbox(
                   checkColor: colorScheme.onSecondaryContainer,
-                  fillColor: MaterialStateProperty.resolveWith(
+                  fillColor: WidgetStateProperty.resolveWith(
                       (states) => getColor(context, states, colorScheme)),
                   value: isChecked,
                   onChanged: (bool? newValue) {
@@ -132,11 +132,11 @@ class FotoDefault extends StatelessWidget {
 }
 
 Color getColor(
-    BuildContext context, Set<MaterialState> states, ColorScheme colorScheme) {
-  const Set<MaterialState> interactiveStates = <MaterialState>{
-    MaterialState.pressed,
-    MaterialState.hovered,
-    MaterialState.focused,
+    BuildContext context, Set<WidgetState> states, ColorScheme colorScheme) {
+  const Set<WidgetState> interactiveStates = <WidgetState>{
+    WidgetState.pressed,
+    WidgetState.hovered,
+    WidgetState.focused,
   };
   if (states.any(interactiveStates.contains)) {
     return colorScheme.tertiaryContainer;
@@ -153,7 +153,7 @@ RichText terminosYCondiciones(
           TextSpan(
               text: 'Acepto los ', // el texto que quieres mostrar
               style: textTheme.bodySmall
-                  ?.copyWith(color: colorScheme.onBackground)),
+                  ?.copyWith(color: colorScheme.onSurface)),
           TextSpan(
               text: 'términos y condiciones',
               style: textTheme.bodySmall?.copyWith(color: colorScheme.tertiary),
@@ -162,7 +162,7 @@ RichText terminosYCondiciones(
           TextSpan(
             text: ' y nuestra ', // el texto que quieres mostrar
             style:
-                textTheme.bodySmall?.copyWith(color: colorScheme.onBackground),
+                textTheme.bodySmall?.copyWith(color: colorScheme.onSurface),
           ),
           TextSpan(
               text: 'política de privacidad.',

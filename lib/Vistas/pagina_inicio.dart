@@ -5,7 +5,6 @@ import 'package:studysphere/Componentes/cards.dart';
 import 'package:studysphere/Componentes/menu_expandible.dart';
 import 'package:studysphere/Controladores/controlador_pagina_inicio.dart';
 import 'package:studysphere/Servicios/servicio_pagina_inicio.dart';
-import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
 class PaginaInicio extends StatefulWidget {
   static const _actionTitles = [

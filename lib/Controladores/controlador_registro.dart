@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:studysphere/Servicios/servicio_abrir_nav.dart';
 import 'package:studysphere/Servicios/servicio_registro.dart';
 
 //mage(image: AssetImage("lib/Assets/logo.png"));
@@ -197,19 +197,12 @@ crearCuenta(BuildContext context) async {
 }
 
 politicas(BuildContext context) {
-  if (!kIsWeb) {
-    if (Platform.isAndroid || Platform.isIOS) {
-      Navigator.pushNamed(
-        context,
-        '/terminos',
-        arguments: 'lib/Assets/policy.html',
-      );
-    }
-  }
+  abrirNav(context,
+      "https://doc-hosting.flycricket.io/studysphere-privacy-policy/917287a3-d7e5-4700-ac01-8ce3f503063b/privacy");
 }
 
 terminos(BuildContext context) {
-  if (!kIsWeb) {
+  /*if (!kIsWeb) {
     if (Platform.isAndroid || Platform.isIOS) {
       Navigator.pushNamed(
         context,
@@ -217,5 +210,7 @@ terminos(BuildContext context) {
         arguments: 'lib/Assets/terms.html',
       );
     }
-  }
+  }*/
+  abrirNav(context,
+      "https://doc-hosting.flycricket.io/studysphere-terminos-y-condiciones/1cc1b45e-7fb9-4fd9-bc6a-0069f199422b/terms");
 }
