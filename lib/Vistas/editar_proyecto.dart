@@ -2,24 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_crear_asignatura.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
+import 'package:studysphere/Controladores/controlador_crear_proyecto.dart';
 
-ControllerCalendar controllerCalendarInit = ControllerCalendar(DateTime.now(), 'Fecha de inicio');
-ControllerCalendar controllerCalendarFinal = ControllerCalendar(DateTime.now().add(const Duration(days: 1)), 'Fecha de Finalización');
+ControllerCalendar controllerCalendarInit =
+    ControllerCalendar(DateTime.now(), 'Fecha de inicio');
+ControllerCalendar controllerCalendarFinal = ControllerCalendar(
+    DateTime.now().add(const Duration(days: 1)), 'Fecha de Finalización');
+
+Map<String, int> asignaturas = {};
+Future<void> actualizarAsignaturas() async {
+  try {
+    asignaturas = await getAsignaturas();
+  } catch (error) {
+    // Manejar cualquier error que pueda ocurrir durante la actualización de las asignaturas
+    print('Error al actualizar las asignaturas: $error');
+  }
+}
+
+String selectedMateria =
+    ""; // Variable para almacenar el nombre de la materia seleccionada
+int selectedMateriaId =
+    0; // Variable para almacenar el ID de la materia seleccionada
 
 class EditProject extends StatelessWidget {
-  const EditProject({super.key,});
+  const EditProject({
+    super.key,
+  });
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
+    actualizarAsignaturas();
     Object? project = ModalRoute.of(context)!.settings.arguments;
-    Map? mapProject = project.toString().substring(1, project.toString().length-1).split(":").asMap();
+    Map? mapProject = project
+        .toString()
+        .substring(1, project.toString().length - 1)
+        .split(":")
+        .asMap();
     String? strProject = mapProject[1]!.trim().split(",")[0];
 
     if (project != null) {
-      name.text = strProject!; 
-      // project.toString().substring(1, project.toString().length-1).split(",")[1]; 
+      name.text = strProject!;
+      // project.toString().substring(1, project.toString().length-1).split(",")[1];
     }
-  
+
     return Scaffold(
       appBar: appBar(context, 'Editar proyecto', color: 1),
       body: Center(
@@ -27,36 +52,45 @@ class EditProject extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             textFormulario(context, name, "Nombre del proyecto"),
-            const SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             const Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                InitCalendar(restorationId: 'main',),
-                SizedBox(width: 20,),
-                FinalCalendar(restorationId: 'main',),
+                InitCalendar(
+                  restorationId: 'main',
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                FinalCalendar(
+                  restorationId: 'main',
+                ),
               ],
             ),
-            const SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             Container(
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                color: const Color.fromRGBO(255, 255, 255, 1),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).colorScheme.onSurface,  
-                  ),
-                  top: BorderSide(
-                    color: Theme.of(context).colorScheme.onSurface,  
-                  ),
-                  left: BorderSide(
-                    color: Theme.of(context).colorScheme.onSurface,  
-                  ),
-                  right: BorderSide(
-                    color: Theme.of(context).colorScheme.onSurface,  
-                  ),
-                ) 
-              ),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  color: const Color.fromRGBO(255, 255, 255, 1),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    top: BorderSide(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    left: BorderSide(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    right: BorderSide(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  )),
               width: 300,
               child: DropdownButtonFormField(
                 alignment: Alignment.center,
@@ -69,7 +103,7 @@ class EditProject extends StatelessWidget {
                   ),
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                items:["Ingeniería de software", "Sistemas de información"].map((e){
+                items: asignaturas.keys.map((e) {
                   return DropdownMenuItem(
                     alignment: Alignment.center,
                     value: e,
@@ -78,28 +112,37 @@ class EditProject extends StatelessWidget {
                 }).toList(),
                 isExpanded: true,
                 hint: const Text("Seleccione la materia"),
-                onChanged:(value){},
+                onChanged: (value) {
+                  selectedMateria = value!;
+                  selectedMateriaId = asignaturas[value]!;
+                },
               ),
             ),
-            const SizedBox(height: 50,),
+            const SizedBox(
+              height: 50,
+            ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                textStyle: const TextStyle(
-                  fontSize: 20,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  textStyle: const TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
-              ),
-              onPressed: () {
-
-              }, 
-              child:Text(
-                "Guardar",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              )
-            ),
+                // onPressed: () => ControladorEditarAsignatura.guardarCambios(
+                //       context,
+                //       name,
+                //       controllerCalendarInit.getDateTimeVar(),
+                //       controllerCalendarFinal.getDateTimeVar(),
+                //       idAsignatura!),
+                onPressed: () {},
+                child: Text(
+                  "Guardar",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                )),
           ],
         ),
       ),
@@ -108,7 +151,10 @@ class EditProject extends StatelessWidget {
 }
 
 class InitCalendar extends StatefulWidget {
-  const InitCalendar({super.key, this.restorationId,});
+  const InitCalendar({
+    super.key,
+    this.restorationId,
+  });
 
   final String? restorationId;
 
@@ -169,33 +215,40 @@ class _InitCalendar extends State<InitCalendar> with RestorationMixin {
         _selectedDate.value = newSelectedDate;
         controllerCalendarInit.setDateTimeVar(newSelectedDate);
 
-        if (controllerCalendarFinal.getDateTimeVar().isBefore(_selectedDate.value)) {
-          controllerCalendarFinal.setDateTimeVar(newSelectedDate.add(const Duration(days: 1)));
+        if (controllerCalendarFinal
+            .getDateTimeVar()
+            .isBefore(_selectedDate.value)) {
+          controllerCalendarFinal
+              .setDateTimeVar(newSelectedDate.add(const Duration(days: 1)));
         }
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         //   content: Text(
         //       'Selected: ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
-        initial_date.text = '${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}';
+        initial_date.text =
+            '${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}';
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column( 
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(6.0),
             child: Row(
-              mainAxisSize: MainAxisSize.min, 
-              children:[ 
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 SizedBox(
-                  width: (MediaQuery.of(context).size.width*0.5).clamp(100, 200),
+                  width:
+                      (MediaQuery.of(context).size.width * 0.5).clamp(100, 200),
                   child: TextField(
                     keyboardType: TextInputType.datetime,
                     enabled: false,
                     controller: initial_date,
-                    style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface),
                     decoration: InputDecoration(
                       fillColor: Theme.of(context).colorScheme.surface,
                       labelText: controllerCalendarInit.getLabel(),
@@ -203,13 +256,11 @@ class _InitCalendar extends State<InitCalendar> with RestorationMixin {
                       labelStyle: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
-                      
                       disabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.onSecondary,
+                          color: Theme.of(context).colorScheme.onSecondary,
                         ),
-                      ), 
-                      
+                      ),
                     ),
                   ),
                 ),
@@ -218,7 +269,7 @@ class _InitCalendar extends State<InitCalendar> with RestorationMixin {
                     _restorableDatePickerRouteFuture.present();
                   },
                   icon: const Icon(Icons.calendar_month),
-                    // label: Text('${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
+                  // label: Text('${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
                 ),
               ],
             ),
@@ -230,7 +281,10 @@ class _InitCalendar extends State<InitCalendar> with RestorationMixin {
 }
 
 class FinalCalendar extends StatefulWidget {
-  const FinalCalendar({super.key, this.restorationId,});
+  const FinalCalendar({
+    super.key,
+    this.restorationId,
+  });
 
   final String? restorationId;
 
@@ -271,7 +325,9 @@ class _FinalCalendar extends State<FinalCalendar> with RestorationMixin {
           restorationId: 'date_picker_dialog',
           initialEntryMode: DatePickerEntryMode.calendar,
           initialDate: controllerCalendarFinal.getDateTimeVar(),
-          firstDate: controllerCalendarInit.getDateTimeVar().add(const Duration(days: 1)),
+          firstDate: controllerCalendarInit
+              .getDateTimeVar()
+              .add(const Duration(days: 1)),
           lastDate: DateTime(2060),
           fieldLabelText: controllerCalendarFinal.getLabel(),
         );
@@ -294,27 +350,31 @@ class _FinalCalendar extends State<FinalCalendar> with RestorationMixin {
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         //   content: Text(
         //       'Selected: ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
-        final_date.text = '${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}';
+        final_date.text =
+            '${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}';
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column( 
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(6.0),
             child: Row(
-              mainAxisSize: MainAxisSize.min, 
-              children:[ 
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 SizedBox(
-                  width: (MediaQuery.of(context).size.width*0.5).clamp(100, 200),
+                  width:
+                      (MediaQuery.of(context).size.width * 0.5).clamp(100, 200),
                   child: TextField(
                     keyboardType: TextInputType.datetime,
                     enabled: false,
                     controller: final_date,
-                    style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface),
                     decoration: InputDecoration(
                       fillColor: Theme.of(context).colorScheme.surface,
                       labelText: controllerCalendarFinal.getLabel(),
@@ -322,13 +382,11 @@ class _FinalCalendar extends State<FinalCalendar> with RestorationMixin {
                       labelStyle: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
-                      
                       disabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.onSecondary,
+                          color: Theme.of(context).colorScheme.onSecondary,
                         ),
-                      ), 
-                      
+                      ),
                     ),
                   ),
                 ),
@@ -337,7 +395,7 @@ class _FinalCalendar extends State<FinalCalendar> with RestorationMixin {
                     _restorableDatePickerRouteFuture.present();
                   },
                   icon: const Icon(Icons.calendar_month),
-                    // label: Text('${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
+                  // label: Text('${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
                 ),
               ],
             ),

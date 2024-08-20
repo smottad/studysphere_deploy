@@ -31,11 +31,13 @@ class VerProyectos extends StatelessWidget {
               List<String> nombresProyectos = snapshot.data ?? [];
               return Column(
                 children: [
-                  Wrap(
-                    spacing: 10,
-                    children: nombresProyectos.map((nombreProyecto) {
-                      return CardProject(nameProject: nombreProyecto);
-                    }).toList(),
+                  Center(
+                    child: Wrap(
+                      spacing: 10,
+                      children: nombresProyectos.map((nombreProyecto) {
+                        return CardProject(nameProject: nombreProyecto);
+                      }).toList(),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
