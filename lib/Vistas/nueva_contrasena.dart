@@ -7,7 +7,9 @@ import 'package:studysphere/Componentes/pop_up_confirm.dart';
 import 'package:studysphere/Controladores/controlador_nueva_contrasena.dart';
 
 class NuevaContrasena extends StatelessWidget {
-  const NuevaContrasena({super.key,});
+  const NuevaContrasena({
+    super.key,
+  });
 
   void timerPopUp(GlobalKey<MyPopUpState> keyVisibility) {
     Timer timer;
@@ -28,7 +30,7 @@ class NuevaContrasena extends StatelessWidget {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     IconData hidden = Icons.remove_red_eye_outlined;
 
@@ -58,38 +60,55 @@ class NuevaContrasena extends StatelessWidget {
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [ 
+                  children: [
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ProfileText(key: keyProfilePassword, teclado: TextInputType.name, controller: contrasena, label: "Contraseña", oscurecer: true,),
+                        ProfileText(
+                          key: keyProfilePassword,
+                          teclado: TextInputType.name,
+                          controller: contrasena,
+                          label: "Contraseña",
+                          oscurecer: true,
+                        ),
                         IconButton(
                           icon: Icon(hidden),
                           onPressed: () {
-                            keyProfilePassword.currentState?.mostrarContrasena();
-                          }, 
+                            keyProfilePassword.currentState
+                                ?.mostrarContrasena();
+                          },
                         ),
                       ],
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ProfileText(key: keyProfileConfimrPassword, teclado: TextInputType.name, controller: verificarContrasena, label: "Confirmar la contraseña", oscurecer: true, validator: true, compareController: contrasena,),
+                        ProfileText(
+                          key: keyProfileConfimrPassword,
+                          teclado: TextInputType.name,
+                          controller: verificarContrasena,
+                          label: "Confirmar la contraseña",
+                          oscurecer: true,
+                          validator: true,
+                          compareController: contrasena,
+                        ),
                         IconButton(
                           onPressed: () {
-                            keyProfileConfimrPassword.currentState?.mostrarContrasena();
-                          }, 
+                            keyProfileConfimrPassword.currentState
+                                ?.mostrarContrasena();
+                          },
                           icon: Icon(hidden),
-                          ),
+                        ),
                       ],
                     ),
                   ],
-                ), 
+                ),
                 IconButton(
                   onPressed: () {
                     keyProfilePassword.currentState?.cambiarAHabilitado();
-                    keyProfileConfimrPassword.currentState?.cambiarAHabilitado();
-                  }, 
+                    keyProfileConfimrPassword.currentState
+                        ?.cambiarAHabilitado();
+                  },
                   icon: const Icon(Icons.edit),
                 ),
               ],
@@ -97,7 +116,9 @@ class NuevaContrasena extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            MyPopUp(key: keyVisibility,),
+            MyPopUp(
+              key: keyVisibility,
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -105,17 +126,21 @@ class NuevaContrasena extends StatelessWidget {
               width: (MediaQuery.of(context).size.width * 0.2).clamp(1, 150),
               child: ElevatedButton(
                 onPressed: () {
-                  if (contrasena.text.isEmpty || verificarContrasena.text.isEmpty) {
+                  if (contrasena.text.isEmpty ||
+                      verificarContrasena.text.isEmpty) {
                     keyVisibility.currentState?.changeAllow();
-                    keyVisibility.currentState?.isCorrect(false, "Llene todos los campos");
+                    keyVisibility.currentState
+                        ?.isCorrect(false, "Llene todos los campos");
                     timerPopUp(keyVisibility);
                   } else if (contrasena.text != verificarContrasena.text) {
                     keyVisibility.currentState?.changeAllow();
-                    keyVisibility.currentState?.isCorrect(false, "Los campos tienen que coincidir");
+                    keyVisibility.currentState
+                        ?.isCorrect(false, "Los campos tienen que coincidir");
                     timerPopUp(keyVisibility);
                   } else {
                     keyVisibility.currentState?.changeAllow();
-                    keyVisibility.currentState?.isCorrect(true, "Contraseña cambiada");
+                    keyVisibility.currentState
+                        ?.isCorrect(true, "Contraseña cambiada");
                     timerPopUp(keyVisibility);
                     goToLogin(context);
                   }
@@ -133,7 +158,8 @@ class NuevaContrasena extends StatelessWidget {
                   child: Text(
                     "Confirmar",
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondaryContainer),
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer),
                   ),
                 ),
               ),

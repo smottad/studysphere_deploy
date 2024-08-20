@@ -19,7 +19,7 @@ goVerProyectosPasados(
   );
 }
 
-goVeProyectosActuales(
+goVerProyectosActuales(
   BuildContext context,
 ) {
   Navigator.pushNamed(
@@ -31,4 +31,9 @@ goVeProyectosActuales(
 obtenerNombresProyectos(BuildContext context) {
   final servicioProyecto = ServicioRegistroProyectoBaseDatos();
   return servicioProyecto.obtenerNombresProyectosPorUsuario(context);
+}
+
+obtenerNombresProyectosAntiguos(BuildContext context) {
+  final servicioProyecto = ServicioRegistroProyectoBaseDatos();
+  return servicioProyecto.obtenerNombresProyectosPorUsuarioAntiguos(context);
 }
