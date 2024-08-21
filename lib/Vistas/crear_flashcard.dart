@@ -1,11 +1,27 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:randomstring_dart/randomstring_dart.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
+import 'package:studysphere/Componentes/image_container.dart';
+import 'package:studysphere/Componentes/image_deafault.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_flashcards.dart';
 import 'package:studysphere/Servicios/servicio_flashcard.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CrearFlashcard extends StatelessWidget {
-  CrearFlashcard({super.key});
+class CrearFlashcard extends StatefulWidget {
+  const CrearFlashcard({super.key});
+
+  @override
+  State<CrearFlashcard> createState() => _CrearFlashcardState();
+}
+
+
+class _CrearFlashcardState extends State<CrearFlashcard> {
+  Image? image; 
+  Uint8List? byteImage;
+  bool isImage = false;
+  final rs = RandomString();
 
   final TextEditingController textEnunciado = TextEditingController();
   final TextEditingController textRespuesta = TextEditingController();
@@ -43,6 +59,30 @@ class CrearFlashcard extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
+                InkWell(
+                  onTap: () async {
+                    var file = await getFoto();
+                    if (file == null) {
+                      return;
+                    }
+                    
+                    return setState(() {
+                      // if (kIsWeb) {
+                      //   image = Image.network(file.path);
+                      // } else {
+                      //   image = Image.file(File(file.path));
+                      // }
+                      image = Image.memory(file);
+                      byteImage = file;
+                      isImage = true;
+                    });
+                  },
+                  customBorder: const CircleBorder(),
+                  child: isImage ? ImageContainer(asset: false, image: image,) : const ImageContainer(asset: true, assetImage: 'lib/Assets/default_image.png',)
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 textFormulario(context, textRespuesta, "Escribe la respuesta"),
                 const SizedBox(
                   height: 20,
@@ -53,37 +93,29 @@ class CrearFlashcard extends StatelessWidget {
                   ),
                   onPressed: () {
                     if(textEnunciado.text.isNotEmpty && textRespuesta.text.isNotEmpty) {
-                      try {
-                        ServicioBaseDatosFlashcard dbFlashcards = ServicioBaseDatosFlashcard();
+                      ServicioBaseDatosFlashcard dbFlashcards = ServicioBaseDatosFlashcard();
+                      String enlaceImagen = rs.getRandomString(uppersCount: 5, lowersCount: 5, numbersCount: 5); 
 
-                        dbFlashcards.guardarFlashcard(
-                          Flashcard(
-                            id: 0, 
-                            enunciado: textEnunciado.text, 
-                            respuesta: textRespuesta.text,
-                            idMazo: args.idMaze, 
-                            nombreMazo: args.nameMaze)
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Se ha guardado con exito"),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                        textEnunciado.clear();
-                        textRespuesta.clear();
-
-                        goToSeeFlashcards(context, 
-                          ArgumentsFlashcards(
-                            idMaze: args.idMaze, 
-                            nameMaze: args.nameMaze)
-                        );
-                      } catch(error) {
+                      dbFlashcards.guardarFlashcard(
+                        Flashcard(
+                          id: 0, 
+                          enunciado: textEnunciado.text, 
+                          respuesta: textRespuesta.text,
+                          idMazo: args.idMaze, 
+                          nombreMazo: args.nameMaze,
+                          enlaceImagen: enlaceImagen,
+                        )
+                      ).then((value) => dbFlashcards.subirImagen(byteImage!, enlaceImagen).then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Se ha guardado con exito"),
+                          duration: Duration(seconds: 2),
+                        ),
+                      ),)
+                      ).catchError((e) =>
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              "Error al guardar el mazo: $error",
+                              "Error al guardar el mazo: $e",
                               style: TextStyle(
                                 color: colorScheme.onTertiary,
                               ),
@@ -91,8 +123,17 @@ class CrearFlashcard extends StatelessWidget {
                             duration: const Duration(seconds: 2),
                             backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
                           )
-                        );
-                      }
+                        )
+                      );
+
+                      textEnunciado.clear();
+                      textRespuesta.clear();
+
+                      goToSeeFlashcards(context, 
+                        ArgumentsFlashcards(
+                          idMaze: args.idMaze, 
+                          nameMaze: args.nameMaze)
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
