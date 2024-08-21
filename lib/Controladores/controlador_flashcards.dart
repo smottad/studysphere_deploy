@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ArgumentsFlashcards {
   const ArgumentsFlashcards({
@@ -28,3 +32,12 @@ goToEditFlashcard(BuildContext context, ArgumentsFlashcards args) {
   Navigator.pushNamed(context, '/inicio/flashcards/editar_flashcard', arguments: args);
 }
 
+getFoto() async {
+  final ImagePicker picker = ImagePicker();
+  Uint8List? byteImage;
+
+  XFile? file = await picker.pickImage(source: ImageSource.gallery);
+  byteImage = await file?.readAsBytes();
+
+  return byteImage;
+}
