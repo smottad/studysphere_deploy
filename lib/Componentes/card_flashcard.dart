@@ -9,6 +9,7 @@ class CardFlashcard extends StatefulWidget {
     required this.respuesta,
     required this.idMaze,
     required this.nameMaze,
+    this.imageName,
   });
 
   final int idFlashcard;
@@ -16,6 +17,7 @@ class CardFlashcard extends StatefulWidget {
   final String nameMaze;
   final String enunciado;
   final String respuesta;
+  final String? imageName;
 
   @override
   State<CardFlashcard> createState() => _CardFlashcardState();
@@ -53,6 +55,7 @@ class _CardFlashcardState extends State<CardFlashcard>{
           respuesta: widget.respuesta,
           idMaze: widget.idMaze,
           nameMaze: widget.nameMaze,
+          imageName: widget.imageName,
           itemCallback: (value) => cambiarTexto(),
         ),
       transitionBuilder: (Widget child, Animation<double> animation) {
