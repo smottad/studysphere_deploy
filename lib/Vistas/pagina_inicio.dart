@@ -5,7 +5,6 @@ import 'package:studysphere/Componentes/cards.dart';
 import 'package:studysphere/Componentes/menu_expandible.dart';
 import 'package:studysphere/Controladores/controlador_pagina_inicio.dart';
 import 'package:studysphere/Servicios/servicio_pagina_inicio.dart';
-import 'package:studysphere/Servicios/servicio_recordatorios.dart';
 
 class PaginaInicio extends StatefulWidget {
   static const _actionTitles = [
@@ -199,7 +198,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
             style: TextStyle(fontSize: 30),
           ),
           FutureBuilder(
-              future: obtenerNombresTareas(),
+              future: obtenerNombresTareasActuales(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final count = snapshot.data?.length;
@@ -283,7 +282,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
             style: TextStyle(fontSize: 30),
           ),
           FutureBuilder(
-              future: obtenerNombresExamenes(),
+              future: obtenerNombresExamenesActuales(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final count = snapshot.data?.length;
@@ -366,7 +365,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
             style: TextStyle(fontSize: 30),
           ),
           FutureBuilder(
-              future: obtenerNombresReuniones(),
+              future: obtenerNombresReunionesActuales(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final count = snapshot.data?.length;

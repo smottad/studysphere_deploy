@@ -66,29 +66,74 @@ class ServicioBaseDatosAsignatura {
 
     final response = await supabase
         .from('asignaturas')
-        .select('id, nombre, dias_semana')
+        .select('id, nombre, dias_semana, fecha_final')
         .eq('id_usuario', userId);
 
     if (response.isEmpty) {
       print('Error al obtener asignaturas:');
       return [];
     }
-
-    print(response);
+// Filtra las asignaturas en el cliente para excluir las que ya pasaron
+    final now = DateTime.now();
     List<Asignatura> asignaturas = [];
     for (var row in response) {
-      // Convertir la lista de strings 'true'/'false' a List<bool>
-      List<bool> diasSeleccionados = (row['dias_semana'] as List<dynamic>)
-          .map((e) => e == 'true')
-          .toList();
-      asignaturas.add(Asignatura(
-        id: row['id'].toString(),
-        nombre: row['nombre'],
-        diasSeleccionados: diasSeleccionados,
-      ));
+      final fechaFinal = DateTime.parse(row['fecha_final']);
+
+      // Solo agregar las asignaturas cuya fecha final es mayor o igual a la fecha actual
+      if (fechaFinal.isAfter(now) || fechaFinal.isAtSameMomentAs(now)) {
+        List<bool> diasSeleccionados = (row['dias_semana'] as List<dynamic>)
+            .map((e) => e == 'true')
+            .toList();
+        asignaturas.add(Asignatura(
+          id: row['id'].toString(),
+          nombre: row['nombre'],
+          diasSeleccionados: diasSeleccionados,
+        ));
+      }
     }
+
     print(asignaturas);
     return asignaturas;
+  }
+
+// Función para obtener las asignaturas desde la base de datos
+  Future<List<Asignatura>> obtenerAsignaturasPorUsuarioAntiguas() async {
+    final supabase = Supabase.instance.client;
+    final Session? session = supabase.auth.currentSession;
+    final userId = session?.user.id;
+
+    if (userId == null) {
+      throw ArgumentError('El userId no puede ser nulo');
+    }
+
+    final response = await supabase
+        .from('asignaturas')
+        .select('id, nombre, dias_semana, fecha_final')
+        .eq('id_usuario', userId);
+
+    if (response.isEmpty) {
+      print('Error al obtener asignaturas:');
+      return [];
+    }
+    // Filtra las asignaturas en el cliente para incluir solo las que ya pasaron
+    final now = DateTime.now();
+    List<Asignatura> asignaturasPasadas = [];
+    for (var row in response) {
+      final fechaFinal = DateTime.parse(row['fecha_final']);
+
+      // Solo agregar las asignaturas cuya fecha final es anterior a la fecha actual
+      if (fechaFinal.isBefore(now)) {
+        List<bool> diasSeleccionados = (row['dias_semana'] as List<dynamic>)
+            .map((e) => e == 'true')
+            .toList();
+        asignaturasPasadas.add(Asignatura(
+          id: row['id'].toString(),
+          nombre: row['nombre'],
+          diasSeleccionados: diasSeleccionados,
+        ));
+      }
+    }
+    return asignaturasPasadas;
   }
 }
 
@@ -118,7 +163,20 @@ Future<void> updateAsignatura({
   } catch (e) {
     // Maneja cualquier error que ocurra durante la actualización
     print('Error al actualizar la asignatura: $e');
-    // Puedes lanzar el error nuevamente o manejarlo de alguna otra manera según tus necesidades
+
+    rethrow;
+  }
+}
+
+Future<void> deleteAsignatura(String idAsignatura) async {
+  final SupabaseClient supabase = Supabase.instance.client;
+
+  try {
+    await supabase.from('asignaturas').delete().eq('id',
+        idAsignatura); // Filtra por el ID de la asignatura que deseas eliminar
+  } catch (e) {
+    // Maneja cualquier error que ocurra durante la eliminación
+    print('Error al eliminar la asignatura: $e');
     rethrow;
   }
 }
