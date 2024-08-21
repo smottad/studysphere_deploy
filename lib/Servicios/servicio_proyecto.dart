@@ -1,3 +1,4 @@
+import 'package:studysphere/Controladores/controlador_crear_recordatorio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ServicioRegistroProyectoBaseDatos {
@@ -43,7 +44,7 @@ class ServicioRegistroProyectoBaseDatos {
     // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
     final response = await supabase
         .from('proyectos')
-        .select('nombre')
+        .select('nombre, fecha_final')
         .eq('id_usuario', userId as Object);
 
     print(response);
@@ -53,19 +54,59 @@ class ServicioRegistroProyectoBaseDatos {
       return [];
     }
 
-    // Extrae los nombres de los proyectos de la respuesta y los devuelve como una lista de cadenas
-    List<String> nombresProyectos = [];
+    // Filtra los proyectos que aún no han finalizado
+    final now = DateTime.now();
+    List<String> nombresProyectosActivos = [];
     for (var row in response) {
-      nombresProyectos.add(row['nombre'] as String);
-    }
-    print(nombresProyectos);
+      final fechaFinal = DateTime.parse(row['fecha_final']);
 
-    return nombresProyectos;
-    // } catch (error) {
-    //   // Manejar cualquier error que pueda ocurrir durante la obtención de los nombres de los proyectos
-    //   print('Error en obtenerNombresProyectosPorUsuario: $error');
-    //   rethrow; // relanzar el error para que el widget pueda manejarlo
-    // }
+      // Solo agregar los proyectos cuya fecha final es posterior a la fecha actual
+      if (fechaFinal.isAfter(now)) {
+        nombresProyectosActivos.add(row['nombre'] as String);
+      }
+    }
+
+    print(nombresProyectosActivos);
+    return nombresProyectosActivos;
+  }
+
+  Future<List<String>> obtenerNombresProyectosPorUsuarioAntiguos(
+      context) async {
+    // try {
+    final supabase = Supabase.instance.client;
+    final Session? session = supabase.auth.currentSession;
+    final userId = session?.user.id;
+    print(userId);
+    if (userId == null) {
+      throw ArgumentError('El userId no puede ser nulo');
+    }
+    // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
+    final response = await supabase
+        .from('proyectos')
+        .select('nombre, fecha_final')
+        .eq('id_usuario', userId as Object);
+
+    print(response);
+    // Verifica si la respuesta está vacía, lo que indicaría que no se encontraron proyectos para el usuario
+    if (response.isEmpty) {
+      print('No se encontraron proyectos para el usuario con ID: $userId');
+      return [];
+    }
+
+    // Filtra los proyectos que aún no han finalizado
+    final now = DateTime.now();
+    List<String> nombresProyectosActivos = [];
+    for (var row in response) {
+      final fechaFinal = DateTime.parse(row['fecha_final']);
+
+      // Solo agregar los proyectos cuya fecha final es posterior a la fecha actual
+      if (fechaFinal.isBefore(now)) {
+        nombresProyectosActivos.add(row['nombre'] as String);
+      }
+    }
+
+    print(nombresProyectosActivos);
+    return nombresProyectosActivos;
   }
 
   Future<Map<String, int>> obtenerAsignaturasPorUsuario() async {
@@ -104,5 +145,25 @@ class ServicioRegistroProyectoBaseDatos {
       print('Error en obtenerAsignaturasPorUsuario: $error');
       rethrow; // Relanzar el error para que el widget pueda manejarlo
     }
+  }
+}
+
+Future<void> deleteProyecto(String nombreProyecto) async {
+  final SupabaseClient supabase = Supabase.instance.client;
+  final Session? session = supabase.auth.currentSession;
+
+  // Verifica si hay una sesión activa y obtiene el ID del usuario
+  final userId = session?.user.id;
+  if (userId == null) {
+    throw Exception('No hay usuario autenticado');
+  }
+
+  try {
+    await supabase.from('proyectos').delete().eq('nombre', nombreProyecto).eq(
+        'id_usuario',
+        userId); // Asegura que el proyecto pertenece al usuario autenticado
+  } catch (e) {
+    print('Error al eliminar el proyecto: $e');
+    rethrow;
   }
 }
