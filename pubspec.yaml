@@ -94,6 +94,8 @@ flutter:
       - lib/Assets/policy.html
       - lib/Assets/terms.html
       - lib/Assets/alarm.wav
+      - lib/Assets/free_crown.png
+      - lib/Assets/premium_crown.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

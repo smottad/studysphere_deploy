@@ -6,6 +6,7 @@ void abrirNav(BuildContext context, String url) async {
   try {
     await launchUrl(
       Uri.parse(url),
+      prefersDeepLink: true,
       customTabsOptions: CustomTabsOptions(
         colorSchemes: CustomTabsColorSchemes.defaults(
           toolbarColor: theme.colorScheme.surface,
