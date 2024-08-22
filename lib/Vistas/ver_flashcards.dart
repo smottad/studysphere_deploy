@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Componentes/card_flashcard.dart';
+import 'package:studysphere/Componentes/image_container.dart';
 import 'package:studysphere/Controladores/controlador_flashcards.dart';
 import 'package:studysphere/Servicios/servicio_flashcard.dart';
 
@@ -69,14 +72,16 @@ class VerFlashcards extends StatelessWidget {
                       // runAlignment: WrapAlignment.center,
                       // crossAxisAlignment: WrapCrossAlignment.center,
                       children: flashcards.map((flash) {
-                          return CardFlashcard(
-                            idFlashcard: flash.id, 
-                            enunciado: flash.enunciado, 
-                            respuesta: flash.respuesta,
-                            idMaze: idMaze,
-                            nameMaze: nameMaze,
-                          );
-                        }).toList(),
+
+                        return CardFlashcard(
+                          idFlashcard: flash.id, 
+                          enunciado: flash.enunciado, 
+                          respuesta: flash.respuesta,
+                          idMaze: idMaze,
+                          nameMaze: nameMaze,
+                          imageName: flash.enlaceImagen
+                        );
+                      }).toList(),
                     ),
                   ),
                 ]

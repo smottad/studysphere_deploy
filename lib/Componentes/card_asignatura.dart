@@ -3,6 +3,7 @@ import 'package:studysphere/Componentes/selected_days.dart';
 import 'package:studysphere/Controladores/controlador_ver_asignatura.dart';
 import 'package:studysphere/my_flutter_app_icons.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:studysphere/Servicios/servicio_asignatura.dart';
 
 class CardAsignatura extends StatelessWidget {
   const CardAsignatura({
@@ -63,13 +64,13 @@ class CardAsignatura extends StatelessWidget {
                               dialogType: DialogType.warning,
                               width: 700,
                               dismissOnTouchOutside: true,
-                              onDismissCallback: (type) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Dismissed by $type'),
-                                  ),
-                                );
-                              },
+                              // onDismissCallback: (type) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //       content: Text('Dismissed by $type'),
+                              //     ),
+                              //   );
+                              // },
                               // body: const Center(child: Text(
                               //         'If the body is specified, then title and description will be ignored, this allows to 											further customize the dialogue.',
                               //   style: TextStyle(fontStyle: FontStyle.italic),
@@ -78,7 +79,25 @@ class CardAsignatura extends StatelessWidget {
                                   '¿Está seguro que quiere eliminar la asignatura $nameSubject?',
                               desc:
                                   'Estas a punto de eliminar la asignatura $nameSubject permanenetemente.',
-                              btnOkOnPress: () {},
+                              btnOkOnPress: () async {
+                                try {
+                                  await deleteAsignatura(idAsignatura);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Asignatura $nameSubject eliminada con éxito'),
+                                    ),
+                                  );
+                                  // Recargar la lista de asignaturas
+                                } catch (error) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Error al eliminar la asignatura: $error'),
+                                    ),
+                                  );
+                                }
+                              },
                               btnCancelOnPress: () {})
                           .show();
                     },
