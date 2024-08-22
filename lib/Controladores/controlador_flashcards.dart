@@ -11,6 +11,7 @@ class ArgumentsFlashcards {
     this.idFlashcard,
     this.enunciado,
     this.respuesta,
+    this.cantidad,
   });
 
   final int idMaze;
@@ -18,6 +19,7 @@ class ArgumentsFlashcards {
   final int? idFlashcard;
   final String? enunciado;
   final String? respuesta;
+  final int? cantidad;
 }
 
 goToSeeFlashcards(BuildContext context, ArgumentsFlashcards args) {

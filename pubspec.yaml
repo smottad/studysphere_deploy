@@ -57,6 +57,7 @@ dependencies:
   randomstring_dart: ^0.0.4
   flutter_custom_tabs: ^2.1.0
   google_sign_in: ^6.2.1
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

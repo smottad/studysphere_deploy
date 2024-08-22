@@ -20,6 +20,7 @@ import 'package:studysphere/Vistas/ingreso_codigo.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
 import 'package:studysphere/Vistas/nueva_contrasena.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
+import 'package:studysphere/Vistas/practicar_flashcards.dart';
 import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
 import 'package:studysphere/Vistas/ver_asignaturas.dart';
@@ -88,6 +89,18 @@ class MyApp extends StatelessWidget {
               return VerFlashcards(
                 idMaze: args.idMaze, 
                 nameMaze: args.nameMaze
+              );
+            }
+          );
+        } else if(settings.name == PracticarFlashcards.routeName) {
+          final args = settings.arguments as ArgumentsFlashcards;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return PracticarFlashcards(
+                idMaze: args.idMaze, 
+                nameMaze: args.nameMaze,
+                cantidad: args.cantidad!,
               );
             }
           );
