@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studysphere/Componentes/app_bar.dart';
 import 'package:studysphere/Servicios/servicio_horario.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:studysphere/Controladores/controlador_horario.dart';
@@ -100,8 +101,9 @@ class _HorarioState extends State<Horario> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Horario"),
+        appBar: appBar(
+          context,
+          "Horario",
         ),
         body: SfCalendar(
           backgroundColor: Theme.of(context).colorScheme.surface,
