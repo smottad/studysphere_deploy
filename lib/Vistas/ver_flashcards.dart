@@ -72,20 +72,6 @@ class VerFlashcards extends StatelessWidget {
                       // runAlignment: WrapAlignment.center,
                       // crossAxisAlignment: WrapCrossAlignment.center,
                       children: flashcards.map((flash) {
-                        Image? downImage;
-                        print(flash.enlaceImagen);
-                        
-                        dbFlashcards.bajarImagen(flash.enlaceImagen)
-                        .then((value) {
-                          downImage = value;
-                          return CardFlashcard(
-                          idFlashcard: flash.id, 
-                          enunciado: flash.enunciado, 
-                          respuesta: flash.respuesta,
-                          idMaze: idMaze,
-                          nameMaze: nameMaze,
-                          imageName: flash.enlaceImagen);
-                        });
 
                         return CardFlashcard(
                           idFlashcard: flash.id, 

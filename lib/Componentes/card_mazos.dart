@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
 import 'package:studysphere/Controladores/controlador_flashcards.dart';
+import 'package:studysphere/Controladores/controlador_ver_mazos.dart';
 import 'package:studysphere/my_flutter_app_icons.dart';
 import 'package:studysphere/Servicios/servicio_mazo.dart';
 
@@ -161,7 +162,12 @@ class CardMazo extends StatelessWidget {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    goToPracticarMazo(
+                      context, 
+                      ArgumentsFlashcards(idMaze: idMaze!, nameMaze: nameMaze, cantidad: cantidad)
+                    );
+                  },
                   child: Text(
                     "Practicar",
                     style: TextStyle(
