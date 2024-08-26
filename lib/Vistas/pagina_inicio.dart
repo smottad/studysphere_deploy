@@ -438,7 +438,7 @@ Widget getFotoUsuario(double width, double height) {
     future: obtenerUrlImagenPerfil(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       }
 
       if (snapshot.hasError) {
@@ -460,7 +460,7 @@ Widget getFotoUsuario(double width, double height) {
         future: bajarImagen(width, height, imageName),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
