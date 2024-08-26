@@ -69,10 +69,6 @@ class ServicioBaseDatosAsignatura {
         .select('id, nombre, dias_semana, fecha_final')
         .eq('id_usuario', userId);
 
-    if (response.isEmpty) {
-      print('Error al obtener asignaturas:');
-      return [];
-    }
 // Filtra las asignaturas en el cliente para excluir las que ya pasaron
     final now = DateTime.now();
     List<Asignatura> asignaturas = [];
