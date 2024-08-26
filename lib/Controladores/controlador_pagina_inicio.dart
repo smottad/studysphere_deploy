@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/material.dart';
 
 //para la foto del menu lateral, por ahora es generico
@@ -7,6 +9,30 @@ Image getFotoUsuario(double width, double height) {
     width: width,
     height: height,
   );
+}
+
+Future<Image> bajarImagen(
+    double width, double height, String? imageName) async {
+  try {
+    final supabase = Supabase.instance.client;
+    Session? sesion = supabase.auth.currentSession;
+    if (imageName != null) {
+      final Uint8List file =
+          await supabase.storage.from('avatars').download(imageName!);
+      final Image image = Image.memory(file);
+
+      return Image(
+        image: image.image,
+        width: width,
+        height: height,
+      );
+    } else {
+      return Image.asset('lib/Assets/default_image.png');
+    }
+  } catch (error) {
+    print('Este es el error: $error');
+    rethrow;
+  }
 }
 
 irAsignaturas(BuildContext context) {
