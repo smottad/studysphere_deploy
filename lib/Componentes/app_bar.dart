@@ -66,26 +66,27 @@ AppBar appBar(BuildContext context, String titulo,
                     ),
                   );
                 }
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.15,
-                  child: Row(
-                    children: [
-                      Text(
-                        "Mejora a premium",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(color: colorTexto),
-                      ),
-                      InkWell(
-                        child: const Image(
+                return InkWell(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.15,
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Text(
+                          "Mejora a premium",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(color: colorTexto),
+                        ),
+                        const Image(
                             height: 30,
                             image: AssetImage("lib/Assets/free_crown.png")),
-                        onTap: () => abrirNav(context,
-                            "https://studysphere-react.vercel.app/pagos?userId=${session?.user.id}"),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  onTap: () => abrirNav(context,
+                      "https://studysphere-react.vercel.app/pagos?userId=${session?.user.id}"),
                 );
               }
               return SizedBox(
