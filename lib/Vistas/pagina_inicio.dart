@@ -165,15 +165,16 @@ class _PaginaInicioState extends State<PaginaInicio> {
   }
 
   Padding fotoYConfiguracion(
-      Size size, BuildContext context, ColorScheme colorScheme) {
+    Size size,
+    BuildContext context,
+    ColorScheme colorScheme,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          getFotoUsuario(
-            (size.height * 0.1).clamp(10, 50),
-            (size.height * 0.1).clamp(10, 50),
-          ),
+          getFotoUsuario((size.height * 0.1).clamp(10, 50),
+              (size.height * 0.1).clamp(10, 50)),
           const Spacer(),
           InkWell(
             onTap: () => irConfiguracion(context),
@@ -429,4 +430,60 @@ class _PaginaInicioState extends State<PaginaInicio> {
       ),
     );
   }
+}
+
+// Método para mostrar la foto del usuario
+Widget getFotoUsuario(double width, double height) {
+  return FutureBuilder<String?>(
+    future: obtenerUrlImagenPerfil(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      }
+
+      final imageName = snapshot.data;
+      print('Imagen: $imageName');
+      if (imageName == null || imageName.isEmpty) {
+        print('No hay enlace de imagen');
+        return Image.asset(
+          'lib/Assets/no_user.png',
+          width: width,
+          height: height,
+        );
+      }
+
+      return FutureBuilder<Image>(
+        future: bajarImagen(width, height, imageName),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            print('Error al bajar la imagen: ${snapshot.error}');
+            return Image.asset(
+              'lib/Assets/no_user.png',
+              width: width,
+              height: height,
+            );
+          }
+
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+
+          // Imagen por defecto en caso de cualquier problema
+          return Image.asset(
+            'lib/Assets/no_user.png',
+            width: width,
+            height: height,
+          );
+        },
+      );
+    },
+  );
 }

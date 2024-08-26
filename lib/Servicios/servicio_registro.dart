@@ -1,8 +1,29 @@
+import 'dart:io';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+// Future<String?> uploadImage(File file) async {
+//   try {
+//     final supabase = Supabase.instance.client;
+//     final fileName =
+//         'profile_pictures/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+//     final response =
+//         await supabase.storage.from('avatar').upload(fileName, file);
+
+//     final publicUrl = supabase.storage.from('avatar').getPublicUrl(fileName);
+//     return publicUrl;
+//   } on Exception catch (e) {
+//     print('Error uploading image: $e');
+//     return null;
+//   }
+// }
 
 class ServicioRegistroBaseDatos {
   Future<bool> registrarUsuario(String nombre, String correo, String contrasena,
-      String edad, String telefono) async {
+      String edad, String telefono, String avatar) async {
     try {
       // Get a reference to your Supabase client
       final supabase = Supabase.instance.client;
@@ -26,6 +47,7 @@ class ServicioRegistroBaseDatos {
         'contraseña': contrasena,
         'tipo_cuenta':
             1, // Aquí puedes definir el tipo de cuenta según tus requerimientos
+        'avatar_url': avatar
       });
 
       return true;

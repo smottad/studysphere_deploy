@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -199,4 +201,27 @@ Future<Map<String, List<List<String>>>> obtenerNombresTareasActuales() async {
   }
 
   return nombresTareas;
+}
+
+Future<String?> obtenerUrlImagenPerfil() async {
+  try {
+    final supabase = Supabase.instance.client;
+    final userId = supabase.auth.currentUser?.id;
+
+    if (userId == null) {
+      return null;
+    }
+
+    final response = await supabase
+        .from(
+            'usuarios') // Nombre de la tabla donde se guardan los datos del usuario
+        .select(
+            'avatar_url') // Nombre de la columna que contiene la URL de la foto
+        .eq('id', userId)
+        .single();
+
+    return response['avatar_url'] as String?;
+  } on Exception catch (e) {
+    print('Error obteniendo la URL de la foto: $e');
+  }
 }

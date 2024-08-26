@@ -107,13 +107,17 @@ validarConfirmarContrasena() {
   }
 }
 
-getFoto() async {
-  final ImagePicker picker = ImagePicker();
-  XFile? file = await picker.pickImage(source: ImageSource.gallery);
-  return file != null ? File(file.path) : null;
-}
+// getFoto() async {
+//   final ImagePicker picker = ImagePicker();
+//   XFile? file = await picker.pickImage(source: ImageSource.gallery);
+//   return file != null ? File(file.path) : null;
+// }
 
-crearCuenta(BuildContext context) async {
+crearCuenta(
+  BuildContext context,
+  String? imageUrl,
+) async {
+  imageUrl ??= ''; // Provide a default value for imageUrl if it is null
   if (nombreValidator_ != null || nombre.text.isEmpty) {
     return ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Ingrese un nombre válido')));
@@ -156,6 +160,7 @@ crearCuenta(BuildContext context) async {
       contrasena.text,
       edad.text,
       telefono.text,
+      imageUrl,
     );
 
     if (context.mounted) {
@@ -168,9 +173,8 @@ crearCuenta(BuildContext context) async {
           ),
         );
         // Navegar a la pantalla de inicio después de mostrar el Snackbar
-        Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-        });
+
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
       } else {
         // Si el registro no fue exitoso, muestra un Snackbar con el mensaje de error
         ScaffoldMessenger.of(context).showSnackBar(
