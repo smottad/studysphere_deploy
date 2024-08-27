@@ -20,6 +20,14 @@ class PaginaInicio extends StatefulWidget {
 }
 
 class _PaginaInicioState extends State<PaginaInicio> {
+  refresh() {
+    setState(() {
+      builderExamenes();
+      builderReuniones();
+      builderTareas();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -33,13 +41,22 @@ class _PaginaInicioState extends State<PaginaInicio> {
           children: [
             Column(children: [
               ActionButton(
-                  onPressed: () => showAction(context, 0),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/inicio/crear_recordatorio')
+                        .then(
+                      (value) => refresh(),
+                    );
+                  },
                   icon: Icon(Icons.alarm, color: colorScheme.onSecondary)),
               Text(PaginaInicio._actionTitles[0])
             ]),
             Column(children: [
               ActionButton(
-                onPressed: () => showAction(context, 1),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/inicio/mazos').then(
+                    (value) => refresh(),
+                  );
+                },
                 icon: Icon(
                   Icons.bookmark,
                   color: colorScheme.onSecondary,
@@ -49,7 +66,12 @@ class _PaginaInicioState extends State<PaginaInicio> {
             ]),
             Column(children: [
               ActionButton(
-                onPressed: () => showAction(context, 2),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/inicio/crear_asignaturas')
+                      .then(
+                    (value) => refresh(),
+                  );
+                },
                 icon: Icon(
                   Icons.book,
                   color: colorScheme.onSecondary,
@@ -59,7 +81,11 @@ class _PaginaInicioState extends State<PaginaInicio> {
             ]),
             Column(children: [
               ActionButton(
-                onPressed: () => showAction(context, 3),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/inicio/crear_proyectos').then(
+                    (value) => refresh(),
+                  );
+                },
                 icon: Icon(
                   Icons.timeline,
                   color: colorScheme.onSecondary,
@@ -95,21 +121,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox.expand(
                   child: SingleChildScrollView(
-                    child: FutureBuilder(
-                        future: paginaInicioTareas(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return snapshot.data!;
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        }),
+                    child: builderTareas(),
                   ),
                 ),
               ),
@@ -117,22 +129,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox.expand(
                   child: SingleChildScrollView(
-                    child: FutureBuilder(
-                        future: paginaInicioExamenes(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return snapshot.data!;
-                          }
-
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        }),
+                    child: builderExamenes(),
                   ),
                 ),
               ),
@@ -140,21 +137,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox.expand(
                   child: SingleChildScrollView(
-                    child: FutureBuilder(
-                        future: paginaInicioReuniones(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return snapshot.data!;
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return const CircularProgressIndicator();
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        }),
+                    child: builderReuniones(),
                   ),
                 ),
               ),
@@ -164,19 +147,75 @@ class _PaginaInicioState extends State<PaginaInicio> {
         ));
   }
 
+  FutureBuilder<Card> builderReuniones() {
+    return FutureBuilder(
+        future: paginaInicioReuniones(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return const CircularProgressIndicator();
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
+  }
+
+  FutureBuilder<Card> builderExamenes() {
+    return FutureBuilder(
+        future: paginaInicioExamenes(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
+  }
+
+  FutureBuilder<Card> builderTareas() {
+    return FutureBuilder(
+        future: paginaInicioTareas(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
+  }
+
   Padding fotoYConfiguracion(
-      Size size, BuildContext context, ColorScheme colorScheme) {
+    Size size,
+    BuildContext context,
+    ColorScheme colorScheme,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          getFotoUsuario(
-            (size.height * 0.1).clamp(10, 50),
-            (size.height * 0.1).clamp(10, 50),
-          ),
+          getFotoUsuario((size.height * 0.1).clamp(10, 50),
+              (size.height * 0.1).clamp(10, 50)),
           const Spacer(),
           InkWell(
-            onTap: () => irConfiguracion(context),
+            onTap: () {
+              irConfiguracion(context);
+              refresh();
+            },
             child: Icon(
               Icons.settings,
               color: colorScheme.onPrimary,
@@ -429,4 +468,60 @@ class _PaginaInicioState extends State<PaginaInicio> {
       ),
     );
   }
+}
+
+// Método para mostrar la foto del usuario
+Widget getFotoUsuario(double width, double height) {
+  return FutureBuilder<String?>(
+    future: obtenerUrlImagenPerfil(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      }
+
+      if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      }
+
+      final imageName = snapshot.data;
+      print('Imagen: $imageName');
+      if (imageName == null || imageName.isEmpty) {
+        print('No hay enlace de imagen');
+        return Image.asset(
+          'lib/Assets/no_user.png',
+          width: width,
+          height: height,
+        );
+      }
+
+      return FutureBuilder<Image>(
+        future: bajarImagen(width, height, imageName),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            print('Error al bajar la imagen: ${snapshot.error}');
+            return Image.asset(
+              'lib/Assets/no_user.png',
+              width: width,
+              height: height,
+            );
+          }
+
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+
+          // Imagen por defecto en caso de cualquier problema
+          return Image.asset(
+            'lib/Assets/no_user.png',
+            width: width,
+            height: height,
+          );
+        },
+      );
+    },
+  );
 }

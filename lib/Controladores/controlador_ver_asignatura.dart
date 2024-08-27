@@ -12,7 +12,7 @@ irEditarAsignatura(BuildContext context, String nameSubject,
 irVerAsignaturasPasadas(
   BuildContext context,
 ) {
-  Navigator.pushNamed(
+  Navigator.pushReplacementNamed(
     context,
     '/inicio/asignaturas_pasadas',
   );
@@ -21,7 +21,7 @@ irVerAsignaturasPasadas(
 irVerAsignaturasActuales(
   BuildContext context,
 ) {
-  Navigator.pushNamed(
+  Navigator.pushReplacementNamed(
     context,
     '/inicio/asignaturas',
   );

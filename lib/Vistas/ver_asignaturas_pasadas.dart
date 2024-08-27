@@ -13,7 +13,7 @@ class VerAsignaturasPasadas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context, "Asignaturas", color: 0),
+      appBar: appBar(context, "Asignaturas pasadas", color: 0),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: FutureBuilder<List<Asignatura>>(
@@ -23,9 +23,11 @@ class VerAsignaturasPasadas extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('No se encontraron asignaturas'));
-            } else {
+            }
+            // else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            //   return const Center(child: Text('No se encontraron asignaturas'));
+            // }
+            else {
               final asignaturas = snapshot.data!;
               return Column(
                 children: [
@@ -45,7 +47,7 @@ class VerAsignaturasPasadas extends StatelessWidget {
                     height: 20,
                   ),
                   TextButton(
-                    onPressed: () => irVerAsignaturasPasadas(context),
+                    onPressed: () => irVerAsignaturasActuales(context),
                     child: Text(
                       "Ver asignaturas",
                       style: TextStyle(

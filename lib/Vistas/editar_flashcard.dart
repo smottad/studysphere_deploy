@@ -10,12 +10,13 @@ class EditarFlashcard extends StatelessWidget {
   final TextEditingController textEnunciado = TextEditingController();
   final TextEditingController textRespuesta = TextEditingController();
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
 
-    final args = ModalRoute.of(context)!.settings.arguments as ArgumentsFlashcards;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as ArgumentsFlashcards;
 
     textEnunciado.text = args.enunciado!;
     textRespuesta.text = args.respuesta!;
@@ -51,72 +52,69 @@ class EditarFlashcard extends StatelessWidget {
                   height: 20,
                 ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    if(textEnunciado.text.isNotEmpty && textRespuesta.text.isNotEmpty) {
-                      try {
-                        ServicioBaseDatosFlashcard dbFlashcards = ServicioBaseDatosFlashcard();
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.primary,
+                    ),
+                    onPressed: () {
+                      if (textEnunciado.text.isNotEmpty &&
+                          textRespuesta.text.isNotEmpty) {
+                        try {
+                          ServicioBaseDatosFlashcard dbFlashcards =
+                              ServicioBaseDatosFlashcard();
 
-                        dbFlashcards.actualizarFlashcard(Flashcard(
-                          id: args.idFlashcard!, 
-                          enunciado: textEnunciado.text, 
-                          respuesta: textRespuesta.text, 
-                          idMazo: args.idMaze, 
-                          nombreMazo: args.nameMaze
-                        ));
+                          dbFlashcards.actualizarFlashcard(Flashcard(
+                              id: args.idFlashcard!,
+                              enunciado: textEnunciado.text,
+                              respuesta: textRespuesta.text,
+                              idMazo: args.idMaze,
+                              nombreMazo: args.nameMaze));
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Se ha actualizado con exito"),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                        textEnunciado.clear();
-                        textRespuesta.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Se ha actualizado con exito"),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                          textEnunciado.clear();
+                          textRespuesta.clear();
 
-                        goToSeeFlashcards(context, 
-                          ArgumentsFlashcards(
-                            idMaze: args.idMaze, 
-                            nameMaze: args.nameMaze)
-                        );
-                      } catch(error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          goToSeeFlashcardsRep(
+                              context,
+                              ArgumentsFlashcards(
+                                  idMaze: args.idMaze,
+                                  nameMaze: args.nameMaze));
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
                               "Error al guardar el mazo: $error",
                               style: TextStyle(
                                 color: colorScheme.onTertiary,
                               ),
                             ),
-                            duration: const Duration(seconds: 2),
-                            backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
-                          )
-                        );
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                            duration: const Duration(seconds: 1),
+                            backgroundColor:
+                                const Color.fromRGBO(255, 50, 50, 1),
+                          ));
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             "Llene todo los campos",
                             style: TextStyle(
                               color: colorScheme.onTertiary,
                             ),
                           ),
-                          duration: const Duration(seconds: 2),
+                          duration: const Duration(seconds: 1),
                           backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
-                        )
-                      );
-                    }
-                  }, 
-                  child: Text(
-                    "Guardar",
-                    style: TextStyle(
-                      color: colorScheme.scrim,
-                    ),
-                  )
-                ),
+                        ));
+                      }
+                    },
+                    child: Text(
+                      "Guardar",
+                      style: TextStyle(
+                        color: colorScheme.scrim,
+                      ),
+                    )),
               ],
             ),
           ),

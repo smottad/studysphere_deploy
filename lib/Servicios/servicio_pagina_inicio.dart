@@ -17,7 +17,21 @@ eliminarRecordatorio(idRecordatorio) async {
   print(response);
 }
 
-markAsDone(idRecordatorio) {}
+markAsDone(idRecordatorio) async {
+  final supabase = Supabase.instance.client;
+  final Session? session = supabase.auth.currentSession;
+  final userId = session?.user.id;
+  print(userId);
+  if (userId == null) {
+    throw ArgumentError('El userId no puede ser nulo');
+  }
+  // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
+  final response = await supabase
+      .from('recordatorios')
+      .delete()
+      .eq('id', int.parse(idRecordatorio));
+  print(response);
+}
 
 Future<Map<String, List<List<String>>>>
     obtenerNombresReunionesActuales() async {
@@ -199,4 +213,28 @@ Future<Map<String, List<List<String>>>> obtenerNombresTareasActuales() async {
   }
 
   return nombresTareas;
+}
+
+Future<String?> obtenerUrlImagenPerfil() async {
+  try {
+    final supabase = Supabase.instance.client;
+    final userId = supabase.auth.currentUser?.id;
+
+    if (userId == null) {
+      return null;
+    }
+
+    final response = await supabase
+        .from(
+            'usuarios') // Nombre de la tabla donde se guardan los datos del usuario
+        .select(
+            'avatar_url') // Nombre de la columna que contiene la URL de la foto
+        .eq('id', userId)
+        .single();
+
+    return response['avatar_url'] as String?;
+  } on Exception catch (e) {
+    print('Error obteniendo la URL de la foto: $e');
+  }
+  return null;
 }

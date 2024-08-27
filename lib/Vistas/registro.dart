@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:studysphere/Componentes/app_bar.dart';
-import 'package:studysphere/Componentes/boton.dart';
+import 'package:randomstring_dart/randomstring_dart.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_registro.dart';
+import 'package:studysphere/Componentes/avatar.dart'; // Asegúrate de importar el widget Avatar
 
 class Registro extends StatefulWidget {
   const Registro({super.key});
@@ -13,7 +13,10 @@ class Registro extends StatefulWidget {
 }
 
 class _RegistroState extends State<Registro> {
-  CircleAvatar? foto;
+  final rs = RandomString();
+  String? imageUrl;
+  String enlaceImagen = '';
+
   @override
   void initState() {
     super.initState();
@@ -23,46 +26,63 @@ class _RegistroState extends State<Registro> {
     telefono.addListener(validarTelefono);
     contrasena.addListener(validarContrasena);
     verificarContrasena.addListener(validarConfirmarContrasena);
+    enlaceImagen =
+        rs.getRandomString(uppersCount: 5, lowersCount: 5, numbersCount: 5);
   }
-
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   nombre.dispose();
-  //   correo.dispose();
-  //   edad.dispose();
-  //   telefono.dispose();
-  //   contrasena.dispose();
-  //   verificarContrasena.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    const titulo = "Crear cuenta";
 
+    final colorTexto = colorScheme.onSecondary;
+    final colorBar = colorScheme.secondary;
     return Scaffold(
-      appBar: appBar(context, "Crear cuenta", color: 1),
+      appBar: AppBar(
+        titleTextStyle: Theme.of(context)
+            .textTheme
+            .headlineMedium
+            ?.copyWith(color: colorTexto),
+        backgroundColor: colorBar,
+        foregroundColor: colorTexto,
+        elevation: 2,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.125,
+            ),
+            const Spacer(),
+            const Text(titulo),
+            const Spacer(),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.15,
+              child: const Image(
+                alignment: Alignment.centerRight,
+                image: AssetImage("lib/Assets/logo.png"),
+                fit: BoxFit.contain,
+                height: 55,
+              ),
+            ),
+          ],
+        ),
+      ),
       backgroundColor: colorScheme.surface,
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           children: [
             const Spacer(),
-            InkWell(
-                onTap: () async {
-                  var file = await getFoto();
-                  if (file == null) {
-                    return;
-                  }
-                  return setState(() => foto = CircleAvatar(
-                        backgroundImage: FileImage(file),
-                        radius: (MediaQuery.of(context).size.height * 0.07)
-                            .clamp(10, 100),
-                      ));
-                },
-                customBorder: const CircleBorder(),
-                child: foto ?? FotoDefault(colorScheme: colorScheme)),
+            Avatar(
+              enlaceImagen: enlaceImagen,
+              imageUrl: imageUrl,
+              onUpload: (url) {
+                setState(() {
+                  imageUrl = url;
+                });
+              },
+            ),
             const Spacer(),
             textFormulario(context, nombre, "Nombre",
                 teclado: TextInputType.name,
@@ -103,7 +123,10 @@ class _RegistroState extends State<Registro> {
               ],
             ),
             const Spacer(),
-            boton(context, "Crear cuenta", crearCuenta),
+            ElevatedButton(
+              onPressed: () => crearCuenta(context, enlaceImagen),
+              child: const Text('Crear cuenta'),
+            ),
             const Spacer(),
             const Spacer(),
           ],
@@ -151,18 +174,17 @@ RichText terminosYCondiciones(
       text: TextSpan(
         children: [
           TextSpan(
-              text: 'Acepto los ', // el texto que quieres mostrar
-              style: textTheme.bodySmall
-                  ?.copyWith(color: colorScheme.onSurface)),
+              text: 'Acepto los ',
+              style:
+                  textTheme.bodySmall?.copyWith(color: colorScheme.onSurface)),
           TextSpan(
               text: 'términos y condiciones',
               style: textTheme.bodySmall?.copyWith(color: colorScheme.tertiary),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => terminos(context)),
           TextSpan(
-            text: ' y nuestra ', // el texto que quieres mostrar
-            style:
-                textTheme.bodySmall?.copyWith(color: colorScheme.onSurface),
+            text: ' y nuestra ',
+            style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurface),
           ),
           TextSpan(
               text: 'política de privacidad.',

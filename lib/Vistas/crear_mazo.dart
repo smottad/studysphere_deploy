@@ -7,8 +7,10 @@ import 'package:studysphere/Controladores/controlador_crear_mazo.dart';
 import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
 import 'package:studysphere/Servicios/servicio_mazo.dart';
 
-String selectedMateria = ""; // Variable para almacenar el nombre de la materia seleccionada
-int selectedMateriaId = 0; // Variable para almacenar el ID de la materia seleccionada
+String selectedMateria =
+    ""; // Variable para almacenar el nombre de la materia seleccionada
+int selectedMateriaId =
+    0; // Variable para almacenar el ID de la materia seleccionada
 
 Map<String, int> asignaturas = {};
 
@@ -28,7 +30,7 @@ Future<void> actualizarAsignaturas() async {
 class CrearMazo extends StatelessWidget {
   const CrearMazo({super.key});
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
@@ -61,7 +63,8 @@ class CrearMazo extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                textFormulario(context, nombreMazoCrear, "Ingrese el nombre del mazo"),
+                textFormulario(
+                    context, nombreMazoCrear, "Ingrese el nombre del mazo"),
                 const SizedBox(
                   height: 20,
                 ),
@@ -98,7 +101,8 @@ class CrearMazo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           items: List.empty(),
                           isExpanded: true,
                           hint: const Text("Seleccione la materia"),
@@ -115,13 +119,14 @@ class CrearMazo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           items: List.empty(),
                           isExpanded: true,
                           hint: const Text("Seleccione la materia"),
                           onChanged: (value) {},
                         );
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty){
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return DropdownButtonFormField(
                           alignment: Alignment.center,
                           decoration: InputDecoration(
@@ -132,7 +137,8 @@ class CrearMazo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           items: List.empty(),
                           isExpanded: true,
                           hint: const Text("Seleccione la materia"),
@@ -149,7 +155,8 @@ class CrearMazo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           items: asignaturas.keys.map((e) {
                             print("Entro Drop");
                             return DropdownMenuItem(
@@ -167,70 +174,69 @@ class CrearMazo extends StatelessWidget {
                         );
                       }
                     },
-                  ), 
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    if(nombreMazoCrear.text.isNotEmpty && selectedMateria != "") {
-                      try {
-                        ServicioBaseDatosMazo bdMazo = ServicioBaseDatosMazo();
-                        Mazo nuevoMazo = Mazo(
-                          nombreMazo: nombreMazoCrear.text, 
-                          idAsignaturaMazo: selectedMateriaId, nombreAsignaturaMazo: selectedMateria,
-                          cantidad: 0
-                        );
-                        
-                        bdMazo.guardarMazo(nuevoMazo);
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.primary,
+                    ),
+                    onPressed: () {
+                      if (nombreMazoCrear.text.isNotEmpty &&
+                          selectedMateria != "") {
+                        try {
+                          ServicioBaseDatosMazo bdMazo =
+                              ServicioBaseDatosMazo();
+                          Mazo nuevoMazo = Mazo(
+                              nombreMazo: nombreMazoCrear.text,
+                              idAsignaturaMazo: selectedMateriaId,
+                              nombreAsignaturaMazo: selectedMateria,
+                              cantidad: 0);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Se ha guardado con exito"),
-                            duration: Duration(seconds: 2),),
+                          bdMazo.guardarMazo(nuevoMazo);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Se ha guardado con exito"),
+                              duration: Duration(seconds: 1),
+                            ),
                           );
-                        nombreMazoCrear.clear();
-                        goToMazes(context);
-                      } catch(error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          nombreMazoCrear.clear();
+                          goToMazesRep(context);
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
                               "Error al guardar el mazo: $error",
                               style: TextStyle(
                                 color: colorScheme.onTertiary,
                               ),
                             ),
-                            duration: const Duration(seconds: 2),
-                            backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
-                          )
-                        );
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                            duration: const Duration(seconds: 1),
+                            backgroundColor:
+                                const Color.fromRGBO(255, 50, 50, 1),
+                          ));
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             "Llene todo los campos",
                             style: TextStyle(
                               color: colorScheme.onTertiary,
                             ),
                           ),
-                          duration: const Duration(seconds: 2),
+                          duration: const Duration(seconds: 1),
                           backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
-                        )
-                      );
-                    }
-                  }, 
-                  child: Text(
-                    "Guardar",
-                    style: TextStyle(
-                      color: colorScheme.scrim,
-                    ),
-                  )
-                ),
+                        ));
+                      }
+                    },
+                    child: Text(
+                      "Guardar",
+                      style: TextStyle(
+                        color: colorScheme.scrim,
+                      ),
+                    )),
               ],
             ),
           ),

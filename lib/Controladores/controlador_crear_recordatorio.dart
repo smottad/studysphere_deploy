@@ -185,7 +185,7 @@ funcionGuardar(BuildContext context) async {
             backgroundColor: Colors.green,
           ),
         );
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 1), () {
           if (context.mounted) {
             Navigator.pop(context);
           }
@@ -199,9 +199,10 @@ funcionGuardar(BuildContext context) async {
             backgroundColor: Colors.red,
           ),
         );
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 1), () {
           if (context.mounted) {
             Navigator.pop(context);
+            //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
           }
         });
       }
@@ -215,9 +216,10 @@ funcionGuardar(BuildContext context) async {
           backgroundColor: Colors.red,
         ),
       );
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 1), () {
         if (context.mounted) {
           Navigator.pop(context);
+          //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
         }
       });
     }

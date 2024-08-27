@@ -11,6 +11,7 @@ class ArgumentsFlashcards {
     this.idFlashcard,
     this.enunciado,
     this.respuesta,
+    this.cantidad,
   });
 
   final int idMaze;
@@ -18,18 +19,27 @@ class ArgumentsFlashcards {
   final int? idFlashcard;
   final String? enunciado;
   final String? respuesta;
+  final int? cantidad;
 }
 
 goToSeeFlashcards(BuildContext context, ArgumentsFlashcards args) {
-  Navigator.pushNamed(context, '/inicio/flashcards/ver_flashcards', arguments: args);
+  Navigator.pushNamed(context, '/inicio/flashcards/ver_flashcards',
+      arguments: args);
+}
+
+goToSeeFlashcardsRep(BuildContext context, ArgumentsFlashcards args) {
+  Navigator.pushReplacementNamed(context, '/inicio/flashcards/ver_flashcards',
+      arguments: args);
 }
 
 goToCreateFlashcard(BuildContext context, ArgumentsFlashcards args) {
-  Navigator.pushNamed(context, '/inicio/flashcards/crear_flashcard', arguments: args);
+  Navigator.pushNamed(context, '/inicio/flashcards/crear_flashcard',
+      arguments: args);
 }
 
 goToEditFlashcard(BuildContext context, ArgumentsFlashcards args) {
-  Navigator.pushNamed(context, '/inicio/flashcards/editar_flashcard', arguments: args);
+  Navigator.pushNamed(context, '/inicio/flashcards/editar_flashcard',
+      arguments: args);
 }
 
 getFoto() async {
