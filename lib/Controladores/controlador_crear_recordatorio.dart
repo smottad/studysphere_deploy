@@ -201,8 +201,8 @@ funcionGuardar(BuildContext context) async {
         );
         Future.delayed(const Duration(seconds: 1), () {
           if (context.mounted) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/inicio', (route) => false);
+            Navigator.pop(context);
+            //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
           }
         });
       }
@@ -218,8 +218,8 @@ funcionGuardar(BuildContext context) async {
       );
       Future.delayed(const Duration(seconds: 1), () {
         if (context.mounted) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/inicio', (route) => false);
+          Navigator.pop(context);
+          //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
         }
       });
     }

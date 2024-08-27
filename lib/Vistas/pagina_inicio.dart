@@ -20,6 +20,14 @@ class PaginaInicio extends StatefulWidget {
 }
 
 class _PaginaInicioState extends State<PaginaInicio> {
+  refresh() {
+    setState(() {
+      builderExamenes();
+      builderReuniones();
+      builderTareas();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -33,13 +41,22 @@ class _PaginaInicioState extends State<PaginaInicio> {
           children: [
             Column(children: [
               ActionButton(
-                  onPressed: () => showAction(context, 0),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/inicio/crear_recordatorio')
+                        .then(
+                      (value) => refresh(),
+                    );
+                  },
                   icon: Icon(Icons.alarm, color: colorScheme.onSecondary)),
               Text(PaginaInicio._actionTitles[0])
             ]),
             Column(children: [
               ActionButton(
-                onPressed: () => showAction(context, 1),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/inicio/mazos').then(
+                    (value) => refresh(),
+                  );
+                },
                 icon: Icon(
                   Icons.bookmark,
                   color: colorScheme.onSecondary,
@@ -49,7 +66,12 @@ class _PaginaInicioState extends State<PaginaInicio> {
             ]),
             Column(children: [
               ActionButton(
-                onPressed: () => showAction(context, 2),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/inicio/crear_asignaturas')
+                      .then(
+                    (value) => refresh(),
+                  );
+                },
                 icon: Icon(
                   Icons.book,
                   color: colorScheme.onSecondary,
@@ -59,7 +81,11 @@ class _PaginaInicioState extends State<PaginaInicio> {
             ]),
             Column(children: [
               ActionButton(
-                onPressed: () => showAction(context, 3),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/inicio/crear_proyectos').then(
+                    (value) => refresh(),
+                  );
+                },
                 icon: Icon(
                   Icons.timeline,
                   color: colorScheme.onSecondary,
@@ -186,7 +212,10 @@ class _PaginaInicioState extends State<PaginaInicio> {
               (size.height * 0.1).clamp(10, 50)),
           const Spacer(),
           InkWell(
-            onTap: () => irConfiguracion(context),
+            onTap: () {
+              irConfiguracion(context);
+              refresh();
+            },
             child: Icon(
               Icons.settings,
               color: colorScheme.onPrimary,
