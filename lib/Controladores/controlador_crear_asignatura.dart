@@ -77,8 +77,8 @@ void guardarAsignatura(
       );
       Future.delayed(const Duration(seconds: 1), () {
         if (context.mounted) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/inicio', (route) => false);
+          Navigator.pop(context);
+          //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false).then((val) => () {});
         }
       });
     }
@@ -91,8 +91,8 @@ void guardarAsignatura(
 
       Future.delayed(const Duration(seconds: 1), () {
         if (context.mounted) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/inicio', (route) => false);
+          Navigator.pop(context);
+          //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
         }
       });
     }

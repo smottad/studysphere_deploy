@@ -37,14 +37,16 @@ void crearProyecto(
     );
     Future.delayed(const Duration(seconds: 1), () {
       if (context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+        Navigator.pop(context);
+        //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
       }
     });
   } catch (e) {
     print('Error al guardar el proyecto: $e');
     Future.delayed(const Duration(seconds: 1), () {
       if (context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+        Navigator.pop(context);
+        //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
       }
     });
   }

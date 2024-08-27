@@ -13,13 +13,13 @@ iniciarSesion(BuildContext context) async {
   print("lugo de la conexion");
 
   try {
-    bool resultado = await 
-        servicioBaseDatosInicioSesion.iniciarSesion(email.text, password.text);
+    bool resultado = await servicioBaseDatosInicioSesion.iniciarSesion(
+        email.text, password.text);
 
     if (context.mounted) {
       if (resultado == true) {
         Navigator.popAndPushNamed(context, '/inicio');
-        Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+        //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
