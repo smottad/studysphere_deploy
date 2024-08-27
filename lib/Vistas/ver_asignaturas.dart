@@ -22,10 +22,30 @@ class VerAsignaturas extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('No se encontraron asignaturas'));
-            } else {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('No se encontraron asignaturas'),
+                    TextButton(
+                      onPressed: () => irVerAsignaturasPasadas(context),
+                      child: Text(
+                        "Ver asignaturas pasadas",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            // else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+
+            //   return const Center(child: Text('No se encontraron asignaturas'));
+
+            // }
+            else {
               final asignaturas = snapshot.data!;
               return Column(
                 children: [
