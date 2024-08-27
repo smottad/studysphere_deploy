@@ -205,8 +205,7 @@ class EditarMazo extends StatelessWidget {
 
                           Future.delayed(const Duration(seconds: 1), () {
                             if (context.mounted) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, '/inicio', (route) => false);
+                              goToMazesRep(context);
                             }
                           });
                         } catch (error) {

@@ -204,7 +204,7 @@ class CrearMazo extends StatelessWidget {
                             ),
                           );
                           nombreMazoCrear.clear();
-                          goToMazes(context);
+                          goToMazesRep(context);
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(

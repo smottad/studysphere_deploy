@@ -21,16 +21,6 @@ class PaginaInicio extends StatefulWidget {
 
 class _PaginaInicioState extends State<PaginaInicio> {
   @override
-  void initState() {
-    setState(() {
-      var examenes = builderExamenes();
-      var reuniones = builderReuniones();
-      var tareas = builderTareas();
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     //final textTheme = Theme.of(context).textTheme;

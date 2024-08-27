@@ -142,7 +142,7 @@ class _CrearFlashcardState extends State<CrearFlashcard> {
                         textEnunciado.clear();
                         textRespuesta.clear();
 
-                        goToSeeFlashcards(
+                        goToSeeFlashcardsRep(
                             context,
                             ArgumentsFlashcards(
                                 idMaze: args.idMaze, nameMaze: args.nameMaze));

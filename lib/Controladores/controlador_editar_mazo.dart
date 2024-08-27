@@ -22,6 +22,15 @@ goToMazes(
   );
 }
 
+goToMazesRep(
+  BuildContext context,
+) {
+  Navigator.pushReplacementNamed(
+    context,
+    '/inicio/mazos',
+  );
+}
+
 class EditMazeArguments {
   EditMazeArguments(
     this.idMaze,

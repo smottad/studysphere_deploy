@@ -78,7 +78,7 @@ class EditarFlashcard extends StatelessWidget {
                           textEnunciado.clear();
                           textRespuesta.clear();
 
-                          goToSeeFlashcards(
+                          goToSeeFlashcardsRep(
                               context,
                               ArgumentsFlashcards(
                                   idMaze: args.idMaze,
