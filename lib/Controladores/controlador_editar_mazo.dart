@@ -13,14 +13,19 @@ goToEditMaze(BuildContext context, EditMazeArguments args) {
   Navigator.pushNamed(context, '/inicio/mazos/editar_mazo', arguments: args);
 }
 
-goToMazes(BuildContext context,) {
-  Navigator.pushNamed(context, '/inicio/mazos',);
+goToMazes(
+  BuildContext context,
+) {
+  Navigator.pushNamed(
+    context,
+    '/inicio/mazos',
+  );
 }
 
 class EditMazeArguments {
   EditMazeArguments(
-    this.idMaze, 
-    this.subjectMaze, 
+    this.idMaze,
+    this.subjectMaze,
     this.nameMaze,
     this.cantidad,
   );

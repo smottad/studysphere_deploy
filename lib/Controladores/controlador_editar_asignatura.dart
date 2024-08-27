@@ -30,6 +30,11 @@ class ControladorEditarAsignatura {
     print(idAsignatura);
 
     // Puedes agregar aquí cualquier navegación que necesites, como Navigator.pop()
-    Navigator.pop(context); // Ejemplo de regresar a la pantalla anterior
+    Future.delayed(const Duration(seconds: 1), () {
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/inicio', ModalRoute.withName('/'));
+      }
+    });
   }
 }

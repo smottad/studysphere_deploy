@@ -88,7 +88,10 @@ Future<void> actualizarPerfil(BuildContext context, nombreO, correoO, telefonoO,
       );
     }
 
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/inicio', ModalRoute.withName('/'));
+    }
   } catch (e) {
     print(e);
     ScaffoldMessenger.of(context).showSnackBar(

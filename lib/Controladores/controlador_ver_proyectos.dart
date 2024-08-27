@@ -13,7 +13,7 @@ goEditProject(
 goVerProyectosPasados(
   BuildContext context,
 ) {
-  Navigator.pushNamed(
+  Navigator.pushReplacementNamed(
     context,
     '/inicio/proyectos_pasados',
   );
@@ -22,7 +22,7 @@ goVerProyectosPasados(
 goVerProyectosActuales(
   BuildContext context,
 ) {
-  Navigator.pushNamed(
+  Navigator.pushReplacementNamed(
     context,
     '/inicio/proyectos',
   );
