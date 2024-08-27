@@ -32,8 +32,7 @@ class ControladorEditarAsignatura {
     // Puedes agregar aquí cualquier navegación que necesites, como Navigator.pop()
     Future.delayed(const Duration(seconds: 1), () {
       if (context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/inicio', ModalRoute.withName('/'));
+        Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
       }
     });
   }

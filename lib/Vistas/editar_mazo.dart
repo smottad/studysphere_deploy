@@ -206,7 +206,7 @@ class EditarMazo extends StatelessWidget {
                           Future.delayed(const Duration(seconds: 1), () {
                             if (context.mounted) {
                               Navigator.pushNamedAndRemoveUntil(
-                                  context, '/inicio', ModalRoute.withName('/'));
+                                  context, '/inicio', (route) => false);
                             }
                           });
                         } catch (error) {

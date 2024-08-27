@@ -21,6 +21,16 @@ class PaginaInicio extends StatefulWidget {
 
 class _PaginaInicioState extends State<PaginaInicio> {
   @override
+  void initState() {
+    setState(() {
+      var examenes = builderExamenes();
+      var reuniones = builderReuniones();
+      var tareas = builderTareas();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     //final textTheme = Theme.of(context).textTheme;
@@ -95,21 +105,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox.expand(
                   child: SingleChildScrollView(
-                    child: FutureBuilder(
-                        future: paginaInicioTareas(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return snapshot.data!;
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        }),
+                    child: builderTareas(),
                   ),
                 ),
               ),
@@ -117,22 +113,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox.expand(
                   child: SingleChildScrollView(
-                    child: FutureBuilder(
-                        future: paginaInicioExamenes(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return snapshot.data!;
-                          }
-
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        }),
+                    child: builderExamenes(),
                   ),
                 ),
               ),
@@ -140,21 +121,7 @@ class _PaginaInicioState extends State<PaginaInicio> {
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox.expand(
                   child: SingleChildScrollView(
-                    child: FutureBuilder(
-                        future: paginaInicioReuniones(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return snapshot.data!;
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return const CircularProgressIndicator();
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        }),
+                    child: builderReuniones(),
                   ),
                 ),
               ),
@@ -162,6 +129,58 @@ class _PaginaInicioState extends State<PaginaInicio> {
             //children: [FutureBuilder(future: getAsignaturas(), builder: )],
           ),
         ));
+  }
+
+  FutureBuilder<Card> builderReuniones() {
+    return FutureBuilder(
+        future: paginaInicioReuniones(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return const CircularProgressIndicator();
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
+  }
+
+  FutureBuilder<Card> builderExamenes() {
+    return FutureBuilder(
+        future: paginaInicioExamenes(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
+  }
+
+  FutureBuilder<Card> builderTareas() {
+    return FutureBuilder(
+        future: paginaInicioTareas(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
   }
 
   Padding fotoYConfiguracion(
