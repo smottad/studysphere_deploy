@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:studysphere/Componentes/web_view.dart';
 import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
+import 'package:studysphere/Controladores/controlador_estudiar_examen.dart';
 import 'package:studysphere/Controladores/controlador_flashcards.dart';
 import 'package:studysphere/Vistas/ajustes.dart';
 import 'package:studysphere/Vistas/crear_flashcard.dart';
@@ -15,12 +16,14 @@ import 'package:studysphere/Vistas/editar_mazo.dart';
 import 'package:studysphere/Vistas/editar_perfil.dart';
 import 'package:studysphere/Vistas/editar_proyecto.dart';
 import 'package:studysphere/Vistas/enviar_correo_nueva_contrasena.dart';
+import 'package:studysphere/Vistas/estudiar_examen.dart';
 import 'package:studysphere/Vistas/horario.dart';
 import 'package:studysphere/Vistas/ingreso_codigo.dart';
 import 'package:studysphere/Vistas/iniciar_sesion.dart';
 import 'package:studysphere/Vistas/nueva_contrasena.dart';
 import 'package:studysphere/Vistas/pagina_inicio.dart';
 import 'package:studysphere/Vistas/practicar_flashcards.dart';
+import 'package:studysphere/Vistas/preparar_examen.dart';
 import 'package:studysphere/Vistas/registro.dart';
 import 'package:studysphere/Vistas/crear_asignatura.dart';
 import 'package:studysphere/Vistas/ver_asignaturas.dart';
@@ -104,10 +107,35 @@ class MyApp extends StatelessWidget {
               );
             }
           );
+        } else if(settings.name == PrepararExamen.routeName) {
+          final args = settings.arguments as ExamenArgs;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return PrepararExamen(
+                idAsignatura: args.idMateria!,
+                nombreAsignatura: args.nombreMateria,
+              );
+            }
+          );
+        } else if(settings.name == EstudiarExamen.routeName) {
+          final args = settings.arguments as ExamenArgs;
+
+          return MaterialPageRoute(
+            builder: (context) {
+              return EstudiarExamen(
+                idAsignatura: args.idMateria!,
+                asignatura: args.nombreMateria,
+                dificultad: args.dificultad!,
+                temas: args.temas!,
+                tiempo: args.tiempo!,
+              );
+            }
+          );
         }
 
         return null;
-      },
+      } ,
       routes: {
         '/': (context) => const IniciarSesion(),
         '/inicio': (context) => const PaginaInicio(),
@@ -131,7 +159,7 @@ class MyApp extends StatelessWidget {
         '/inicio/ajustes/editar_perfil': (context) => const EditProfile(),
         '/inicio/mazos': (context) => const VerMazos(),
         '/inicio/mazos/crear_mazo': (context) => const CrearMazo(),
-        '/inicio/flashcards/crear_flashcard': (context) => CrearFlashcard(),
+        '/inicio/flashcards/crear_flashcard': (context) => const CrearFlashcard(),
         '/inicio/flashcards/editar_flashcard': (context) => EditarFlashcard(),
       },
     );

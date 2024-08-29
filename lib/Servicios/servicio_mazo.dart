@@ -101,4 +101,39 @@ class ServicioBaseDatosMazo {
     }
     return mazos;
   }
+
+  Future<List<Mazo>> traerMazo(int idAsignatura) async {
+    List<Mazo> mazos = [];
+
+    try {
+      final Session? sesion = supabase.auth.currentSession;
+      final userId = sesion?.user.id;
+
+      if(userId == null) {
+        throw ArgumentError("El user OD no puede ser nulo");
+      }
+
+      final data = await supabase
+      .from("mazos")
+      .select("*, asignaturas(nombre), flashcards(id)")
+      .eq('id_usuario', userId)
+      .eq('id_asignatura', idAsignatura)
+      .order("nombre", ascending: true);
+
+      for(var maze in data) {
+        mazos.add(Mazo(
+          id: maze["id"],
+          nombreMazo: maze["nombre"], 
+          idAsignaturaMazo: maze["id_asignatura"],
+          nombreAsignaturaMazo: maze["asignaturas"]["nombre"],
+          cantidad: maze["flashcards"].length
+        ));
+      }
+
+      print(data);
+    } catch(error) {
+      print(error);
+    }
+    return mazos;
+  }
 }

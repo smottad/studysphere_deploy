@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studysphere/Componentes/selected_days.dart';
+import 'package:studysphere/Controladores/controlador_estudiar_examen.dart';
 import 'package:studysphere/Controladores/controlador_ver_asignatura.dart';
 import 'package:studysphere/my_flutter_app_icons.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -137,7 +138,9 @@ class CardAsignatura extends StatelessWidget {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    irPrepararExamen(context, ExamenArgs(nombreMateria: nameSubject, idMateria: idAsignatura));
+                  },
                   child: Text(
                     "Estudiar",
                     style: TextStyle(
