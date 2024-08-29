@@ -35,11 +35,20 @@ void crearProyecto(
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Proyecto guardado con éxito')),
     );
+    Future.delayed(const Duration(seconds: 1), () {
+      if (context.mounted) {
+        Navigator.pop(context);
+        //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+      }
+    });
   } catch (e) {
     print('Error al guardar el proyecto: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error al guardar el proyecto: $e')),
-    );
+    Future.delayed(const Duration(seconds: 1), () {
+      if (context.mounted) {
+        Navigator.pop(context);
+        //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+      }
+    });
   }
 }
 

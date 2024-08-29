@@ -23,15 +23,23 @@ class ArgumentsFlashcards {
 }
 
 goToSeeFlashcards(BuildContext context, ArgumentsFlashcards args) {
-  Navigator.pushNamed(context, '/inicio/flashcards/ver_flashcards', arguments: args);
+  Navigator.pushNamed(context, '/inicio/flashcards/ver_flashcards',
+      arguments: args);
+}
+
+goToSeeFlashcardsRep(BuildContext context, ArgumentsFlashcards args) {
+  Navigator.pushReplacementNamed(context, '/inicio/flashcards/ver_flashcards',
+      arguments: args);
 }
 
 goToCreateFlashcard(BuildContext context, ArgumentsFlashcards args) {
-  Navigator.pushNamed(context, '/inicio/flashcards/crear_flashcard', arguments: args);
+  Navigator.pushNamed(context, '/inicio/flashcards/crear_flashcard',
+      arguments: args);
 }
 
 goToEditFlashcard(BuildContext context, ArgumentsFlashcards args) {
-  Navigator.pushNamed(context, '/inicio/flashcards/editar_flashcard', arguments: args);
+  Navigator.pushNamed(context, '/inicio/flashcards/editar_flashcard',
+      arguments: args);
 }
 
 getFoto() async {

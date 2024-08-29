@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +17,21 @@ eliminarRecordatorio(idRecordatorio) async {
   print(response);
 }
 
-markAsDone(idRecordatorio) {}
+markAsDone(idRecordatorio) async {
+  final supabase = Supabase.instance.client;
+  final Session? session = supabase.auth.currentSession;
+  final userId = session?.user.id;
+  print(userId);
+  if (userId == null) {
+    throw ArgumentError('El userId no puede ser nulo');
+  }
+  // Realiza una consulta a la tabla de proyectos para obtener los nombres de los proyectos del usuario
+  final response = await supabase
+      .from('recordatorios')
+      .delete()
+      .eq('id', int.parse(idRecordatorio));
+  print(response);
+}
 
 Future<Map<String, List<List<String>>>>
     obtenerNombresReunionesActuales() async {
@@ -224,4 +236,5 @@ Future<String?> obtenerUrlImagenPerfil() async {
   } on Exception catch (e) {
     print('Error obteniendo la URL de la foto: $e');
   }
+  return null;
 }

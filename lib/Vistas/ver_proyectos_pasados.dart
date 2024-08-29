@@ -9,7 +9,7 @@ class VerProyectosPasados extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context, "Proyectos", color: 0),
+      appBar: appBar(context, "Proyectos pasados", color: 0),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: FutureBuilder<List<String>>(

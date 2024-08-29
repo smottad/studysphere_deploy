@@ -18,7 +18,7 @@ Future<Image> bajarImagen(
     Session? sesion = supabase.auth.currentSession;
     if (imageName != null) {
       final Uint8List file =
-          await supabase.storage.from('avatars').download(imageName!);
+          await supabase.storage.from('avatars').download(imageName);
       final Image image = Image.memory(file);
 
       return Image(
@@ -50,11 +50,13 @@ irHorario(BuildContext context) {
 irConfiguracion(BuildContext context) {
   Navigator.pushNamed(context, '/inicio/ajustes');
 }
-
+/*
 void showAction(BuildContext context, int index) {
   switch (index) {
     case 0:
-      Navigator.pushNamed(context, '/inicio/crear_recordatorio');
+      Navigator.pushNamed(context, '/inicio/crear_recordatorio').then(
+        (value) => refresh(),
+      );
       break;
     case 1:
       Navigator.pushNamed(context, '/inicio/mazos');
@@ -72,3 +74,4 @@ void showAction(BuildContext context, int index) {
       throw ('wtf');
   }
 }
+*/

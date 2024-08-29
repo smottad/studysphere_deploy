@@ -7,8 +7,10 @@ import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_editar_mazo.dart';
 import 'package:studysphere/Servicios/servicio_mazo.dart';
 
-String selectedMateria = ""; // Variable para almacenar el nombre de la materia seleccionada
-int selectedMateriaId = 0; // Variable para almacenar el ID de la materia seleccionada
+String selectedMateria =
+    ""; // Variable para almacenar el nombre de la materia seleccionada
+int selectedMateriaId =
+    0; // Variable para almacenar el ID de la materia seleccionada
 
 Map<String, int> asignaturas = {};
 
@@ -26,7 +28,12 @@ Future<void> actualizarAsignaturas() async {
 }
 
 class EditarMazo extends StatelessWidget {
-  EditarMazo({super.key, required this.idMaze, required this.nameMaze, required this.subjectMaze, required this.cantidad});
+  EditarMazo(
+      {super.key,
+      required this.idMaze,
+      required this.nameMaze,
+      required this.subjectMaze,
+      required this.cantidad});
 
   final int idMaze;
   final String nameMaze;
@@ -35,7 +42,7 @@ class EditarMazo extends StatelessWidget {
 
   static const routeName = '/inicio/mazos/editar_mazo';
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
     Size size = MediaQuery.of(context).size;
@@ -68,7 +75,11 @@ class EditarMazo extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                textFormulario(context, nombreMazo, "Ingrese el nombre del mazo",),
+                textFormulario(
+                  context,
+                  nombreMazo,
+                  "Ingrese el nombre del mazo",
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -105,7 +116,8 @@ class EditarMazo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           items: List.empty(),
                           isExpanded: true,
                           hint: const Text("Seleccione la materia"),
@@ -122,13 +134,14 @@ class EditarMazo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           items: List.empty(),
                           isExpanded: true,
                           hint: const Text("Seleccione la materia"),
                           onChanged: (value) {},
                         );
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty){
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return DropdownButtonFormField(
                           alignment: Alignment.center,
                           decoration: InputDecoration(
@@ -139,7 +152,8 @@ class EditarMazo extends StatelessWidget {
                               ),
                             ),
                           ),
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
                           items: List.empty(),
                           isExpanded: true,
                           hint: const Text("Seleccione la materia"),
@@ -148,84 +162,85 @@ class EditarMazo extends StatelessWidget {
                       } else {
                         final subjects = snapshot.data!;
                         return MyDropdownWidget(
-                          asignaturas: subjects, 
-                          hintText: "Seleccione la materia", 
-                          currentItem: subjectMaze, 
-                          itemCallback: (String status) {
-                            subjectMaze = status;
-                            selectedMateria = status;
-                            selectedMateriaId = subjects[selectedMateria]!;
-                          }, 
-                          idCurrentItem: subjects[subjectMaze]!);
+                            asignaturas: subjects,
+                            hintText: "Seleccione la materia",
+                            currentItem: subjectMaze,
+                            itemCallback: (String status) {
+                              subjectMaze = status;
+                              selectedMateria = status;
+                              selectedMateriaId = subjects[selectedMateria]!;
+                            },
+                            idCurrentItem: subjects[subjectMaze]!);
                       }
                     },
-                  ), 
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.primary,
-                  ),
-                  onPressed: () {
-                    if(nombreMazo.text.isNotEmpty && selectedMateria != "") {
-                      try {
-                        ServicioBaseDatosMazo bdMazo = ServicioBaseDatosMazo();
-                        Mazo nuevoMazo = Mazo(
-                          id: idMaze,
-                          nombreMazo: nombreMazo.text, 
-                          idAsignaturaMazo: selectedMateriaId, 
-                          nombreAsignaturaMazo: selectedMateria,
-                          cantidad: cantidad
-                        );
-                        
-                        bdMazo.actualizarMazo(nuevoMazo);
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.primary,
+                    ),
+                    onPressed: () {
+                      if (nombreMazo.text.isNotEmpty && selectedMateria != "") {
+                        try {
+                          ServicioBaseDatosMazo bdMazo =
+                              ServicioBaseDatosMazo();
+                          Mazo nuevoMazo = Mazo(
+                              id: idMaze,
+                              nombreMazo: nombreMazo.text,
+                              idAsignaturaMazo: selectedMateriaId,
+                              nombreAsignaturaMazo: selectedMateria,
+                              cantidad: cantidad);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Se ha actualizado con exito"),
-                            duration: Duration(seconds: 1),),
+                          bdMazo.actualizarMazo(nuevoMazo);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Se ha actualizado con exito"),
+                              duration: Duration(seconds: 1),
+                            ),
                           );
 
-                          goToMazes(context);
-                      } catch(error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          Future.delayed(const Duration(seconds: 1), () {
+                            if (context.mounted) {
+                              goToMazesRep(context);
+                            }
+                          });
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
                               "Error al guardar el mazo: $error",
                               style: TextStyle(
                                 color: colorScheme.onTertiary,
                               ),
                             ),
-                            duration: const Duration(seconds: 2),
-                            backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
-                          )
-                        );
-                      }
-                    } else {
-                      print(nombreMazo.text.isNotEmpty);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                            duration: const Duration(seconds: 1),
+                            backgroundColor:
+                                const Color.fromRGBO(255, 50, 50, 1),
+                          ));
+                        }
+                      } else {
+                        print(nombreMazo.text.isNotEmpty);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             "Llene todo los campos",
                             style: TextStyle(
                               color: colorScheme.onTertiary,
                             ),
                           ),
-                          duration: const Duration(seconds: 2),
+                          duration: const Duration(seconds: 1),
                           backgroundColor: const Color.fromRGBO(255, 50, 50, 1),
-                        )
-                      );
-                    }
-                  }, 
-                  child: Text(
-                    "Guardar",
-                    style: TextStyle(
-                      color: colorScheme.scrim,
-                    ),
-                  )
-                ),
+                        ));
+                      }
+                    },
+                    child: Text(
+                      "Guardar",
+                      style: TextStyle(
+                        color: colorScheme.scrim,
+                      ),
+                    )),
               ],
             ),
           ),

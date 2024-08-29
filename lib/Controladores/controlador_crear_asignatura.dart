@@ -71,13 +71,30 @@ void guardarAsignatura(
       horaDeInicio: horaDeInicio,
       horaDeFin: horaDeFin,
     );
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Asignatura guardada con éxito')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Asignatura guardada con éxito')),
+      );
+      Future.delayed(const Duration(seconds: 1), () {
+        if (context.mounted) {
+          Navigator.pop(context);
+          //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false).then((val) => () {});
+        }
+      });
+    }
   } catch (e) {
     print('Error al guardar la asignatura: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error al guardar la asignatura: $e')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al guardar la asignatura: $e')),
+      );
+
+      Future.delayed(const Duration(seconds: 1), () {
+        if (context.mounted) {
+          Navigator.pop(context);
+          //Navigator.pushNamedAndRemoveUntil(context, '/inicio', (route) => false);
+        }
+      });
+    }
   }
 }

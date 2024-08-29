@@ -1,8 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:randomstring_dart/randomstring_dart.dart';
-import 'package:studysphere/Componentes/app_bar.dart';
-import 'package:studysphere/Componentes/boton.dart';
 import 'package:studysphere/Componentes/text_forms.dart';
 import 'package:studysphere/Controladores/controlador_registro.dart';
 import 'package:studysphere/Componentes/avatar.dart'; // Asegúrate de importar el widget Avatar
@@ -36,9 +34,40 @@ class _RegistroState extends State<Registro> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    const titulo = "Crear cuenta";
 
+    final colorTexto = colorScheme.onSecondary;
+    final colorBar = colorScheme.secondary;
     return Scaffold(
-      appBar: appBar(context, "Crear cuenta", color: 1),
+      appBar: AppBar(
+        titleTextStyle: Theme.of(context)
+            .textTheme
+            .headlineMedium
+            ?.copyWith(color: colorTexto),
+        backgroundColor: colorBar,
+        foregroundColor: colorTexto,
+        elevation: 2,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.125,
+            ),
+            const Spacer(),
+            const Text(titulo),
+            const Spacer(),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.15,
+              child: const Image(
+                alignment: Alignment.centerRight,
+                image: AssetImage("lib/Assets/logo.png"),
+                fit: BoxFit.contain,
+                height: 55,
+              ),
+            ),
+          ],
+        ),
+      ),
       backgroundColor: colorScheme.surface,
       resizeToAvoidBottomInset: false,
       body: Center(

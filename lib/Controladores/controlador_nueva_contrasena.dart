@@ -4,8 +4,5 @@ TextEditingController contrasena = TextEditingController();
 TextEditingController verificarContrasena = TextEditingController();
 
 goToLogin(BuildContext context) {
-  Navigator.pushNamed(
-    context,
-    '/',
-  );
+  Navigator.pushNamedAndRemoveUntil(context, '/', ModalRoute.withName('/'));
 }
