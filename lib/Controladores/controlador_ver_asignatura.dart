@@ -28,10 +28,10 @@ irVerAsignaturasActuales(
   );
 }
 
-irEstudiarExamen(BuildContext context) {
-  Navigator.pushNamed(context, '/inicio/asignaturas/estudiar_examen');
+irEstudiarExamen(BuildContext context, ExamenArgs args) {
+  Navigator.pushReplacementNamed(context, '/inicio/asignaturas/estudiar_examen', arguments: args);
 }
 
 irPrepararExamen(BuildContext context, ExamenArgs args) {
-  Navigator.pushNamed(context, '/inicio/asignaturas/preparar_examen', arguments: args);
+  Navigator.pushReplacementNamed(context, '/inicio/asignaturas/preparar_examen', arguments: args);
 }
