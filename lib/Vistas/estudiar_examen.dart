@@ -98,7 +98,26 @@ class _EstudiarExamenState extends State<EstudiarExamen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No se generó el exámen,'));
+            return Center(child: Column(
+              children: [
+                const Text('No se generó el exámen,'),
+                const SizedBox(height: 25,),
+                ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: colorScheme.primary,
+                ),
+                onPressed: () {
+                  irPrepararExamen(context, ExamenArgs(nombreMateria: widget.asignatura, idMateria: widget.idAsignatura));
+                },
+                child: Text(
+                  "Empezar examen",
+                  style: TextStyle(
+                    color: colorScheme.scrim,
+                  ),
+                )),  
+              ],
+            )
+            );
           } else {
             final examen = snapshot.data!;
             correctAnswersArr = examen['respuestas'];
